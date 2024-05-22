@@ -46,7 +46,7 @@ struct GroupsView: View {
                 } else {
                     List {
                         ForEach(groups) { group in
-                            NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name)) {
+                            NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
                                 VStack(alignment: .leading) {
                                     Text(group.name)
                                         .font(.headline)
