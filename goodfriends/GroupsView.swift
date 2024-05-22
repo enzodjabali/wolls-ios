@@ -39,6 +39,7 @@ struct GroupsView: View {
             fetchGroups()
         }
         .navigationTitle("Groups")
+        .navigationBarBackButtonHidden(true) // This line hides the back button
     }
 
     func fetchGroups() {
@@ -93,4 +94,3 @@ struct GroupsView: View {
 #Preview {
     GroupsView()
 }
-
