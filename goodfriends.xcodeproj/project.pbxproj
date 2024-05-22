@@ -14,6 +14,13 @@
 		C60EA1152BFE3C7D00C5E23F /* goodfriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1142BFE3C7D00C5E23F /* goodfriendsTests.swift */; };
 		C60EA11F2BFE3C7D00C5E23F /* goodfriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */; };
 		C60EA1212BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */; };
+		C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12D2BFE548100C5E23F /* LoginView.swift */; };
+		C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12F2BFE576D00C5E23F /* RegisterView.swift */; };
+		C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1322BFE5CED00C5E23F /* GroupsView.swift */; };
+		C60EA1352BFE6D4400C5E23F /* GroupDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */; };
+		C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */; };
+		C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1382BFE6D9800C5E23F /* RefundsView.swift */; };
+		C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +51,13 @@
 		C60EA11A2BFE3C7D00C5E23F /* goodfriendsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = goodfriendsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITests.swift; sourceTree = "<group>"; };
 		C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C60EA12D2BFE548100C5E23F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C60EA12F2BFE576D00C5E23F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		C60EA1322BFE5CED00C5E23F /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
+		C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailView.swift; sourceTree = "<group>"; };
+		C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
+		C60EA1382BFE6D9800C5E23F /* RefundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundsView.swift; sourceTree = "<group>"; };
+		C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +112,13 @@
 				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
+				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
+				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
+				C60EA1322BFE5CED00C5E23F /* GroupsView.swift */,
+				C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */,
+				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
+				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
+				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -257,8 +278,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
+				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
+				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
+				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
+				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
+				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
+				C60EA1352BFE6D4400C5E23F /* GroupDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

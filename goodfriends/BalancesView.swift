@@ -1,19 +1,12 @@
-//
-//  ContentView.swift
-//  goodfriends
-//
-//  Created by Enzo on 22/05/2024.
-//
-
 import SwiftUI
 
-struct ContentView: View {
+struct BalancesView: View {
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundStyle(.tint)
-            Text("Hello, world !")
+            Text("Hello, world balances!")
         }
         .padding()
     }
