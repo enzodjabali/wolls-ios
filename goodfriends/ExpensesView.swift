@@ -8,6 +8,7 @@ struct Expense: Identifiable, Decodable {
     let amount: Double
     let date: String // Assuming date is in String format
     let creator_id: String
+    let creator_pseudonym: String
     let group_id: String
     let category: String
     let refund_recipients: [String]
@@ -23,6 +24,7 @@ struct Expense: Identifiable, Decodable {
         case amount
         case date
         case creator_id
+        case creator_pseudonym
         case group_id
         case category
         case refund_recipients
@@ -39,6 +41,7 @@ struct Expense: Identifiable, Decodable {
         amount = try container.decode(Double.self, forKey: .amount)
         date = try container.decode(String.self, forKey: .date)
         creator_id = try container.decode(String.self, forKey: .creator_id)
+        creator_pseudonym = try container.decode(String.self, forKey: .creator_pseudonym)
         group_id = try container.decode(String.self, forKey: .group_id)
         category = try container.decode(String.self, forKey: .category)
         refund_recipients = try container.decode([String].self, forKey: .refund_recipients)
@@ -84,16 +87,14 @@ struct ExpensesView: View {
                                 .font(.headline)
                         }
                         HStack {
-                            Text("Paid by \(expense.creator_id)")
+                            Text("Paid by \(expense.creator_pseudonym)")
                                 .font(.subheadline)
                             Spacer()
                             Text(formatDate(expense.date))
                                 .font(.subheadline)
                         }
                     }
-                
                 }
-
             }
         }
         .onAppear {
