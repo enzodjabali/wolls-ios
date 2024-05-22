@@ -12,6 +12,7 @@ struct GroupsView: View {
     @State private var groups: [Group] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
+    @State private var showCreateGroupSheet = false
 
     var body: some View {
         VStack {
@@ -39,7 +40,18 @@ struct GroupsView: View {
             fetchGroups()
         }
         .navigationTitle("Groups")
-        .navigationBarBackButtonHidden(true) // This line hides the back button
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(trailing: Button(action: {
+            showCreateGroupSheet.toggle()
+        }) {
+            Image(systemName: "plus")
+                .font(.title2)
+        })
+        .sheet(isPresented: $showCreateGroupSheet) {
+            CreateGroupView { newGroup in
+                groups.append(newGroup)
+            }
+        }
     }
 
     func fetchGroups() {
@@ -73,7 +85,6 @@ struct GroupsView: View {
                     }
                 }
             } else {
-                // Handle error
                 if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let errorMessage = jsonResponse["error"] as? String {
                     DispatchQueue.main.async {
@@ -85,6 +96,79 @@ struct GroupsView: View {
                         fetchError = "An unknown error occurred"
                         isLoading = false
                     }
+                }
+            }
+        }.resume()
+    }
+}
+
+struct CreateGroupView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @State private var groupName = ""
+    @State private var groupDescription = ""
+    @State private var createError: String?
+    var onCreate: (Group) -> Void
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Group Name")) {
+                    TextField("Enter group name", text: $groupName)
+                }
+                Section(header: Text("Description")) {
+                    TextField("Enter description", text: $groupDescription)
+                }
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+            }
+            .navigationTitle("Create Group")
+            .navigationBarItems(leading: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            }, trailing: Button("Create") {
+                createGroup()
+            })
+        }
+    }
+
+    func createGroup() {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/groups") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let newGroup = ["name": groupName, "description": groupDescription]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: newGroup, options: []) else { return }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    createError = error.localizedDescription
+                }
+                return
+            }
+
+            guard let data = data else { return }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+                if let jsonResponse = try? JSONDecoder().decode(Group.self, from: data) {
+                    DispatchQueue.main.async {
+                        onCreate(jsonResponse)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        createError = "Failed to parse response"
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    createError = "Failed to create group"
                 }
             }
         }.resume()
