@@ -102,32 +102,12 @@ struct ExpensesView: View {
                 }
             }
             
-            // Button to add an expense
-            Button(action: {
-                showAddExpenseSheet.toggle()
-            }) {
-                Text("Add Expense")
-                    .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-            }
-            .padding()
-            
         }
         .onAppear {
             fetchExpenses()
         }
         .onChange(of: searchText) { value in
             filterExpenses()
-        }
-        .sheet(isPresented: $showAddExpenseSheet) {
-            AddExpenseView(groupId: groupId) { newExpense in
-                expenses.append(newExpense)
-            }
-        }
-        .onAppear {
-            fetchExpenses()
         }
         .navigationTitle("Expenses")
         .navigationBarItems(trailing: Button(action: {
@@ -141,8 +121,6 @@ struct ExpensesView: View {
                 expenses.append(newExpense)
             }
         }
-    
-        
     }
 
     func fetchExpenses() {
