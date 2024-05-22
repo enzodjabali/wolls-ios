@@ -53,6 +53,17 @@ struct ExpensesView: View {
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     
+    private func formatDate(_ dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Assuming the input format is this
+        if let date = dateFormatter.date(from: dateString) {
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            return dateFormatter.string(from: date)
+        } else {
+            return "Invalid Date"
+        }
+    }
+    
     var body: some View {
         VStack {
             if isLoading {
@@ -64,8 +75,25 @@ struct ExpensesView: View {
                     .padding()
             } else {
                 List(expenses) { expense in
-                    Text(expense.title)
+                    VStack(alignment: .leading) {
+                        HStack {
+                            Text(expense.title)
+                                .font(.headline)
+                            Spacer()
+                            Text(String(format: "%.2f", expense.amount))
+                                .font(.headline)
+                        }
+                        HStack {
+                            Text("Paid by \(expense.creator_id)")
+                                .font(.subheadline)
+                            Spacer()
+                            Text(formatDate(expense.date))
+                                .font(.subheadline)
+                        }
+                    }
+                
                 }
+
             }
         }
         .onAppear {
