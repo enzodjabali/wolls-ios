@@ -1,15 +1,49 @@
 import SwiftUI
 
-struct Expense: Identifiable {
-    let id: UUID
+import Foundation
+
+struct Expense: Identifiable, Decodable {
+    let id: String // Assuming _id in JSON is a String
     let title: String
     let amount: Double
-    // Other properties
+    let date: String // Assuming date is in String format
+    let creator_id: String
+    let group_id: String
+    let category: String
+    let refund_recipients: [String]
+    let isRefunded: Bool
+    let __v: Int
     
-    init(id: UUID = UUID(), title: String, amount: Double) {
-        self.id = id
-        self.title = title
-        self.amount = amount
+    // You can add additional properties if needed
+    
+    // Define CodingKeys enum to map JSON keys to Swift properties
+    private enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case title
+        case amount
+        case date
+        case creator_id
+        case group_id
+        case category
+        case refund_recipients
+        case isRefunded
+        case __v
+    }
+    
+    // Implement custom decoding to handle specific cases, if necessary
+    // If the date format is not standard, you may need to implement custom date decoding
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        title = try container.decode(String.self, forKey: .title)
+        amount = try container.decode(Double.self, forKey: .amount)
+        date = try container.decode(String.self, forKey: .date)
+        creator_id = try container.decode(String.self, forKey: .creator_id)
+        group_id = try container.decode(String.self, forKey: .group_id)
+        category = try container.decode(String.self, forKey: .category)
+        refund_recipients = try container.decode([String].self, forKey: .refund_recipients)
+        isRefunded = try container.decode(Bool.self, forKey: .isRefunded)
+        __v = try container.decode(Int.self, forKey: .__v)
     }
 }
 
@@ -40,10 +74,41 @@ struct ExpensesView: View {
     }
     
     func fetchExpenses() {
-        guard let url = URL(string: "https://api.goodfriends.tech/v1/expenses/\(groupId)") else { return }
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/expenses/\(groupId)") else { return }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            // Handle response
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601 // Assuming the date is in ISO 8601 format
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data else {
+                if let error = error {
+                    fetchError = error.localizedDescription
+                } else {
+                    fetchError = "No data received"
+                }
+                isLoading = false
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse {
+                print("Response status code: \(httpResponse.statusCode)")
+            }
+            
+            print("Raw data: \(String(data: data, encoding: .utf8) ?? "Unable to decode data")")
+            
+            do {
+                expenses = try decoder.decode([Expense].self, from: data)
+                isLoading = false
+            } catch {
+                fetchError = "Failed to decode expenses: \(error.localizedDescription)"
+                isLoading = false
+            }
         }.resume()
     }
+
 }
