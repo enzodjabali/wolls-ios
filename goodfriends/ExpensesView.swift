@@ -126,6 +126,23 @@ struct ExpensesView: View {
                 expenses.append(newExpense)
             }
         }
+        .onAppear {
+            fetchExpenses()
+        }
+        .navigationTitle("Expenses")
+        .navigationBarItems(trailing: Button(action: {
+            showAddExpenseSheet.toggle()
+        }) {
+            Image(systemName: "plus")
+                .font(.title2)
+        })
+        .sheet(isPresented: $showAddExpenseSheet) {
+            AddExpenseView(groupId: groupId){ newExpense in
+                expenses.append(newExpense)
+            }
+        }
+    
+        
     }
 
     func fetchExpenses() {
@@ -231,12 +248,14 @@ struct AddExpenseView: View {
                         .foregroundColor(.red)
                 }
             }
+            
             .navigationTitle("Add Expense")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Save") {
                 createExpense()
             })
+            
         }
     }
 
