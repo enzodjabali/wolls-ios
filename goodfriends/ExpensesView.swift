@@ -53,9 +53,11 @@ struct Expense: Identifiable, Decodable {
 struct ExpensesView: View {
     let groupId: String
     @State private var expenses: [Expense] = []
+    @State private var filteredExpenses: [Expense] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
-    
+    @State private var searchText: String = ""
+
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" // Assuming the input format is this
@@ -66,9 +68,11 @@ struct ExpensesView: View {
             return "Invalid Date"
         }
     }
-    
+
     var body: some View {
         VStack {
+            SearchBar(text: $searchText, placeholder: "Search Expenses")
+            
             if isLoading {
                 ProgressView("Loading...")
                     .padding()
@@ -77,7 +81,7 @@ struct ExpensesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(expenses) { expense in
+                List(filteredExpenses.isEmpty ? expenses : filteredExpenses) { expense in
                     VStack(alignment: .leading) {
                         HStack {
                             Text(expense.title)
@@ -100,19 +104,22 @@ struct ExpensesView: View {
         .onAppear {
             fetchExpenses()
         }
+        .onChange(of: searchText) { value in
+            filterExpenses()
+        }
     }
-    
+
     func fetchExpenses() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "https://api.goodfriends.tech/v1/expenses/\(groupId)") else { return }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(token, forHTTPHeaderField: "Authorization")
-        
+
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601 // Assuming the date is in ISO 8601 format
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
                 if let error = error {
@@ -123,16 +130,17 @@ struct ExpensesView: View {
                 isLoading = false
                 return
             }
-            
+
             if let httpResponse = response as? HTTPURLResponse {
                 print("Response status code: \(httpResponse.statusCode)")
             }
-            
+
             print("Raw data: \(String(data: data, encoding: .utf8) ?? "Unable to decode data")")
-            
+
             do {
                 expenses = try decoder.decode([Expense].self, from: data)
                 isLoading = false
+                filterExpenses() // Filter expenses initially
             } catch {
                 fetchError = "Failed to decode expenses: \(error.localizedDescription)"
                 isLoading = false
@@ -140,4 +148,40 @@ struct ExpensesView: View {
         }.resume()
     }
 
+    func filterExpenses() {
+        if searchText.isEmpty {
+            filteredExpenses = expenses
+        } else {
+            filteredExpenses = expenses.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+}
+
+struct SearchBar: View {
+    @Binding var text: String
+    var placeholder: String
+
+    var body: some View {
+        HStack {
+            TextField(placeholder, text: $text)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 8)
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal)
+                .onChange(of: text) { _ in
+                    // Automatically update the text while typing
+                    // If you prefer to search only after pressing the return key, remove this line
+                }
+            if !text.isEmpty {
+                Button(action: {
+                    // Clear the text when the clear button is tapped
+                    text = ""
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .padding(.horizontal)
+                }
+            }
+        }
+    }
 }
