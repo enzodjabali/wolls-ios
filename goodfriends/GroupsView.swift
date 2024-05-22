@@ -128,8 +128,16 @@ struct GroupsView: View {
                         groups.remove(at: index)
                     }
                 } else {
-                    DispatchQueue.main.async {
-                        fetchError = "Failed to delete group"
+                    if let data = data,
+                       let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let errorMessage = jsonResponse["error"] as? String {
+                        DispatchQueue.main.async {
+                            fetchError = errorMessage
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            fetchError = "Failed to delete group"
+                        }
                     }
                 }
             }.resume()
@@ -202,8 +210,15 @@ struct CreateGroupView: View {
                     }
                 }
             } else {
-                DispatchQueue.main.async {
-                    createError = "Failed to create group"
+                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    DispatchQueue.main.async {
+                        createError = errorMessage
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        createError = "Failed to create group"
+                    }
                 }
             }
         }.resume()
