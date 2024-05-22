@@ -24,15 +24,18 @@ struct GroupsView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(groups) { group in
-                    NavigationLink(destination: GroupDetailView(groupId: group.id)) {
-                        VStack(alignment: .leading) {
-                            Text(group.name)
-                                .font(.headline)
-                            Text(group.description)
-                                .font(.subheadline)
+                List {
+                    ForEach(groups) { group in
+                        NavigationLink(destination: GroupDetailView(groupId: group.id)) {
+                            VStack(alignment: .leading) {
+                                Text(group.name)
+                                    .font(.headline)
+                                Text(group.description)
+                                    .font(.subheadline)
+                            }
                         }
                     }
+                    .onDelete(perform: deleteGroup)
                 }
             }
         }
@@ -99,6 +102,38 @@ struct GroupsView: View {
                 }
             }
         }.resume()
+    }
+
+    func deleteGroup(at offsets: IndexSet) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken") else { return }
+
+        offsets.forEach { index in
+            let group = groups[index]
+            guard let url = URL(string: "https://api.goodfriends.tech/v1/groups/\(group.id)") else { return }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "DELETE"
+            request.setValue(token, forHTTPHeaderField: "Authorization")
+
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    DispatchQueue.main.async {
+                        fetchError = error.localizedDescription
+                    }
+                    return
+                }
+
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                    DispatchQueue.main.async {
+                        groups.remove(at: index)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        fetchError = "Failed to delete group"
+                    }
+                }
+            }.resume()
+        }
     }
 }
 
