@@ -2,8 +2,8 @@ import SwiftUI
 
 struct GroupDetailView: View {
     @State private var selectedTab = 0
-    @State private var groupName: String = ""
     let groupId: String
+    let groupName: String
     
     var body: some View {
         VStack {
@@ -18,9 +18,6 @@ struct GroupDetailView: View {
             viewForSelectedTab()
         }
         .navigationTitle(groupName)
-        .onAppear {
-            fetchGroupName()
-        }
     }
     
     @ViewBuilder
@@ -36,35 +33,4 @@ struct GroupDetailView: View {
             Text("Select a tab")
         }
     }
-    
-    private func fetchGroupName() {
-        guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/groups/\(groupId)") else {
-            print("Invalid URL or missing token")
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(token, forHTTPHeaderField: "Authorization")
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print("No data received: \(error?.localizedDescription ?? "Unknown error")")
-                return
-            }
-            
-            if let decodedResponse = try? JSONDecoder().decode(GroupDetailResponse.self, from: data) {
-                DispatchQueue.main.async {
-                    self.groupName = decodedResponse.name
-                }
-            } else {
-                print("Failed to decode group name from API.")
-            }
-        }.resume()
-    }
-}
-
-struct GroupDetailResponse: Decodable {
-    let name: String
 }
