@@ -24,18 +24,39 @@ struct GroupsView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List {
-                    ForEach(groups) { group in
-                        NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name)) {
-                            VStack(alignment: .leading) {
-                                Text(group.name)
-                                    .font(.headline)
-                                Text(group.description)
-                                    .font(.subheadline)
-                            }
+                if groups.isEmpty {
+                    VStack {
+                        Image("nothing")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 250, height: 250)
+                            .foregroundColor(.gray)
+                        
+                        Text("You don't have any groups yet.")
+                            .foregroundColor(.gray)
+                        
+                        Button(action: {
+                            showCreateGroupSheet.toggle()
+                        }) {
+                            Text("Create Your First Group")
+                                .foregroundColor(.blue)
+                                .padding()
                         }
                     }
-                    .onDelete(perform: deleteGroup)
+                } else {
+                    List {
+                        ForEach(groups) { group in
+                            NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name)) {
+                                VStack(alignment: .leading) {
+                                    Text(group.name)
+                                        .font(.headline)
+                                    Text(group.description)
+                                        .font(.subheadline)
+                                }
+                            }
+                        }
+                        .onDelete(perform: deleteGroup)
+                    }
                 }
             }
         }
@@ -56,7 +77,7 @@ struct GroupsView: View {
             }
         }
     }
-
+    
     func fetchGroups() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "https://api.goodfriends.tech/v1/groups") else { return }

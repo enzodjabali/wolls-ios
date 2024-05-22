@@ -6,11 +6,16 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var loginError: String?
     @State private var isLoggedIn: Bool = false
-
+    
     var body: some View {
         NavigationView {
             VStack {
-                TextField("Pseudonym", text: $pseudonym)
+                Image("login") // Replace "your_image_name" with the name of your image asset
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 270, height: 270) // Adjust size as needed
+                
+                TextField("Username", text: $pseudonym)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
                     .padding()
