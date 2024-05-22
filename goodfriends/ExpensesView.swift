@@ -109,7 +109,6 @@ struct ExpensesView: View {
         .onChange(of: searchText) { value in
             filterExpenses()
         }
-        .navigationTitle("Expenses")
         .navigationBarItems(trailing: Button(action: {
             showAddExpenseSheet.toggle()
         }) {
