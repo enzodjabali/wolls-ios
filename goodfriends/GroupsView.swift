@@ -13,65 +13,95 @@ struct GroupsView: View {
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     @State private var showCreateGroupSheet = false
+    @State private var isSidebarOpen = false // Added state for sidebar
+    @Binding var isLoggedIn: Bool // Add binding for login status
+    
+    init(isLoggedIn: Binding<Bool>) {
+        _isLoggedIn = isLoggedIn // Bind the argument to the state variable
+    }
 
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView("Loading...")
-                    .padding()
-            } else if let error = fetchError {
-                Text(error)
-                    .foregroundColor(.red)
-                    .padding()
-            } else {
-                if groups.isEmpty {
+        if isLoggedIn {
+            NavigationView {
+                ZStack(alignment: .leading) {
+                    // Main content
                     VStack {
-                        Image("nothing")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 250, height: 250)
-                            .foregroundColor(.gray)
-                        
-                        Text("You don't have any groups yet.")
-                            .foregroundColor(.gray)
-                        
-                        Button(action: {
-                            showCreateGroupSheet.toggle()
-                        }) {
-                            Text("Create Your First Group")
-                                .foregroundColor(.blue)
+                        if isLoading {
+                            ProgressView("Loading...")
                                 .padding()
-                        }
-                    }
-                } else {
-                    List {
-                        ForEach(groups) { group in
-                            NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
-                                GroupBoxView(group: group)
+                        } else if let error = fetchError {
+                            Text(error)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            if groups.isEmpty {
+                                VStack {
+                                    Image("nothing")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 250, height: 250)
+                                        .foregroundColor(.gray)
+                                    
+                                    Text("You don't have any groups yet.")
+                                        .foregroundColor(.gray)
+                                    
+                                    Button(action: {
+                                        showCreateGroupSheet.toggle()
+                                    }) {
+                                        Text("Create Your First Group")
+                                            .foregroundColor(.blue)
+                                            .padding()
+                                    }
+                                }
+                            } else {
+                                List {
+                                    ForEach(groups) { group in
+                                        NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
+                                            GroupBoxView(group: group)
+                                        }
+                                    }
+                                    .onDelete(perform: deleteGroup)
+                                    .listRowSeparator(.hidden)
+                                }
+                                .listStyle(PlainListStyle())
                             }
                         }
-                        .onDelete(perform: deleteGroup)
-                        .listRowSeparator(.hidden)
                     }
-                    .listStyle(PlainListStyle())
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    
+                    // Sidebar
+                    if isSidebarOpen {
+                        SidebarView()
+                            .frame(width: 200)
+                            .transition(.move(edge: .leading))
+                    }
+                }
+                .onAppear {
+                    fetchGroups()
+                }
+                .navigationTitle("Groups")
+                .navigationBarBackButtonHidden(true) // Hide back button
+                .navigationBarItems(
+                    leading: Button(action: {
+                        isSidebarOpen.toggle() // Toggle sidebar directly
+                    }) {
+                        Image(systemName: "sidebar.left")
+                            .font(.title2)
+                    },
+                    trailing: Button(action: {
+                        showCreateGroupSheet.toggle()
+                    }) {
+                        Image(systemName: "plus")
+                            .font(.title2)
+                    })
+                .sheet(isPresented: $showCreateGroupSheet) {
+                    CreateGroupView { newGroup in
+                        groups.append(newGroup)
+                    }
                 }
             }
-        }
-        .onAppear {
-            fetchGroups()
-        }
-        .navigationTitle("Groups")
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(trailing: Button(action: {
-            showCreateGroupSheet.toggle()
-        }) {
-            Image(systemName: "plus")
-                .font(.title2)
-        })
-        .sheet(isPresented: $showCreateGroupSheet) {
-            CreateGroupView { newGroup in
-                groups.append(newGroup)
-            }
+        } else {
+            LoginView(isLoggedIn: $isLoggedIn)
         }
     }
     
@@ -275,6 +305,3 @@ struct CreateGroupView: View {
     }
 }
 
-#Preview {
-    GroupsView()
-}

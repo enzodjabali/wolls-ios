@@ -21,6 +21,7 @@
 		C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */; };
 		C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1382BFE6D9800C5E23F /* RefundsView.swift */; };
 		C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */; };
+		C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1402BFFB9F500C5E23F /* SidebarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,7 @@
 		C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
 		C60EA1382BFE6D9800C5E23F /* RefundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundsView.swift; sourceTree = "<group>"; };
 		C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesView.swift; sourceTree = "<group>"; };
+		C60EA1402BFFB9F500C5E23F /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
 				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
 				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
+				C60EA1402BFFB9F500C5E23F /* SidebarView.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -285,6 +288,7 @@
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
 				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
+				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
 				C60EA1352BFE6D4400C5E23F /* GroupDetailView.swift in Sources */,
 			);

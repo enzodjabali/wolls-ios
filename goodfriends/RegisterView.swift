@@ -8,7 +8,8 @@ struct RegisterView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var registerError: String?
-    @State private var isRegistered: Bool = false
+    @State private var isRegistered = false
+    
 
     var body: some View {
         VStack {
@@ -63,7 +64,7 @@ struct RegisterView: View {
             }
             .padding()
 
-            NavigationLink(destination: LoginView(), isActive: $isRegistered) {
+            NavigationLink(destination: LoginView(isLoggedIn: $isRegistered), isActive: $isRegistered) {
                 EmptyView()
             }
         }

@@ -5,8 +5,12 @@ struct LoginView: View {
     @State private var pseudonym: String = ""
     @State private var password: String = ""
     @State private var loginError: String?
-    @State private var isLoggedIn: Bool = false
+    @Binding var isLoggedIn: Bool // Binding for login status
     
+    init(isLoggedIn: Binding<Bool>) {
+        _isLoggedIn = isLoggedIn
+    }
+
     var body: some View {
         NavigationView {
             VStack {
@@ -47,10 +51,6 @@ struct LoginView: View {
                         .foregroundColor(.blue)
                         .padding()
                 }
-
-                NavigationLink(destination: GroupsView(), isActive: $isLoggedIn) {
-                    EmptyView()
-                }
             }
             .padding()
             .navigationTitle("Login")
@@ -83,7 +83,7 @@ struct LoginView: View {
                     // Successful login
                     DispatchQueue.main.async {
                         UserDefaults.standard.set(token, forKey: "userToken")
-                        isLoggedIn = true
+                        isLoggedIn = true // Update login status
                     }
                 } else {
                     DispatchQueue.main.async {
@@ -105,8 +105,4 @@ struct LoginView: View {
             }
         }.resume()
     }
-}
-
-#Preview {
-    LoginView()
 }
