@@ -44,16 +44,16 @@ struct GroupsView: View {
                         }
                     }
                 } else {
-                    ScrollView {
-                        VStack(spacing: 16) {
-                            ForEach(groups) { group in
-                                NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
-                                    GroupBoxView(group: group)
-                                }
+                    List {
+                        ForEach(groups) { group in
+                            NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
+                                GroupBoxView(group: group)
                             }
                         }
-                        .padding()
+                        .onDelete(perform: deleteGroup)
+                        .listRowSeparator(.hidden)
                     }
+                    .listStyle(PlainListStyle())
                 }
             }
         }
