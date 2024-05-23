@@ -61,6 +61,7 @@ struct GroupsView: View {
             fetchGroups()
         }
         .navigationTitle("Groups")
+        .navigationBarBackButtonHidden(true)
         .navigationBarItems(trailing: Button(action: {
             showCreateGroupSheet.toggle()
         }) {
