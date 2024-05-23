@@ -246,7 +246,7 @@ struct CreateGroupView: View {
                         .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Create Group")
+            .navigationTitle("Create a group")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Create") {
