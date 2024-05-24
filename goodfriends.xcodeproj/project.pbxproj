@@ -36,6 +36,7 @@
 		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
 		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
 		C60EA16B2C01141400C5E23F /* EditIbanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16A2C01141400C5E23F /* EditIbanView.swift */; };
+		C60EA16D2C011AFF00C5E23F /* EditPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,7 @@
 		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		C60EA16A2C01141400C5E23F /* EditIbanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIbanView.swift; sourceTree = "<group>"; };
+		C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -269,6 +271,7 @@
 				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
 				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
 				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
+				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
 			);
 			path = AccountViews;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,
 				C60EA1482C00C7CA00C5E23F /* ExpenseModel.swift in Sources */,
 				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
+				C60EA16D2C011AFF00C5E23F /* EditPasswordView.swift in Sources */,
 				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
 				C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */,
 				C60EA1692C010F6700C5E23F /* Config.swift in Sources */,

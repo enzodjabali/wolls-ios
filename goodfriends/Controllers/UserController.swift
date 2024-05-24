@@ -338,4 +338,43 @@ class UserController {
             }
         }.resume()
     }
+    
+    func updatePassword(currentPassword: String, newPassword: String, confirmPassword: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/users/password") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let passwordData = ["currentPassword": currentPassword, "newPassword": newPassword, "confirmPassword": confirmPassword]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: passwordData, options: []) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request body"])))
+            return
+        }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                completion(.success(()))
+            } else {
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to update password"])))
+                }
+            }
+        }.resume()
+    }
 }

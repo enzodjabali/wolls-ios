@@ -48,6 +48,15 @@ struct SidebarView: View {
                         }
                     }
                 }
+                
+                NavigationLink(destination: EditPasswordView()) {
+                    VStack(alignment: .leading) {
+                        Text("Password")
+                        Text("Change your password")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
             }
 
             Section {
