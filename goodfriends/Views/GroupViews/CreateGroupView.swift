@@ -22,6 +22,8 @@ struct CreateGroupView: View {
                 Section(header: Text("Invite Users")) {
                     // Text field to search and invite users
                     TextField("Search users by pseudonym", text: $searchPseudonym)
+                        .autocapitalization(.none) // Disable auto-capitalization
+                        .disableAutocorrection(true) // Disable autocorrect
                         .onChange(of: searchPseudonym) { newValue in
                             searchUsers()
                         }
@@ -47,31 +49,12 @@ struct CreateGroupView: View {
                 createGroup()
             })
         }
-        .onAppear {
-            fetchUsers() // Fetch all users when view appears
-        }
+        //.onAppear {
+            //fetchUsers() // Fetch all users when view appears
+        //}
     }
 
-    // Fetch users from the server
-    func fetchUsers() {
-        UserController.shared.fetchUsers { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let users):
-                    //print("ALL Users:")
-                    print(UserController.shared.users)
-                    suggestedUsers = users // Populate suggested users
-                    //print(suggestedUsers)
-                case .failure(let error):
-                    createError = error.localizedDescription
-                }
-            }
-        }
-    }
-
-    // Search users based on pseudonym
     func searchUsers() {
-        
         let searchText = searchPseudonym
         
         UserController.shared.fetchUsers { result in
@@ -84,8 +67,7 @@ struct CreateGroupView: View {
                     //print(suggestedUsers)
                     
                     if searchText.isEmpty {
-                        // If search pseudonym is empty, show all users as suggested users
-                        suggestedUsers = users
+                        suggestedUsers = []
                     } else {
                         // Filter users based on search pseudonym
                         suggestedUsers = users.filter { user in
@@ -99,9 +81,6 @@ struct CreateGroupView: View {
                 }
             }
         }
-        
-        
-       
     }
 
     // Invite user to the group
