@@ -7,44 +7,44 @@ struct SidebarView: View {
     var body: some View {
         List {
             Section(header: Text("My Account")) {
-                NavigationLink(destination: EditNameView(firstName: user.firstname, lastName: user.lastname)) {
+                NavigationLink(destination: EditNameView(firstName: user.firstname ?? "", lastName: user.lastname ?? "")) {
                     VStack(alignment: .leading) {
                         Text("Name")
-                        Text("\(user.firstname) \(user.lastname)")
+                        Text("\(user.firstname ?? "") \(user.lastname ?? "")")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                 }
 
-                NavigationLink(destination: EditUsernameView(username: user.pseudonym)) {
+                NavigationLink(destination: EditUsernameView(username: user.pseudonym ?? "")) {
                     VStack(alignment: .leading) {
                         Text("Username")
-                        Text(user.pseudonym)
+                        Text(user.pseudonym ?? "")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                 }
 
-                NavigationLink(destination: EditEmailView(email: user.email)) {
+                NavigationLink(destination: EditEmailView(email: user.email ?? "")) {
                     VStack(alignment: .leading) {
                         Text("Email")
-                        Text(user.email)
+                        Text(user.email ?? "")
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
                 }
                 
-                NavigationLink(destination: EditIbanView(iban: user.iban)) {
+                NavigationLink(destination: EditIbanView(iban: user.iban ?? "")) {
                     VStack(alignment: .leading) {
                         Text("IBAN")
-                        if user.iban.isEmpty {
+                        if let iban = user.iban, !iban.isEmpty {
+                            Text(iban)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        } else {
                             Text("Add your IBAN")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
-                        } else {
-                            Text(user.iban)
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
                         }
                     }
                 }

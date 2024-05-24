@@ -2,6 +2,7 @@ import Foundation
 
 class UserController {
     static let shared = UserController()
+    var users: [User] = [] // Store fetched users
     
     private init() {}
     
@@ -147,6 +148,56 @@ class UserController {
                 } else {
                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch current user"])))
                 }
+            }
+        }.resume()
+    }
+    
+    func fetchUsers(completion: @escaping (Result<[User], Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/users") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching users:", error)
+                completion(.failure(error))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
+                return
+            }
+
+            print("HTTP Response:", httpResponse.statusCode)
+
+            guard httpResponse.statusCode == 200 else {
+                print("Failed to fetch users. Status code:", httpResponse.statusCode)
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch users"])))
+                return
+            }
+
+            guard let data = data else {
+                print("No data received")
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+
+            do {
+                let users = try JSONDecoder().decode([User].self, from: data)
+                //print("Fetched users:", users)
+                completion(.success(users))
+            } catch {
+                print("Error decoding users:", error)
+                completion(.failure(error))
             }
         }.resume()
     }

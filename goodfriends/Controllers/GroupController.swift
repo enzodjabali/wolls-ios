@@ -3,7 +3,7 @@ import Foundation
 class GroupController {
     static let shared = GroupController()
     
-    func createGroup(name: String, description: String, completion: @escaping (Result<Group, Error>) -> Void) {
+    func createGroup(name: String, description: String, invitedUsers: [User], completion: @escaping (Result<Group, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/groups") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -15,7 +15,13 @@ class GroupController {
         request.setValue(token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let newGroup = ["name": name, "description": description]
+        var newGroup: [String: Any] = ["name": name, "description": description]
+        if !invitedUsers.isEmpty {
+            // Convert invited user IDs to an array of strings
+            let invitedUserPseudonyms = invitedUsers.map { $0.pseudonym }
+            newGroup["invited_users"] = invitedUserPseudonyms
+        }
+
         guard let jsonData = try? JSONSerialization.data(withJSONObject: newGroup, options: []) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request body"])))
             return
@@ -43,7 +49,6 @@ class GroupController {
                 if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let errorMessage = jsonResponse["error"] as? String {
                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
-
                 } else {
                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create group"])))
                 }
