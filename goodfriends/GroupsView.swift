@@ -64,17 +64,30 @@ struct GroupsView: View {
                                     .listRowSeparator(.hidden)
                                 }
                                 .listStyle(PlainListStyle())
+                                .transition(.opacity) // Apply opacity transition only to the list
                             }
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                    // Sidebar and overlay
+                    // Dark overlay
+                    if isSidebarOpen {
+                        Color.black.opacity(0.5)
+                            .edgesIgnoringSafeArea(.all)
+                            .onTapGesture {
+                                withAnimation {
+                                    isSidebarOpen.toggle()
+                                }
+                            }
+                            .zIndex(1) // Ensure the overlay is above the main content
+                    }
+
+                    // Sidebar
                     if isSidebarOpen {
                         SidebarView()
                             .frame(width: 200)
                             .transition(.move(edge: .leading))
-                            .zIndex(1) // Ensure the sidebar is above the main content
+                            .zIndex(2) // Ensure the sidebar is above the dark overlay
                     }
                 }
                 .onAppear {
@@ -107,7 +120,6 @@ struct GroupsView: View {
             LoginView(isLoggedIn: $isLoggedIn)
         }
     }
-
     
     func fetchGroups() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
