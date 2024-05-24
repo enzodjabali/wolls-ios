@@ -1,31 +1,54 @@
 import SwiftUI
 
 struct SidebarView: View {
+    let user: User
+
     var body: some View {
         List {
-            // Edit Personal Info
-            Button(action: {
-                // Handle action for editing personal info
-            }) {
-                Label("marcopolo", systemImage: "person.crop.circle")
+            Section(header: Text("My Account")) {
+                NavigationLink(destination: EditDetailView(title: "Name", value: "\(user.firstname) \(user.lastname)")) {
+                    VStack(alignment: .leading) {
+                        Text("Name")
+                        Text("\(user.firstname) \(user.lastname)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                NavigationLink(destination: EditDetailView(title: "Username", value: user.pseudonym)) {
+                    VStack(alignment: .leading) {
+                        Text("Username")
+                        Text(user.pseudonym)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                NavigationLink(destination: EditEmailView(email: user.email)) {
+                    VStack(alignment: .leading) {
+                        Text("Email")
+                        Text(user.email)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
             }
 
-            // Settings
-            Button(action: {
-                // Handle action for settings
-            }) {
-                Label("Settings", systemImage: "gear")
-            }
+            Section {
+                Button(action: {
+                    // Handle settings action
+                }) {
+                    Label("Settings", systemImage: "gear")
+                }
 
-            // Sign Out
-            Button(action: {
-                // Handle action for signing out
-            }) {
-                Label("Sign Out", systemImage: "arrowshape.turn.up.left")
+                Button(action: {
+                    // Handle sign out action
+                }) {
+                    Label("Sign Out", systemImage: "arrowshape.turn.up.left")
+                }
             }
         }
         .listStyle(SidebarListStyle())
-        .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
-        .navigationTitle("Hi")
+        .navigationTitle("Menu")
     }
 }

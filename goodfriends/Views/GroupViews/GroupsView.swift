@@ -5,6 +5,7 @@ struct GroupsView: View {
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     @State private var showCreateGroupSheet = false
+    @State private var currentUser: User?
     @State private var currentUserInitials = ""
     @State private var isSidebarOpen = false
     @Binding var isLoggedIn: Bool
@@ -81,13 +82,12 @@ struct GroupsView: View {
                     }
 
                     // Sidebar
-                    if isSidebarOpen {
-                        SidebarView()
+                    if isSidebarOpen, let currentUser = currentUser {
+                        SidebarView(user: currentUser)
                             .frame(width: 300)
                             .transition(.move(edge: .leading))
                             .zIndex(3)
                     }
-
                 }
                 .onAppear {
                     fetchCurrentUser()
@@ -124,12 +124,13 @@ struct GroupsView: View {
             LoginView(isLoggedIn: $isLoggedIn)
         }
     }
-    
+
     func fetchCurrentUser() {
         UserController.shared.fetchCurrentUser { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let currentUser):
+                    self.currentUser = currentUser
                     // Construct initials from first and last name
                     let firstNameInitial = currentUser.firstname.first ?? Character("")
                     let lastNameInitial = currentUser.lastname.first ?? Character("")
@@ -140,7 +141,7 @@ struct GroupsView: View {
             }
         }
     }
-    
+
     func fetchGroups() {
         GroupController.shared.fetchGroups { result in
             DispatchQueue.main.async {
