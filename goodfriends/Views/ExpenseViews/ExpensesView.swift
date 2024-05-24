@@ -52,7 +52,6 @@ struct ExpensesView: View {
                     }
                 }
             }
-            
         }
         .onAppear {
             fetchExpenses()
@@ -67,49 +66,26 @@ struct ExpensesView: View {
                 .font(.title2)
         })
         .sheet(isPresented: $showAddExpenseSheet) {
-            AddExpenseView(groupId: groupId){ newExpense in
+            AddExpenseView(groupId: groupId) { newExpense in
                 expenses.append(newExpense)
             }
         }
     }
 
     func fetchExpenses() {
-        guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/expenses/\(groupId)") else { return }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(token, forHTTPHeaderField: "Authorization")
-
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601 // Assuming the date is in ISO 8601 format
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                if let error = error {
-                    fetchError = error.localizedDescription
-                } else {
-                    fetchError = "No data received"
+        ExpenseController.shared.fetchExpenses(groupId: groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let expenses):
+                    self.expenses = expenses
+                    self.isLoading = false
+                    self.filterExpenses() // Filter expenses initially
+                case .failure(let error):
+                    self.fetchError = error.localizedDescription
+                    self.isLoading = false
                 }
-                isLoading = false
-                return
             }
-
-            if let httpResponse = response as? HTTPURLResponse {
-                print("Response status code: \(httpResponse.statusCode)")
-            }
-
-            print("Raw data: \(String(data: data, encoding: .utf8) ?? "Unable to decode data")")
-
-            do {
-                expenses = try decoder.decode([Expense].self, from: data)
-                isLoading = false
-                filterExpenses() // Filter expenses initially
-            } catch {
-                fetchError = "Failed to decode expenses: \(error.localizedDescription)"
-                isLoading = false
-            }
-        }.resume()
+        }
     }
 
     func filterExpenses() {
@@ -133,13 +109,8 @@ struct SearchBar: View {
                 .background(Color(.systemGray6))
                 .cornerRadius(10)
                 .padding(.horizontal)
-                .onChange(of: text) { _ in
-                    // Automatically update the text while typing
-                    // If you prefer to search only after pressing the return key, remove this line
-                }
             if !text.isEmpty {
                 Button(action: {
-                    // Clear the text when the clear button is tapped
                     text = ""
                 }) {
                     Image(systemName: "xmark.circle.fill")
@@ -147,95 +118,5 @@ struct SearchBar: View {
                 }
             }
         }
-    }
-}
-
-struct AddExpenseView: View {
-    let groupId: String
-    @Environment(\.presentationMode) var presentationMode
-    @State private var title = ""
-    @State private var amountString = ""
-    @State private var category = ""
-    @State private var createError: String?
-    var onAdd: (Expense) -> Void
-
-    // Existing code...
-
-    var body: some View {
-        // Form to enter expense details
-        NavigationView {
-            Form {
-                Section(header: Text("Expense Details")) {
-                    TextField("Title", text: $title)
-                    TextField("Amount", text: $amountString)
-                        .keyboardType(.decimalPad)
-                    TextField("Category", text: $category)
-                }
-                if let error = createError {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-            }
-            
-            .navigationTitle("Add Expense")
-            .navigationBarItems(leading: Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
-            }, trailing: Button("Save") {
-                createExpense()
-            })
-            
-        }
-    }
-
-    // Existing code...
-
-    func createExpense() {
-        guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let amount = Double(amountString),
-              let url = URL(string: "https://api.goodfriends.tech/v1/expenses") else { return }
-
-        let newExpense: [String: Any] = ["title": title, "amount": amount, "group_id": groupId, "category": category]
-        guard let jsonData = try? JSONSerialization.data(withJSONObject: newExpense, options: []) else { return }
- 
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue(token, forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = jsonData
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    createError = error.localizedDescription
-                }
-                return
-            }
-
-            guard let data = data else { return }
-
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
-                if let jsonResponse = try? JSONDecoder().decode(Expense.self, from: data) {
-                    DispatchQueue.main.async {
-                        onAdd(jsonResponse)
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        createError = "Failed to parse response"
-                    }
-                }
-            } else {
-                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let errorMessage = jsonResponse["error"] as? String {
-                    DispatchQueue.main.async {
-                        createError = errorMessage
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        createError = "Failed to create expense"
-                    }
-                }
-            }
-        }.resume()
     }
 }

@@ -30,6 +30,15 @@
 		C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1532C00D24100C5E23F /* GroupBoxView.swift */; };
 		C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1562C00D2AB00C5E23F /* AvatarView.swift */; };
 		C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */; };
+		C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1602C00DBA300C5E23F /* EditEmailView.swift */; };
+		C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1622C00DC0700C5E23F /* EditDetailView.swift */; };
+		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
+		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
+		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
+		C60EA16B2C01141400C5E23F /* EditIbanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16A2C01141400C5E23F /* EditIbanView.swift */; };
+		C60EA16D2C011AFF00C5E23F /* EditPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */; };
+		C60EA16F2C011D9400C5E23F /* ExpenseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16E2C011D9400C5E23F /* ExpenseController.swift */; };
+		C60EA1712C011EB600C5E23F /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1702C011EB600C5E23F /* AddExpenseView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +85,15 @@
 		C60EA1532C00D24100C5E23F /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
 		C60EA1562C00D2AB00C5E23F /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsView.swift; sourceTree = "<group>"; };
+		C60EA1602C00DBA300C5E23F /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
+		C60EA1622C00DC0700C5E23F /* EditDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailView.swift; sourceTree = "<group>"; };
+		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
+		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
+		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		C60EA16A2C01141400C5E23F /* EditIbanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIbanView.swift; sourceTree = "<group>"; };
+		C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPasswordView.swift; sourceTree = "<group>"; };
+		C60EA16E2C011D9400C5E23F /* ExpenseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseController.swift; sourceTree = "<group>"; };
+		C60EA1702C011EB600C5E23F /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +151,7 @@
 				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
+				C60EA1682C010F6700C5E23F /* Config.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -177,6 +196,7 @@
 			children = (
 				C60EA14A2C00CAE600C5E23F /* UserController.swift */,
 				C60EA14D2C00CDAE00C5E23F /* GroupController.swift */,
+				C60EA16E2C011D9400C5E23F /* ExpenseController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -197,6 +217,12 @@
 		C60EA14F2C00CEA200C5E23F /* UserViews */ = {
 			isa = PBXGroup;
 			children = (
+				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
+				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
+				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
+				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
+				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
+				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
 				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
 				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
 			);
@@ -227,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
+				C60EA1702C011EB600C5E23F /* AddExpenseView.swift */,
 			);
 			path = ExpenseViews;
 			sourceTree = "<group>";
@@ -377,12 +404,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C60EA16B2C01141400C5E23F /* EditIbanView.swift in Sources */,
 				C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */,
+				C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
+				C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */,
 				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
+				C60EA16F2C011D9400C5E23F /* ExpenseController.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
 				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
+				C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
@@ -390,10 +422,14 @@
 				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,
 				C60EA1482C00C7CA00C5E23F /* ExpenseModel.swift in Sources */,
 				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
+				C60EA1712C011EB600C5E23F /* AddExpenseView.swift in Sources */,
+				C60EA16D2C011AFF00C5E23F /* EditPasswordView.swift in Sources */,
 				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
 				C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */,
+				C60EA1692C010F6700C5E23F /* Config.swift in Sources */,
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
 				C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */,
+				C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */,
 				C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

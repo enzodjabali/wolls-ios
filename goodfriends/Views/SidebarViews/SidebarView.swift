@@ -1,31 +1,81 @@
 import SwiftUI
 
 struct SidebarView: View {
+    let user: User
+    @Binding var isLoggedIn: Bool // Add binding to update login status
+
     var body: some View {
         List {
-            // Edit Personal Info
-            Button(action: {
-                // Handle action for editing personal info
-            }) {
-                Label("marcopolo", systemImage: "person.crop.circle")
+            Section(header: Text("My Account")) {
+                NavigationLink(destination: EditNameView(firstName: user.firstname, lastName: user.lastname)) {
+                    VStack(alignment: .leading) {
+                        Text("Name")
+                        Text("\(user.firstname) \(user.lastname)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                NavigationLink(destination: EditUsernameView(username: user.pseudonym)) {
+                    VStack(alignment: .leading) {
+                        Text("Username")
+                        Text(user.pseudonym)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+
+                NavigationLink(destination: EditEmailView(email: user.email)) {
+                    VStack(alignment: .leading) {
+                        Text("Email")
+                        Text(user.email)
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
+                
+                NavigationLink(destination: EditIbanView(iban: user.iban)) {
+                    VStack(alignment: .leading) {
+                        Text("IBAN")
+                        if user.iban.isEmpty {
+                            Text("Add your IBAN")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                        } else {
+                            Text(user.iban)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
+                
+                NavigationLink(destination: EditPasswordView()) {
+                    VStack(alignment: .leading) {
+                        Text("Password")
+                        Text("Change your password")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    }
+                }
             }
 
-            // Settings
-            Button(action: {
-                // Handle action for settings
-            }) {
-                Label("Settings", systemImage: "gear")
-            }
+            Section {
+                Button(action: {
+                    // Handle settings action
+                }) {
+                    Label("Settings", systemImage: "gear")
+                }
 
-            // Sign Out
-            Button(action: {
-                // Handle action for signing out
-            }) {
-                Label("Sign Out", systemImage: "arrowshape.turn.up.left")
+                Button(action: {
+                    // Handle sign out action
+                    UserController.shared.signOut()
+                    isLoggedIn = false // Update login status
+                }) {
+                    Label("Sign Out", systemImage: "arrowshape.turn.up.left")
+                }
             }
         }
         .listStyle(SidebarListStyle())
-        .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
-        .navigationTitle("Hi")
+        .navigationTitle("Menu")
     }
 }
