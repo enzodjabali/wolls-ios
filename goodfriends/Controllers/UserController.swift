@@ -6,7 +6,7 @@ class UserController {
     private init() {}
     
     func login(pseudonym: String, password: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let url = URL(string: "https://api.goodfriends.tech/v1/users/login") else {
+        guard let url = URL(string: "\(API.baseURL)/v1/users/login") else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
@@ -65,7 +65,7 @@ class UserController {
         confirmPassword: String,
         completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        guard let url = URL(string: "https://api.goodfriends.tech/v1/users/register") else {
+        guard let url = URL(string: "\(API.baseURL)/v1/users/register") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
@@ -115,7 +115,7 @@ class UserController {
     
     func fetchCurrentUser(completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/users/me?simplified=true") else {
+              let url = URL(string: "\(API.baseURL)/v1/users/me?simplified=false") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
@@ -153,7 +153,7 @@ class UserController {
     
     func editUserEmail(newEmail: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/users") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
@@ -200,7 +200,7 @@ class UserController {
 
     func editUserUsername(newUsername: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/users") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
@@ -247,7 +247,7 @@ class UserController {
     
     func editUserName(newFirstName: String, newLastName: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/users") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"

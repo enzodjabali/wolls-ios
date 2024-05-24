@@ -95,7 +95,7 @@ struct EditGroupView: View {
     
     func editGroup() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/groups/\(groupId)") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/groups/\(groupId)") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"

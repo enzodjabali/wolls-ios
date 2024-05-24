@@ -5,7 +5,7 @@ class GroupController {
     
     func createGroup(name: String, description: String, completion: @escaping (Result<Group, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/groups") else {
+              let url = URL(string: "\(API.baseURL)/v1/groups") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
@@ -53,7 +53,7 @@ class GroupController {
 
     func deleteGroup(groupId: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/groups/\(groupId)") else {
+              let url = URL(string: "\(API.baseURL)/v1/groups/\(groupId)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
@@ -84,7 +84,7 @@ class GroupController {
 
     func fetchGroups(completion: @escaping (Result<[Group], Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/groups") else {
+              let url = URL(string: "\(API.baseURL)/v1/groups") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }

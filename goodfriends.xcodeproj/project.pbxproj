@@ -34,6 +34,7 @@
 		C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1622C00DC0700C5E23F /* EditDetailView.swift */; };
 		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
 		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
+		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +85,7 @@
 		C60EA1622C00DC0700C5E23F /* EditDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailView.swift; sourceTree = "<group>"; };
 		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
 		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
+		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
+				C60EA1682C010F6700C5E23F /* Config.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
 				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
 				C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */,
+				C60EA1692C010F6700C5E23F /* Config.swift in Sources */,
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
 				C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */,
 				C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */,

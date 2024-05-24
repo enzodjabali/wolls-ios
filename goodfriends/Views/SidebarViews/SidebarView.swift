@@ -33,6 +33,21 @@ struct SidebarView: View {
                             .foregroundColor(.gray)
                     }
                 }
+                
+                NavigationLink(destination: EditEmailView(email: user.email)) {
+                    VStack(alignment: .leading) {
+                        Text("IBAN")
+                        if user.iban.isEmpty {
+                            Text("Add your IBAN.")
+                                .font(.subheadline)
+                                .foregroundColor(.red)
+                        } else {
+                            Text(user.iban)
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                        }
+                    }
+                }
             }
 
             Section {

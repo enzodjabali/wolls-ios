@@ -75,7 +75,7 @@ struct ExpensesView: View {
 
     func fetchExpenses() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "https://api.goodfriends.tech/v1/expenses/\(groupId)") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/expenses/\(groupId)") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
@@ -192,7 +192,7 @@ struct AddExpenseView: View {
     func createExpense() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let amount = Double(amountString),
-              let url = URL(string: "https://api.goodfriends.tech/v1/expenses") else { return }
+              let url = URL(string: "\(API.baseURL)/v1/expenses") else { return }
 
         let newExpense: [String: Any] = ["title": title, "amount": amount, "group_id": groupId, "category": category]
         guard let jsonData = try? JSONSerialization.data(withJSONObject: newExpense, options: []) else { return }
