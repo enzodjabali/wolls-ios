@@ -71,16 +71,10 @@ struct GroupsView: View {
 
                     // Sidebar and overlay
                     if isSidebarOpen {
-                        // Darken background
-                        Color.black.opacity(0.6)
-                            .ignoresSafeArea()
-                            .onTapGesture {
-                                isSidebarOpen = false
-                            }
-
                         SidebarView()
                             .frame(width: 200)
                             .transition(.move(edge: .leading))
+                            .zIndex(1) // Ensure the sidebar is above the main content
                     }
                 }
                 .onAppear {
@@ -90,7 +84,9 @@ struct GroupsView: View {
                 .navigationBarBackButtonHidden(true) // Hide back button
                 .navigationBarItems(
                     leading: Button(action: {
-                        isSidebarOpen.toggle() // Toggle sidebar directly
+                        withAnimation {
+                            isSidebarOpen.toggle() // Toggle sidebar directly
+                        }
                     }) {
                         Image(systemName: "sidebar.left")
                             .font(.title2)
@@ -312,4 +308,3 @@ struct CreateGroupView: View {
         }.resume()
     }
 }
-
