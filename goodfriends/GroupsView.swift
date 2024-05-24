@@ -15,7 +15,7 @@ struct GroupsView: View {
     @State private var showCreateGroupSheet = false
     @State private var isSidebarOpen = false // Added state for sidebar
     @Binding var isLoggedIn: Bool // Add binding for login status
-    
+
     init(isLoggedIn: Binding<Bool>) {
         _isLoggedIn = isLoggedIn // Bind the argument to the state variable
     }
@@ -41,10 +41,10 @@ struct GroupsView: View {
                                         .aspectRatio(contentMode: .fit)
                                         .frame(width: 250, height: 250)
                                         .foregroundColor(.gray)
-                                    
+
                                     Text("You don't have any groups yet.")
                                         .foregroundColor(.gray)
-                                    
+
                                     Button(action: {
                                         showCreateGroupSheet.toggle()
                                     }) {
@@ -68,9 +68,16 @@ struct GroupsView: View {
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    
-                    // Sidebar
+
+                    // Sidebar and overlay
                     if isSidebarOpen {
+                        // Darken background
+                        Color.black.opacity(0.6)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                isSidebarOpen = false
+                            }
+
                         SidebarView()
                             .frame(width: 200)
                             .transition(.move(edge: .leading))
@@ -104,6 +111,7 @@ struct GroupsView: View {
             LoginView(isLoggedIn: $isLoggedIn)
         }
     }
+
     
     func fetchGroups() {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
