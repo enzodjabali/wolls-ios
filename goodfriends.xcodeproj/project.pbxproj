@@ -133,9 +133,6 @@
 				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
-				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
-				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
-				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -187,6 +184,9 @@
 		C60EA14C2C00CC3000C5E23F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C60EA15E2C00D46E00C5E23F /* BalanceViews */,
+				C60EA15D2C00D45B00C5E23F /* RefundViews */,
+				C60EA15C2C00D44900C5E23F /* ExpenseViews */,
 				C60EA1552C00D28200C5E23F /* SidebarViews */,
 				C60EA1502C00CF0400C5E23F /* GroupViews */,
 				C60EA14F2C00CEA200C5E23F /* UserViews */,
@@ -221,6 +221,30 @@
 				C60EA1562C00D2AB00C5E23F /* AvatarView.swift */,
 			);
 			path = SidebarViews;
+			sourceTree = "<group>";
+		};
+		C60EA15C2C00D44900C5E23F /* ExpenseViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
+			);
+			path = ExpenseViews;
+			sourceTree = "<group>";
+		};
+		C60EA15D2C00D45B00C5E23F /* RefundViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
+			);
+			path = RefundViews;
+			sourceTree = "<group>";
+		};
+		C60EA15E2C00D46E00C5E23F /* BalanceViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
+			);
+			path = BalanceViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
