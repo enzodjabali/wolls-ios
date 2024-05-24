@@ -146,4 +146,72 @@ class UserController {
             }
         }.resume()
     }
+    
+    func editUserEmail(newEmail: String, completion: @escaping (Result<User, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let emailUpdate = ["email": newEmail]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: emailUpdate, options: []) else { return }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else { return }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                do {
+                    let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                    completion(.success(updatedUser))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user email"])))
+            }
+        }.resume()
+    }
+    
+    func editUserUsername(newUsername: String, completion: @escaping (Result<User, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let usernameUpdate = ["pseudonym": newUsername]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: usernameUpdate, options: []) else { return }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else { return }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                do {
+                    let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                    completion(.success(updatedUser))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user username"])))
+            }
+        }.resume()
+    }
 }

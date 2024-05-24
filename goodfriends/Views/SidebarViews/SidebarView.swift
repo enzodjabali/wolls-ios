@@ -15,7 +15,7 @@ struct SidebarView: View {
                     }
                 }
 
-                NavigationLink(destination: EditDetailView(title: "Username", value: user.pseudonym)) {
+                NavigationLink(destination: EditUsernameView(username: user.pseudonym)) {
                     VStack(alignment: .leading) {
                         Text("Username")
                         Text(user.pseudonym)

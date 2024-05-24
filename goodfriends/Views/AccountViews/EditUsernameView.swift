@@ -1,22 +1,21 @@
 import SwiftUI
 
-struct EditEmailView: View {
-    @State private var newEmail: String
+struct EditUsernameView: View {
+    @State private var newUsername: String
     @State private var errorMessage: String?
     @Environment(\.presentationMode) var presentationMode
-    var email: String
+    var username: String
 
-    init(email: String) {
-        self.email = email
-        _newEmail = State(initialValue: email)
+    init(username: String) {
+        self.username = username
+        _newUsername = State(initialValue: username)
     }
 
     var body: some View {
         VStack {
             Form {
-                Section(header: Text("Edit Email")) {
-                    TextField("Email", text: $newEmail)
-                        .keyboardType(.emailAddress)
+                Section(header: Text("Edit Username")) {
+                    TextField("Username", text: $newUsername)
                         .autocapitalization(.none)
                         .autocorrectionDisabled(true)
                 }
@@ -26,27 +25,27 @@ struct EditEmailView: View {
                         .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Email")
+            .navigationTitle("Username")
             .navigationBarItems(
                 trailing: Button("Save") {
-                    updateEmail()
+                    updateUsername()
                 }
             )
 
-            Text("This makes it easier for you to recover your account. To help keep your account safe, only use an email address that you know.")
+            Text("This is how your friends find and add you to their groups.")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .padding()
         }
     }
 
-    private func updateEmail() {
-        UserController.shared.editUserEmail(newEmail: newEmail) { result in
+    private func updateUsername() {
+        UserController.shared.editUserUsername(newUsername: newUsername) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let updatedUser):
-                    // Handle successful email update
-                    print("Email updated successfully: \(updatedUser.email)")
+                    // Handle successful username update
+                    print("Username updated successfully: \(updatedUser.pseudonym)")
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
                     // Handle error
