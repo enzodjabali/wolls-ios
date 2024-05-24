@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct GroupDetailView: View {
+struct GroupDetailsView: View {
     @State private var selectedTab = 0
     @State private var isEditing = false
     @State private var newName = ""

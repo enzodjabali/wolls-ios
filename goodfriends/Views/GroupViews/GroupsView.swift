@@ -1,59 +1,5 @@
 import SwiftUI
 
-struct AvatarView: View {
-    let initials: String
-
-    var body: some View {
-        ZStack {
-            Circle()
-                .fill(
-                    RadialGradient(
-                        gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]),
-                        center: .center,
-                        startRadius: 0,
-                        endRadius: 0
-                    )
-                )
-                .frame(width: 35, height: 35) // Circle size
-            Text(initials)
-                .font(.system(size: 16)) // Adjust font size
-                .foregroundColor(.white)
-        }
-    }
-}
-
-struct GroupBoxView: View {
-    let group: Group
-
-    var body: some View {
-        ZStack(alignment: .topLeading) {
-            Image("group-background-buildings") // Placeholder for the background image
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 150)
-                .clipped()
-                .cornerRadius(10)
-
-            Color.blue.opacity(0.3)
-                .cornerRadius(10)
-
-            VStack(alignment: .leading) {
-                Text(group.name)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding([.top, .leading], 8)
-                    .shadow(radius: 1)
-                Text(group.description)
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .padding([.leading, .bottom], 8)
-                    .shadow(radius: 1)
-            }
-        }
-        .frame(height: 150)
-    }
-}
-
 struct GroupsView: View {
     @State private var groups: [Group] = []
     @State private var fetchError: String?
@@ -103,7 +49,7 @@ struct GroupsView: View {
                             } else {
                                 List {
                                     ForEach(groups) { group in
-                                        NavigationLink(destination: GroupDetailView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
+                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
                                             GroupBoxView(group: group)
                                         }
                                     }
