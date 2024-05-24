@@ -8,16 +8,47 @@ struct Group: Identifiable, Decodable {
     var id: String { _id }
 }
 
+struct User: Decodable {
+    let _id: String
+    let pseudonym: String
+    let firstname: String
+    let lastname: String
+    let email: String
+}
+
+struct AvatarView: View {
+    let initials: String
+
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    RadialGradient(
+                        gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]),
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: 0
+                    )
+                )
+                .frame(width: 35, height: 35) // Circle size
+            Text(initials)
+                .font(.system(size: 16)) // Adjust font size
+                .foregroundColor(.white)
+        }
+    }
+}
+
 struct GroupsView: View {
     @State private var groups: [Group] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     @State private var showCreateGroupSheet = false
-    @State private var isSidebarOpen = false // Added state for sidebar
-    @Binding var isLoggedIn: Bool // Add binding for login status
+    @State private var currentUserInitials = ""
+    @State private var isSidebarOpen = false
+    @Binding var isLoggedIn: Bool
 
     init(isLoggedIn: Binding<Bool>) {
-        _isLoggedIn = isLoggedIn // Bind the argument to the state variable
+        _isLoggedIn = isLoggedIn
     }
 
     var body: some View {
@@ -64,22 +95,27 @@ struct GroupsView: View {
                                     .listRowSeparator(.hidden)
                                 }
                                 .listStyle(PlainListStyle())
-                                .transition(.opacity) // Apply opacity transition only to the list
+                                .transition(.opacity)
                             }
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
 
+                    // Overlay to close sidebar
+                    Color.clear
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            withAnimation {
+                                isSidebarOpen.toggle()
+                            }
+                        }
+                        .zIndex(1) // Ensure the overlay is above the main content
+
                     // Dark overlay
                     if isSidebarOpen {
                         Color.black.opacity(0.5)
                             .edgesIgnoringSafeArea(.all)
-                            .onTapGesture {
-                                withAnimation {
-                                    isSidebarOpen.toggle()
-                                }
-                            }
-                            .zIndex(1) // Ensure the overlay is above the main content
+                            .zIndex(2)
                     }
 
                     // Sidebar
@@ -87,29 +123,35 @@ struct GroupsView: View {
                         SidebarView()
                             .frame(width: 300)
                             .transition(.move(edge: .leading))
-                            .zIndex(2) // Ensure the sidebar is above the dark overlay
+                            .zIndex(3)
                     }
+
                 }
                 .onAppear {
+                    fetchCurrentUser()
                     fetchGroups()
                 }
                 .navigationTitle("Groups")
-                .navigationBarBackButtonHidden(true) // Hide back button
+                .navigationBarBackButtonHidden(true)
                 .navigationBarItems(
-                    leading: Button(action: {
-                        withAnimation {
-                            isSidebarOpen.toggle() // Toggle sidebar directly
+                    leading: AvatarView(initials: currentUserInitials)
+                        .onTapGesture {
+                            withAnimation {
+                                isSidebarOpen.toggle()
+                            }
                         }
-                    }) {
-                        Image(systemName: "sidebar.left")
-                            .font(.title2)
-                    },
+                        .frame(width: 35, height: 35) // Adjust size
+                        .background(
+                            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]), startPoint: .bottom, endPoint: .top)
+                                .clipShape(Circle())
+                        ),
                     trailing: Button(action: {
                         showCreateGroupSheet.toggle()
                     }) {
                         Image(systemName: "plus")
                             .font(.title2)
-                    })
+                    }
+                )
                 .sheet(isPresented: $showCreateGroupSheet) {
                     CreateGroupView { newGroup in
                         groups.append(newGroup)
@@ -119,6 +161,38 @@ struct GroupsView: View {
         } else {
             LoginView(isLoggedIn: $isLoggedIn)
         }
+    }
+    
+    func fetchCurrentUser() {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/users/me?simplified=true") else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error fetching current user:", error)
+                return
+            }
+
+            guard let data = data else { return }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                if let currentUser = try? JSONDecoder().decode(User.self, from: data) {
+                    DispatchQueue.main.async {
+                        // Construct initials from first and last name
+                        let firstNameInitial = currentUser.firstname.first ?? Character("")
+                        let lastNameInitial = currentUser.lastname.first ?? Character("")
+                        currentUserInitials = "\(firstNameInitial)\(lastNameInitial)"
+                    }
+                } else {
+                    print("Failed to parse current user data")
+                }
+            } else {
+                print("Failed to fetch current user:")
+            }
+        }.resume()
     }
     
     func fetchGroups() {
@@ -320,3 +394,4 @@ struct CreateGroupView: View {
         }.resume()
     }
 }
+
