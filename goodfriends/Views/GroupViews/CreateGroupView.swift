@@ -4,11 +4,15 @@ struct CreateGroupView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var groupName = ""
     @State private var groupDescription = ""
-    @State private var invitedUsers: [User] = [] // Track invited users
-    @State private var suggestedUsers: [User] = [] // Track suggested users
-    @State private var searchPseudonym = "" // Track user search
+    @State private var invitedUsers: [User] = []
+    @State private var filteredUsers: [User] = []
+    @State private var searchPseudonym = ""
     @State private var createError: String?
     var onCreate: (Group) -> Void
+    
+    // Store the fetched users
+    @State private var fetchedUsers: [User] = []
+    @State private var usersFetched = false
 
     var body: some View {
         NavigationView {
@@ -20,16 +24,11 @@ struct CreateGroupView: View {
                     TextField("Enter description", text: $groupDescription)
                 }
                 Section(header: Text("Invite Users")) {
-                    // Text field to search and invite users
                     TextField("Search users by pseudonym", text: $searchPseudonym)
-                        .autocapitalization(.none) // Disable auto-capitalization
-                        .disableAutocorrection(true) // Disable autocorrect
-                        .onChange(of: searchPseudonym) { newValue in
-                            searchUsers()
-                        }
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
                     
-                    // List to display suggested users
-                    List(suggestedUsers) { user in
+                    List(filteredUsers, id: \.id) { user in
                         Button(action: {
                             inviteUser(user)
                         }) {
@@ -48,34 +47,25 @@ struct CreateGroupView: View {
             }, trailing: Button("Create") {
                 createGroup()
             })
+            .onAppear {
+                if !usersFetched {
+                    fetchUsers()
+                    usersFetched = true
+                }
+            }
+            .onChange(of: searchPseudonym) { _ in
+                searchUsers()
+            }
         }
-        //.onAppear {
-            //fetchUsers() // Fetch all users when view appears
-        //}
     }
 
-    func searchUsers() {
-        let searchText = searchPseudonym
-        
+    func fetchUsers() {
         UserController.shared.fetchUsers { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
-                    //print("ALL Users:")
-                    print(UserController.shared.users)
-                    suggestedUsers = users // Populate suggested users
-                    //print(suggestedUsers)
-                    
-                    if searchText.isEmpty {
-                        suggestedUsers = []
-                    } else {
-                        // Filter users based on search pseudonym
-                        suggestedUsers = users.filter { user in
-                            user.pseudonym.contains(searchText)
-                        }
-                        print("somethinn!")
-                    }
-                    
+                    fetchedUsers = users
+                    filteredUsers = users // Initialize filteredUsers with all users
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -83,14 +73,22 @@ struct CreateGroupView: View {
         }
     }
 
-    // Invite user to the group
-    func inviteUser(_ user: User) {
-        invitedUsers.append(user) // Add user to invited users
-        // Optionally, remove user from suggested users after invitation
-        // suggestedUsers.removeAll(where: { $0.id == user.id })
+    func searchUsers() {
+        let searchText = searchPseudonym.lowercased()
+        
+        if searchText.isEmpty {
+            filteredUsers = fetchedUsers // Reset to display all users
+        } else {
+            filteredUsers = fetchedUsers.filter { user in
+                user.pseudonym.lowercased().contains(searchText)
+            }
+        }
     }
 
-    // Create a new group
+    func inviteUser(_ user: User) {
+        invitedUsers.append(user)
+    }
+
     func createGroup() {
         GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers) { result in
             DispatchQueue.main.async {
