@@ -166,21 +166,34 @@ class UserController {
                 return
             }
 
-            guard let data = data else { return }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user email"])))
+                return
+            }
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                do {
-                    let updatedUser = try JSONDecoder().decode(User.self, from: data)
-                    completion(.success(updatedUser))
-                } catch {
-                    completion(.failure(error))
+            if httpResponse.statusCode == 200 {
+                if let data = data {
+                    do {
+                        let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                        completion(.success(updatedUser))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 }
             } else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user email"])))
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user email"])))
+                }
             }
         }.resume()
     }
-    
+
     func editUserUsername(newUsername: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
@@ -200,17 +213,77 @@ class UserController {
                 return
             }
 
-            guard let data = data else { return }
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user username"])))
+                return
+            }
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                do {
-                    let updatedUser = try JSONDecoder().decode(User.self, from: data)
-                    completion(.success(updatedUser))
-                } catch {
-                    completion(.failure(error))
+            if httpResponse.statusCode == 200 {
+                if let data = data {
+                    do {
+                        let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                        completion(.success(updatedUser))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 }
             } else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user username"])))
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user username"])))
+                }
+            }
+        }.resume()
+    }
+    
+    func editUserName(newFirstName: String, newLastName: String, completion: @escaping (Result<User, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "https://api.goodfriends.tech/v1/users") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let nameUpdate = ["firstname": newFirstName, "lastname": newLastName]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: nameUpdate, options: []) else { return }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user name"])))
+                return
+            }
+
+            if httpResponse.statusCode == 200 {
+                if let data = data {
+                    do {
+                        let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                        completion(.success(updatedUser))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                }
+            } else {
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user name"])))
+                }
             }
         }.resume()
     }

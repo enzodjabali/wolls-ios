@@ -6,7 +6,7 @@ struct SidebarView: View {
     var body: some View {
         List {
             Section(header: Text("My Account")) {
-                NavigationLink(destination: EditDetailView(title: "Name", value: "\(user.firstname) \(user.lastname)")) {
+                NavigationLink(destination: EditNameView(firstName: user.firstname, lastName: user.lastname)) {
                     VStack(alignment: .leading) {
                         Text("Name")
                         Text("\(user.firstname) \(user.lastname)")

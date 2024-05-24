@@ -33,6 +33,7 @@
 		C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1602C00DBA300C5E23F /* EditEmailView.swift */; };
 		C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1622C00DC0700C5E23F /* EditDetailView.swift */; };
 		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
+		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +83,7 @@
 		C60EA1602C00DBA300C5E23F /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
 		C60EA1622C00DC0700C5E23F /* EditDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailView.swift; sourceTree = "<group>"; };
 		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
+		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -260,6 +262,7 @@
 				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
 				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
 				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
+				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
 			);
 			path = AccountViews;
 			sourceTree = "<group>";
@@ -397,6 +400,7 @@
 				C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */,
 				C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
+				C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */,
 				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
