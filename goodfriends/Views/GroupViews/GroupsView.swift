@@ -132,8 +132,8 @@ struct GroupsView: View {
                 case .success(let currentUser):
                     self.currentUser = currentUser
                     // Construct initials from first and last name
-                    let firstNameInitial = currentUser.firstname.first ?? Character("")
-                    let lastNameInitial = currentUser.lastname.first ?? Character("")
+                    let firstNameInitial = currentUser.firstname?.first ?? Character("")
+                    let lastNameInitial = currentUser.lastname?.first ?? Character("")
                     currentUserInitials = "\(firstNameInitial)\(lastNameInitial)"
                 case .failure(let error):
                     print("Error fetching current user:", error)
