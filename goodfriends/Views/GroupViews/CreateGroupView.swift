@@ -22,7 +22,7 @@ struct CreateGroupView: View {
                 Section(header: Text("Invite Users")) {
                     // Text field to search and invite users
                     TextField("Search users by pseudonym", text: $searchPseudonym)
-                        .onChange(of: searchPseudonym) { _ in
+                        .onChange(of: searchPseudonym) { newValue in
                             searchUsers()
                         }
                     
@@ -48,7 +48,7 @@ struct CreateGroupView: View {
             })
         }
         .onAppear {
-            fetchUsers() // Fetch users when view appears
+            fetchUsers() // Fetch all users when view appears
         }
     }
 
@@ -58,7 +58,10 @@ struct CreateGroupView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
+                    //print("ALL Users:")
+                    print(UserController.shared.users)
                     suggestedUsers = users // Populate suggested users
+                    //print(suggestedUsers)
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -68,10 +71,37 @@ struct CreateGroupView: View {
 
     // Search users based on pseudonym
     func searchUsers() {
-        // Filter suggested users based on search pseudonym
-        suggestedUsers = UserController.shared.users.filter {
-            $0.pseudonym.lowercased().contains(searchPseudonym.lowercased())
+        
+        let searchText = searchPseudonym
+        
+        UserController.shared.fetchUsers { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let users):
+                    //print("ALL Users:")
+                    print(UserController.shared.users)
+                    suggestedUsers = users // Populate suggested users
+                    //print(suggestedUsers)
+                    
+                    if searchText.isEmpty {
+                        // If search pseudonym is empty, show all users as suggested users
+                        suggestedUsers = users
+                    } else {
+                        // Filter users based on search pseudonym
+                        suggestedUsers = users.filter { user in
+                            user.pseudonym.contains(searchText)
+                        }
+                        print("somethinn!")
+                    }
+                    
+                case .failure(let error):
+                    createError = error.localizedDescription
+                }
+            }
         }
+        
+        
+       
     }
 
     // Invite user to the group
