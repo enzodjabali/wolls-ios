@@ -32,7 +32,14 @@ struct CreateGroupView: View {
                         Button(action: {
                             inviteUser(user)
                         }) {
-                            Text(user.pseudonym)
+                            HStack {
+                                Text(user.pseudonym)
+                                Spacer()
+                                if invitedUsers.contains(where: { $0.id == user.id }) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.blue)
+                                }
+                            }
                         }
                     }
                 }
@@ -86,7 +93,11 @@ struct CreateGroupView: View {
     }
 
     func inviteUser(_ user: User) {
-        invitedUsers.append(user)
+        if let index = invitedUsers.firstIndex(where: { $0.id == user.id }) {
+            invitedUsers.remove(at: index)
+        } else {
+            invitedUsers.append(user)
+        }
     }
 
     func createGroup() {
