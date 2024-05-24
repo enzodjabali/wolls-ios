@@ -17,11 +17,19 @@
 		C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12D2BFE548100C5E23F /* LoginView.swift */; };
 		C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12F2BFE576D00C5E23F /* RegisterView.swift */; };
 		C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1322BFE5CED00C5E23F /* GroupsView.swift */; };
-		C60EA1352BFE6D4400C5E23F /* GroupDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */; };
 		C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */; };
 		C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1382BFE6D9800C5E23F /* RefundsView.swift */; };
 		C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */; };
 		C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1402BFFB9F500C5E23F /* SidebarView.swift */; };
+		C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1432C00C75900C5E23F /* GroupModel.swift */; };
+		C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1452C00C78B00C5E23F /* UserModel.swift */; };
+		C60EA1482C00C7CA00C5E23F /* ExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1472C00C7CA00C5E23F /* ExpenseModel.swift */; };
+		C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA14A2C00CAE600C5E23F /* UserController.swift */; };
+		C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA14D2C00CDAE00C5E23F /* GroupController.swift */; };
+		C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1512C00D07A00C5E23F /* CreateGroupView.swift */; };
+		C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1532C00D24100C5E23F /* GroupBoxView.swift */; };
+		C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1562C00D2AB00C5E23F /* AvatarView.swift */; };
+		C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,11 +63,19 @@
 		C60EA12D2BFE548100C5E23F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C60EA12F2BFE576D00C5E23F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		C60EA1322BFE5CED00C5E23F /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
-		C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailView.swift; sourceTree = "<group>"; };
 		C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
 		C60EA1382BFE6D9800C5E23F /* RefundsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundsView.swift; sourceTree = "<group>"; };
 		C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalancesView.swift; sourceTree = "<group>"; };
 		C60EA1402BFFB9F500C5E23F /* SidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		C60EA1432C00C75900C5E23F /* GroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupModel.swift; sourceTree = "<group>"; };
+		C60EA1452C00C78B00C5E23F /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
+		C60EA1472C00C7CA00C5E23F /* ExpenseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseModel.swift; sourceTree = "<group>"; };
+		C60EA14A2C00CAE600C5E23F /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
+		C60EA14D2C00CDAE00C5E23F /* GroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupController.swift; sourceTree = "<group>"; };
+		C60EA1512C00D07A00C5E23F /* CreateGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroupView.swift; sourceTree = "<group>"; };
+		C60EA1532C00D24100C5E23F /* GroupBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupBoxView.swift; sourceTree = "<group>"; };
+		C60EA1562C00D2AB00C5E23F /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,18 +126,13 @@
 		C60EA1022BFE3C7B00C5E23F /* goodfriends */ = {
 			isa = PBXGroup;
 			children = (
+				C60EA14C2C00CC3000C5E23F /* Views */,
+				C60EA1492C00CACF00C5E23F /* Controllers */,
+				C60EA1422C00C73800C5E23F /* Models */,
 				C60EA1032BFE3C7B00C5E23F /* goodfriendsApp.swift */,
 				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
-				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
-				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
-				C60EA1322BFE5CED00C5E23F /* GroupsView.swift */,
-				C60EA1342BFE6D4400C5E23F /* GroupDetailView.swift */,
-				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
-				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
-				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
-				C60EA1402BFFB9F500C5E23F /* SidebarView.swift */,
 			);
 			path = goodfriends;
 			sourceTree = "<group>";
@@ -149,6 +160,91 @@
 				C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */,
 			);
 			path = goodfriendsUITests;
+			sourceTree = "<group>";
+		};
+		C60EA1422C00C73800C5E23F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1432C00C75900C5E23F /* GroupModel.swift */,
+				C60EA1452C00C78B00C5E23F /* UserModel.swift */,
+				C60EA1472C00C7CA00C5E23F /* ExpenseModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		C60EA1492C00CACF00C5E23F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA14A2C00CAE600C5E23F /* UserController.swift */,
+				C60EA14D2C00CDAE00C5E23F /* GroupController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		C60EA14C2C00CC3000C5E23F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA15E2C00D46E00C5E23F /* BalanceViews */,
+				C60EA15D2C00D45B00C5E23F /* RefundViews */,
+				C60EA15C2C00D44900C5E23F /* ExpenseViews */,
+				C60EA1552C00D28200C5E23F /* SidebarViews */,
+				C60EA1502C00CF0400C5E23F /* GroupViews */,
+				C60EA14F2C00CEA200C5E23F /* UserViews */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		C60EA14F2C00CEA200C5E23F /* UserViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
+				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
+			);
+			path = UserViews;
+			sourceTree = "<group>";
+		};
+		C60EA1502C00CF0400C5E23F /* GroupViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1322BFE5CED00C5E23F /* GroupsView.swift */,
+				C60EA1512C00D07A00C5E23F /* CreateGroupView.swift */,
+				C60EA1532C00D24100C5E23F /* GroupBoxView.swift */,
+				C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */,
+			);
+			path = GroupViews;
+			sourceTree = "<group>";
+		};
+		C60EA1552C00D28200C5E23F /* SidebarViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1402BFFB9F500C5E23F /* SidebarView.swift */,
+				C60EA1562C00D2AB00C5E23F /* AvatarView.swift */,
+			);
+			path = SidebarViews;
+			sourceTree = "<group>";
+		};
+		C60EA15C2C00D44900C5E23F /* ExpenseViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1362BFE6D7900C5E23F /* ExpensesView.swift */,
+			);
+			path = ExpenseViews;
+			sourceTree = "<group>";
+		};
+		C60EA15D2C00D45B00C5E23F /* RefundViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA1382BFE6D9800C5E23F /* RefundsView.swift */,
+			);
+			path = RefundViews;
+			sourceTree = "<group>";
+		};
+		C60EA15E2C00D46E00C5E23F /* BalanceViews */ = {
+			isa = PBXGroup;
+			children = (
+				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
+			);
+			path = BalanceViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -281,16 +377,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
+				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
+				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
+				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
+				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,
+				C60EA1482C00C7CA00C5E23F /* ExpenseModel.swift in Sources */,
 				C60EA13B2BFE6DBE00C5E23F /* BalancesView.swift in Sources */,
 				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
+				C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */,
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
-				C60EA1352BFE6D4400C5E23F /* GroupDetailView.swift in Sources */,
+				C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */,
+				C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
