@@ -83,7 +83,7 @@ struct GroupsView: View {
 
                     // Sidebar
                     if isSidebarOpen, let currentUser = currentUser {
-                        SidebarView(user: currentUser)
+                        SidebarView(user: currentUser, isLoggedIn: $isLoggedIn)
                             .frame(width: 300)
                             .transition(.move(edge: .leading))
                             .zIndex(3)

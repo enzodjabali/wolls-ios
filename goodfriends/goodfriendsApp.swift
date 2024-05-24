@@ -6,10 +6,14 @@ struct goodfriendsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if isLoggedIn {
-                GroupsView(isLoggedIn: $isLoggedIn) // Pass isLoggedIn to GroupsView
+            if isLoggedIn || UserDefaults.standard.string(forKey: "userToken") != nil {
+                // If user is logged in or has a valid token stored locally
+                GroupsView(isLoggedIn: $isLoggedIn) // Redirect to GroupsView
+                    .onAppear {
+                        isLoggedIn = true // Set isLoggedIn to true
+                    }
             } else {
-                LoginView(isLoggedIn: $isLoggedIn) // Pass isLoggedIn to LoginView
+                LoginView(isLoggedIn: $isLoggedIn) // Redirect to LoginView
             }
         }
     }

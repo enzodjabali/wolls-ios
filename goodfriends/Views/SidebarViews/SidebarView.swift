@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SidebarView: View {
     let user: User
+    @Binding var isLoggedIn: Bool // Add binding to update login status
 
     var body: some View {
         List {
@@ -43,6 +44,8 @@ struct SidebarView: View {
 
                 Button(action: {
                     // Handle sign out action
+                    UserController.shared.signOut()
+                    isLoggedIn = false // Update login status
                 }) {
                     Label("Sign Out", systemImage: "arrowshape.turn.up.left")
                 }

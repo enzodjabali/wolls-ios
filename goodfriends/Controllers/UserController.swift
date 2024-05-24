@@ -52,6 +52,10 @@ class UserController {
         }.resume()
     }
     
+    func signOut() {
+        UserDefaults.standard.removeObject(forKey: "userToken")
+    }
+    
     func register(
         firstname: String,
         lastname: String,
