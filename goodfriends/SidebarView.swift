@@ -25,7 +25,7 @@ struct SidebarView: View {
             }
         }
         .listStyle(SidebarListStyle())
-        .frame(minWidth: 200, idealWidth: 250, maxWidth: 300)
+        .frame(minWidth: 300, idealWidth: 300, maxWidth: 300)
         .navigationTitle("Hi")
     }
 }

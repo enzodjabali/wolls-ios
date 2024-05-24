@@ -85,7 +85,7 @@ struct GroupsView: View {
                     // Sidebar
                     if isSidebarOpen {
                         SidebarView()
-                            .frame(width: 200)
+                            .frame(width: 300)
                             .transition(.move(edge: .leading))
                             .zIndex(2) // Ensure the sidebar is above the dark overlay
                     }
