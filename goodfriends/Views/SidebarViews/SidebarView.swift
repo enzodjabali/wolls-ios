@@ -34,11 +34,11 @@ struct SidebarView: View {
                     }
                 }
                 
-                NavigationLink(destination: EditEmailView(email: user.email)) {
+                NavigationLink(destination: EditIbanView(iban: user.iban)) {
                     VStack(alignment: .leading) {
                         Text("IBAN")
                         if user.iban.isEmpty {
-                            Text("Add your IBAN.")
+                            Text("Add your IBAN")
                                 .font(.subheadline)
                                 .foregroundColor(.red)
                         } else {

@@ -35,6 +35,7 @@
 		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
 		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
 		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
+		C60EA16B2C01141400C5E23F /* EditIbanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA16A2C01141400C5E23F /* EditIbanView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
 		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		C60EA16A2C01141400C5E23F /* EditIbanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditIbanView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -266,6 +268,7 @@
 				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
 				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
 				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
+				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
 			);
 			path = AccountViews;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C60EA16B2C01141400C5E23F /* EditIbanView.swift in Sources */,
 				C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */,
 				C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,

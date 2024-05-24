@@ -291,4 +291,51 @@ class UserController {
             }
         }.resume()
     }
+    
+    func editUserIban(newIban: String, completion: @escaping (Result<User, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/users") else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let ibanUpdate = ["iban": newIban]
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: ibanUpdate, options: []) else { return }
+        request.httpBody = jsonData
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user IBAN"])))
+                return
+            }
+
+            if httpResponse.statusCode == 200 {
+                if let data = data {
+                    do {
+                        let updatedUser = try JSONDecoder().decode(User.self, from: data)
+                        completion(.success(updatedUser))
+                    } catch {
+                        completion(.failure(error))
+                    }
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                }
+            } else {
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to edit the user IBAN"])))
+                }
+            }
+        }.resume()
+    }
 }
