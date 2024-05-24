@@ -199,7 +199,6 @@
 		C60EA14C2C00CC3000C5E23F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C60EA15F2C00DB7A00C5E23F /* AccountViews */,
 				C60EA15E2C00D46E00C5E23F /* BalanceViews */,
 				C60EA15D2C00D45B00C5E23F /* RefundViews */,
 				C60EA15C2C00D44900C5E23F /* ExpenseViews */,
@@ -213,6 +212,12 @@
 		C60EA14F2C00CEA200C5E23F /* UserViews */ = {
 			isa = PBXGroup;
 			children = (
+				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
+				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
+				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
+				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
+				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
+				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
 				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
 				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
 			);
@@ -261,19 +266,6 @@
 				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
 			);
 			path = BalanceViews;
-			sourceTree = "<group>";
-		};
-		C60EA15F2C00DB7A00C5E23F /* AccountViews */ = {
-			isa = PBXGroup;
-			children = (
-				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
-				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
-				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
-				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
-				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
-				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
-			);
-			path = AccountViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
