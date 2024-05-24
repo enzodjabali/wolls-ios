@@ -18,8 +18,8 @@ class GroupController {
         var newGroup: [String: Any] = ["name": name, "description": description]
         if !invitedUsers.isEmpty {
             // Convert invited user IDs to an array of strings
-            let invitedUserIds = invitedUsers.map { $0.id }
-            newGroup["invited_users"] = invitedUserIds
+            let invitedUserPseudonyms = invitedUsers.map { $0.pseudonym }
+            newGroup["invited_users"] = invitedUserPseudonyms
         }
 
         guard let jsonData = try? JSONSerialization.data(withJSONObject: newGroup, options: []) else {

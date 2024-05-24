@@ -24,7 +24,7 @@ struct CreateGroupView: View {
                     TextField("Enter description", text: $groupDescription)
                 }
                 Section(header: Text("Invite Users")) {
-                    TextField("Search users by pseudonym", text: $searchPseudonym)
+                    TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                     
@@ -93,8 +93,8 @@ struct CreateGroupView: View {
     }
 
     func inviteUser(_ user: User) {
-        if let index = invitedUsers.firstIndex(where: { $0.id == user.id }) {
-            invitedUsers.remove(at: index)
+        if invitedUsers.contains(where: { $0.pseudonym == user.pseudonym }) {
+            invitedUsers.removeAll(where: { $0.pseudonym == user.pseudonym })
         } else {
             invitedUsers.append(user)
         }
