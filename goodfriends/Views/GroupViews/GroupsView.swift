@@ -60,6 +60,12 @@ struct GroupsView: View {
                                 }
                                 .listStyle(PlainListStyle())
                                 .transition(.opacity)
+                                .refreshable {
+                                    // Code to run when the list is pulled down to refresh
+                                    fetchCurrentUser()
+                                    fetchGroups()
+                                    fetchInvitationCount()
+                                }
                             }
                         }
                     }
