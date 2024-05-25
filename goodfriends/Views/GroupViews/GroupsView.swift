@@ -118,15 +118,16 @@ struct GroupsView: View {
                                 .foregroundColor(.blue)
                         }
                         .buttonStyle(PlainButtonStyle()) // Remove the default button style
-                        .padding(.trailing, 0) // Add some trailing padding to separate it from the plus button
-                        
+                        .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
                         // Plus button
                         Button(action: {
                             showCreateGroupSheet.toggle()
                         }) {
                             Image(systemName: "plus")
                                 .font(.title2)
+                                .foregroundColor(.blue)
                         }
+                        .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
                     }
                 )
                 .sheet(isPresented: $showCreateGroupSheet) {
