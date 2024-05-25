@@ -10,6 +10,7 @@ struct AddExpenseView: View {
     @State private var members = [User]()
     @State private var selectedMembers = [User]()
     @State private var searchText = ""
+    @State private var currentUser: User? // Track current user
     var onAdd: (Expense) -> Void
 
     var body: some View {
@@ -59,6 +60,7 @@ struct AddExpenseView: View {
             })
             .onAppear {
                 fetchGroupMembers()
+                fetchCurrentUser()
             }
         }
     }
@@ -83,6 +85,23 @@ struct AddExpenseView: View {
             }
         }
     }
+    
+    func fetchCurrentUser() {
+        UserController.shared.fetchCurrentUser { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self.currentUser = user
+                    // Add current user to selected members by default
+                    if let currentUser = self.currentUser {
+                        self.selectedMembers.append(currentUser)
+                    }
+                case .failure(let error):
+                    print("Failed to fetch current user: \(error)")
+                }
+            }
+        }
+    }
 
     func createExpense() {
         guard let amount = Double(amountString) else {
@@ -91,6 +110,11 @@ struct AddExpenseView: View {
         }
         
         let refundRecipientIds = selectedMembers.map { $0.id }
+        
+        // Add current user to selected members by default if available
+        if let currentUser = currentUser, !selectedMembers.contains(where: { $0.id == currentUser.id }) {
+            selectedMembers.append(currentUser)
+        }
 
         ExpenseController.shared.createExpense(groupId: groupId, title: title, amount: amount, category: category, refundRecipients: refundRecipientIds) { result in
             DispatchQueue.main.async {
