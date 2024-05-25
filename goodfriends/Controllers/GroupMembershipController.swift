@@ -1,6 +1,6 @@
 import Foundation
 
-class GroupMembershipController {
+class GroupMembershipController: ObservableObject {
     static let shared = GroupMembershipController()
     
     func fetchInvitationCount(completion: @escaping (Result<Int, Error>) -> Void) {
@@ -65,8 +65,8 @@ class GroupMembershipController {
 
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 do {
-                    let invitations = try JSONDecoder().decode([Group].self, from: data)
-                    completion(.success(invitations))
+                    let groups = try JSONDecoder().decode([Group].self, from: data)
+                    completion(.success(groups))
                 } catch {
                     completion(.failure(error))
                 }
@@ -81,7 +81,7 @@ class GroupMembershipController {
         }.resume()
     }
         
-    func respondToInvitation(invitationId: String, accept: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
+    func respondToInvitation(groupId: String, accept: Bool, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/groups/memberships/invitations") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -93,7 +93,7 @@ class GroupMembershipController {
         request.setValue(token, forHTTPHeaderField: "Authorization")
         
         let requestBody: [String: Any] = [
-            "group_id": invitationId,
+            "group_id": groupId,
             "accept_invitation": accept
         ]
         
