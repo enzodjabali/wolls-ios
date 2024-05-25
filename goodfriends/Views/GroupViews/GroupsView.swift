@@ -8,6 +8,7 @@ struct GroupsView: View {
     @State private var currentUser: User?
     @State private var currentUserInitials = ""
     @State private var isSidebarOpen = false
+    @State private var invitationCount: Int = 0
     @Binding var isLoggedIn: Bool
 
     init(isLoggedIn: Binding<Bool>) {
@@ -92,6 +93,7 @@ struct GroupsView: View {
                 .onAppear {
                     fetchCurrentUser()
                     fetchGroups()
+                    fetchInvitationCount()
                 }
                 .navigationTitle("Groups")
                 .navigationBarBackButtonHidden(true)
@@ -112,13 +114,28 @@ struct GroupsView: View {
                     },
                     trailing: HStack {
                         // Button to open the page with waiting invitations
-                        NavigationLink(destination: InvitationsView()) {
-                            Image(systemName: "envelope")
-                                .font(.title2)
-                                .foregroundColor(.blue)
+                        ZStack {
+                            NavigationLink(destination: InvitationsView()) {
+                                Image(systemName: "envelope")
+                                    .font(.title2)
+                                    .foregroundColor(.blue)
+                            }
+                            .buttonStyle(PlainButtonStyle()) // Remove the default button style
+                            .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
+
+                            // Badge
+                            if invitationCount > 0 {
+                                Text("\(invitationCount)")
+                                    .font(.caption2)
+                                    .padding(5)
+                                    .background(Color.red)
+                                    .clipShape(Circle())
+                                    .foregroundColor(.white)
+                                    .offset(x: 13, y: -10)
+                                    .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
+                            }
                         }
-                        .buttonStyle(PlainButtonStyle()) // Remove the default button style
-                        .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
+                        
                         // Plus button
                         Button(action: {
                             showCreateGroupSheet.toggle()
@@ -147,10 +164,10 @@ struct GroupsView: View {
                 switch result {
                 case .success(let currentUser):
                     self.currentUser = currentUser
-                    // Construct initials from first and last name
                     let firstNameInitial = currentUser.firstname?.first ?? Character("")
                     let lastNameInitial = currentUser.lastname?.first ?? Character("")
                     currentUserInitials = "\(firstNameInitial)\(lastNameInitial)"
+                    fetchInvitationCount() // Fetch invitation count after fetching the current user
                 case .failure(let error):
                     print("Error fetching current user:", error)
                 }
@@ -168,6 +185,19 @@ struct GroupsView: View {
                 case .failure(let error):
                     fetchError = error.localizedDescription
                     isLoading = false
+                }
+            }
+        }
+    }
+
+    func fetchInvitationCount() {
+        GroupMembershipController.shared.fetchInvitationCount { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let count):
+                    invitationCount = count
+                case .failure(let error):
+                    print("Error fetching invitation count:", error)
                 }
             }
         }
