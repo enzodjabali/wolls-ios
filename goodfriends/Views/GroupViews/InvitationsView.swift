@@ -5,19 +5,19 @@ struct InvitationsView: View {
     @State private var invitations: [Group] = []
     
     var body: some View {
-        NavigationView {
+        VStack {
             List(invitations, id: \.id) { group in
                 InvitationRow(group: group) { accept in
                     // Respond to invitation
                     self.respondToInvitation(group: group, accept: accept)
                 }
             }
-            .navigationBarTitle("Invitations")
             .onAppear {
                 // Fetch invitations when the view appears
                 self.fetchInvitations()
             }
         }
+        .navigationTitle("Invitations")
     }
     
     private func fetchInvitations() {
@@ -93,4 +93,3 @@ struct InvitationRow: View {
         }
     }
 }
-
