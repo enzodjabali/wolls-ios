@@ -96,22 +96,38 @@ struct GroupsView: View {
                 .navigationTitle("Groups")
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(
-                    leading: AvatarView(initials: currentUserInitials)
-                        .onTapGesture {
-                            withAnimation {
-                                isSidebarOpen.toggle()
+                    leading: HStack {
+                        // Avatar view
+                        AvatarView(initials: currentUserInitials)
+                            .onTapGesture {
+                                withAnimation {
+                                    isSidebarOpen.toggle()
+                                }
                             }
+                            .frame(width: 35, height: 35)
+                            .background(
+                                LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]), startPoint: .bottom, endPoint: .top)
+                                    .clipShape(Circle())
+                            )
+                    },
+                    trailing: HStack {
+                        // Button to open the page with waiting invitations
+                        NavigationLink(destination: InvitationsView()) {
+                            Image(systemName: "envelope")
+                                .font(.title2)
+                                .foregroundColor(.blue)
                         }
-                        .frame(width: 35, height: 35) // Adjust size
-                        .background(
-                            LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]), startPoint: .bottom, endPoint: .top)
-                                .clipShape(Circle())
-                        ),
-                    trailing: Button(action: {
-                        showCreateGroupSheet.toggle()
-                    }) {
-                        Image(systemName: "plus")
-                            .font(.title2)
+                        .buttonStyle(PlainButtonStyle()) // Remove the default button style
+                        .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
+                        // Plus button
+                        Button(action: {
+                            showCreateGroupSheet.toggle()
+                        }) {
+                            Image(systemName: "plus")
+                                .font(.title2)
+                                .foregroundColor(.blue)
+                        }
+                        .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
                     }
                 )
                 .sheet(isPresented: $showCreateGroupSheet) {
