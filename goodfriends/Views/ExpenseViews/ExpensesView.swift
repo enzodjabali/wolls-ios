@@ -43,8 +43,13 @@ struct ExpensesView: View {
                                 .font(.headline)
                         }
                         HStack {
-                            Text("Paid by \(expense.creator_pseudonym)")
-                                .font(.subheadline)
+                            if let pseudonym = expense.creator_pseudonym {
+                                Text("Paid by \(pseudonym)")
+                                    .font(.subheadline)
+                            } else {
+                                Text("Paid by Unknown")
+                                    .font(.subheadline)
+                            }
                             Spacer()
                             Text(formatDate(expense.date))
                                 .font(.subheadline)
