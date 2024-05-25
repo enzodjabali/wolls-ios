@@ -5,13 +5,16 @@ struct InvitationsView: View {
     @State private var invitations: [Group] = []
     
     var body: some View {
-        VStack {
-            List(invitations, id: \.id) { group in
-                InvitationRow(group: group) { accept in
-                    // Respond to invitation
-                    self.respondToInvitation(group: group, accept: accept)
+        ScrollView {
+            VStack(spacing: 20) {
+                ForEach(invitations, id: \.id) { group in
+                    InvitationRow(group: group) { accept in
+                        // Respond to invitation
+                        self.respondToInvitation(group: group, accept: accept)
+                    }
                 }
             }
+            .padding()
             .onAppear {
                 // Fetch invitations when the view appears
                 self.fetchInvitations()
@@ -61,7 +64,7 @@ struct InvitationRow: View {
                 
                 HStack(spacing: 20) {
                     Button(action: {
-                        self.respondAction(true)
+                        self.respondAction(true) // Accept action
                     }) {
                         Text("Accept")
                             .foregroundColor(Color.white)
@@ -71,9 +74,9 @@ struct InvitationRow: View {
                             .cornerRadius(20)
                     }
                     .padding(.top, 5) // Add padding above the button
-
+                    
                     Button(action: {
-                        self.respondAction(false)
+                        self.respondAction(false) // Decline action
                     }) {
                         Text("Decline")
                             .foregroundColor(Color.blue)
