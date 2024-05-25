@@ -6,20 +6,35 @@ struct InvitationsView: View {
     
     var body: some View {
         ScrollView {
-            VStack(spacing: 20) {
-                ForEach(invitations, id: \.id) { group in
-                    InvitationRow(group: group) { accept in
-                        // Respond to invitation
-                        self.respondToInvitation(group: group, accept: accept)
+            if invitations.isEmpty {
+                VStack(spacing: 20) {
+                    Text("You have no pending invitations.")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                        .frame(maxWidth: .infinity) // Ensure the container takes up the whole width
+                }
+                .padding()
+                .onAppear {
+                    // Fetch invitations when the view appears
+                    self.fetchInvitations()
+                }
+            } else {
+                VStack(spacing: 20) {
+                    ForEach(invitations, id: \.id) { group in
+                        InvitationRow(group: group) { accept in
+                            // Respond to invitation
+                            self.respondToInvitation(group: group, accept: accept)
+                        }
                     }
                 }
-            }
-            .padding()
-            .onAppear {
-                // Fetch invitations when the view appears
-                self.fetchInvitations()
+                .padding()
+                .onAppear {
+                    // Fetch invitations when the view appears
+                    self.fetchInvitations()
+                }
             }
         }
+        .background(Color.gray.opacity(0.1)) // Background color for the entire page
         .navigationTitle("Invitations")
         .refreshable {
             self.fetchInvitations()
@@ -59,7 +74,7 @@ struct InvitationRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
-                Text("You've been invited you to join ")
+                Text("You've been invited to join ")
                     .font(.body)
                     + Text(group.name)
                     .font(.body)
@@ -97,5 +112,10 @@ struct InvitationRow: View {
             }
             Spacer() // Add spacer to push buttons to the left
         }
+        .padding()
+        .background(Color.white) // Background color for the box
+        .cornerRadius(10) // Border radius for the box
+        .padding(.horizontal) // Horizontal padding for the box
+        .frame(maxWidth: .infinity) // Ensure the container takes up the whole width
     }
 }
