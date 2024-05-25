@@ -21,6 +21,9 @@ struct InvitationsView: View {
             }
         }
         .navigationTitle("Invitations")
+        .refreshable {
+            self.fetchInvitations()
+        }
     }
     
     private func fetchInvitations() {
