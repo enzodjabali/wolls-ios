@@ -22,14 +22,6 @@ struct GroupDetailsView: View {
             viewForSelectedTab()
         }
         .navigationTitle(groupName)
-        .overlay(
-            Text(groupDescription)
-                .font(.subheadline)
-                .foregroundColor(.gray)
-                .padding(.horizontal)
-                .padding(.top, -7),
-            alignment: .topLeading
-        )
         .navigationBarItems(trailing:
             Button(action: {
                 isEditing.toggle()
