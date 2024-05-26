@@ -5,7 +5,7 @@ struct AddExpenseView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var title = ""
     @State private var amountString = ""
-    @State private var selectedCategory = "Travel" // Default category
+    @State private var selectedCategory = "No category" // Default category
     @State private var createError: String?
     @State private var members = [User]()
     @State private var selectedMembers = [User]()
@@ -13,7 +13,7 @@ struct AddExpenseView: View {
     @State private var currentUser: User? // Track current user
     var onAdd: (Expense) -> Void
 
-    let categories = ["Travel", "Weekend", "Groceries", "Lifestyle", "Party"]
+    let categories = ["No category", "Accommodation", "Entertainment", "Groceries", "Restaurants & Bars", "Shopping", "Transport", "Healthcare", "Insurance"]
 
     var body: some View {
         NavigationView {
