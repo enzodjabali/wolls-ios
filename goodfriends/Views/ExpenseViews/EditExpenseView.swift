@@ -40,18 +40,20 @@ struct EditExpenseView: View {
                 } else {
                     Section(header: Text("Expense Details")) {
                         TextField("Title", text: $title)
-                        TextField("Amount", text: $amountString)
-                            .keyboardType(.decimalPad)
-                    }
-                    
-                    Section(header: Text("Category")) {
                         Picker("Category", selection: $selectedCategory) {
                             ForEach(categories, id: \.self) {
                                 Text($0)
                             }
                         }
+                        HStack {
+                            TextField("Amount", text: $amountString)
+                                .keyboardType(.decimalPad)
+                            Text("€")
+                                .font(.headline)
+                                .foregroundColor(.secondary)
+                        }
                     }
-                    
+            
                     Section(header: Text("Recipients")) {
                         TextField("Search users by username", text: $searchText)
                         
@@ -78,11 +80,7 @@ struct EditExpenseView: View {
                         }
                     }
                     
-                    Section {
-                        Toggle("Is Refunded", isOn: $isRefunded)
-                    }
-                    
-                    Section {
+                    Section(header: Text("Receipt")) {
                         if let selectedImage = selectedImage {
                             Image(uiImage: selectedImage)
                                 .resizable()
@@ -137,6 +135,10 @@ struct EditExpenseView: View {
                                 self.showActionSheet = true
                             }
                         }
+                    }
+                    
+                    Section {
+                        Toggle("Refunded", isOn: $isRefunded)
                     }
                 
                     if let error = createError {
