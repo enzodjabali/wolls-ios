@@ -85,6 +85,7 @@ struct ExpensesView: View {
         .sheet(isPresented: $showAddExpenseSheet) {
             AddExpenseView(groupId: groupId) { newExpense in
                 expenses.append(newExpense)
+                fetchExpenses()
             }
         }
     }
