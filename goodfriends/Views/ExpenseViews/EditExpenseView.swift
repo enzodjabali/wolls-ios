@@ -198,6 +198,12 @@ struct EditExpenseView: View {
             }
             .disabled(!isCreator)
         )
+        if !isCreator {
+            Text("You can only view this expense. Editing is allowed only for the creator.")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding()
+        }
     }
     
     var filteredMembers: [User] {
