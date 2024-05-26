@@ -5,13 +5,15 @@ struct AddExpenseView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var title = ""
     @State private var amountString = ""
-    @State private var category = ""
+    @State private var selectedCategory = "Travel" // Default category
     @State private var createError: String?
     @State private var members = [User]()
     @State private var selectedMembers = [User]()
     @State private var searchText = ""
     @State private var currentUser: User? // Track current user
     var onAdd: (Expense) -> Void
+
+    let categories = ["Travel", "Weekend", "Groceries", "Lifestyle", "Party"]
 
     var body: some View {
         NavigationView {
@@ -20,9 +22,16 @@ struct AddExpenseView: View {
                     TextField("Title", text: $title)
                     TextField("Amount", text: $amountString)
                         .keyboardType(.decimalPad)
-                    TextField("Category", text: $category)
                 }
-                
+
+                Section(header: Text("Category")) {
+                    Picker("Category", selection: $selectedCategory) {
+                        ForEach(categories, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                }
+
                 Section(header: Text("Recipients")) {
                     TextField("Search users by username", text: $searchText)
                     
@@ -118,7 +127,7 @@ struct AddExpenseView: View {
             selectedMembers.append(currentUser)
         }
 
-        ExpenseController.shared.createExpense(groupId: groupId, title: title, amount: amount, category: category, refundRecipients: refundRecipientIds) { result in
+        ExpenseController.shared.createExpense(groupId: groupId, title: title, amount: amount, category: selectedCategory, refundRecipients: refundRecipientIds) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let newExpense):
