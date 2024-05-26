@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import MobileCoreServices
 
 struct AddExpenseView: View {
     let groupId: String
@@ -13,9 +14,13 @@ struct AddExpenseView: View {
     @State private var searchText = ""
     @State private var currentUser: User? // Track current user
     @State private var showImagePicker = false
+    @State private var showDocumentPicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
     @State private var selectedImage: UIImage?
     @State private var base64ImageString: String?
+    @State private var base64FileString: String?
+    @State private var fileName: String?
+    @State private var showActionSheet = false
 
     var onAdd: (Expense) -> Void
 
@@ -65,19 +70,17 @@ struct AddExpenseView: View {
                 }
 
                 Section {
-                    Button("Select Image") {
-                        self.showImagePicker = true
-                        self.imagePickerSourceType = .photoLibrary
-                    }
-                    Button("Take Picture") {
-                        self.showImagePicker = true
-                        self.imagePickerSourceType = .camera
+                    Button("Add Attachment") {
+                        self.showActionSheet = true
                     }
                     if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
+                    }
+                    if let fileName = fileName {
+                        Text("Selected file: \(fileName)")
                     }
                 }
 
@@ -96,8 +99,27 @@ struct AddExpenseView: View {
                 fetchGroupMembers()
                 fetchCurrentUser()
             }
+            .actionSheet(isPresented: $showActionSheet) {
+                ActionSheet(title: Text("Add Attachment"), buttons: [
+                    .default(Text("Select Picture")) {
+                        self.imagePickerSourceType = .photoLibrary
+                        self.showImagePicker = true
+                    },
+                    .default(Text("Take Picture")) {
+                        self.imagePickerSourceType = .camera
+                        self.showImagePicker = true
+                    },
+                    .default(Text("Select File")) {
+                        self.showDocumentPicker = true
+                    },
+                    .cancel()
+                ])
+            }
             .sheet(isPresented: $showImagePicker) {
                 ImagePicker(sourceType: self.imagePickerSourceType, selectedImage: self.$selectedImage, base64ImageString: self.$base64ImageString)
+            }
+            .sheet(isPresented: $showDocumentPicker) {
+                DocumentPicker(base64FileString: self.$base64FileString, fileName: self.$fileName)
             }
         }
     }
@@ -158,6 +180,11 @@ struct AddExpenseView: View {
             attachment = [
                 "filename": "image.png",
                 "content": base64ImageString
+            ]
+        } else if let base64FileString = base64FileString, let fileName = fileName {
+            attachment = [
+                "filename": fileName,
+                "content": base64FileString
             ]
         }
 
@@ -222,4 +249,36 @@ struct ImagePicker: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+}
+
+struct DocumentPicker: UIViewControllerRepresentable {
+    @Binding var base64FileString: String?
+    @Binding var fileName: String?
+
+    class Coordinator: NSObject, UIDocumentPickerDelegate {
+        var parent: DocumentPicker
+
+        init(parent: DocumentPicker) {
+            self.parent = parent
+        }
+
+        func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            if let url = urls.first, let fileData = try? Data(contentsOf: url) {
+                parent.base64FileString = fileData.base64EncodedString()
+                parent.fileName = url.lastPathComponent
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(parent: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+        let documentPicker = UIDocumentPickerViewController(documentTypes: [kUTTypeData as String, kUTTypePDF as String], in: .import)
+        documentPicker.delegate = context.coordinator
+        return documentPicker
+    }
+
+    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 }
