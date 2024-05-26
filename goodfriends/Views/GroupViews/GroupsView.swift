@@ -1,5 +1,12 @@
 import SwiftUI
 
+class UserSession {
+    static let shared = UserSession()
+    var userId: String? // Variable to store the user ID
+
+    private init() {} // Private initializer to prevent multiple instances
+}
+
 struct GroupsView: View {
     @State private var groups: [Group] = []
     @State private var fetchError: String?
@@ -169,6 +176,8 @@ struct GroupsView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let currentUser):
+                    // Save user ID to UserSession
+                    UserSession.shared.userId = currentUser.id
                     self.currentUser = currentUser
                     let firstNameInitial = currentUser.firstname?.first ?? Character("")
                     let lastNameInitial = currentUser.lastname?.first ?? Character("")

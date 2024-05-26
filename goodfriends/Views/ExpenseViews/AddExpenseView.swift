@@ -120,7 +120,6 @@ struct AddExpenseView: View {
             })
             .onAppear {
                 fetchGroupMembers()
-                fetchCurrentUser()
             }
             .actionSheet(isPresented: $showActionSheet) {
                 ActionSheet(title: Text("Add Attachment"), buttons: [
@@ -161,27 +160,27 @@ struct AddExpenseView: View {
                 switch result {
                 case .success(let users):
                     self.members = users
+                    self.selectCurrentUser()
                 case .failure(let error):
                     self.createError = error.localizedDescription
                 }
             }
         }
     }
-    
-    func fetchCurrentUser() {
-        UserController.shared.fetchCurrentUser { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let user):
-                    self.currentUser = user
-                    // Add current user to selected members by default
-                    if let currentUser = self.currentUser {
-                        self.selectedMembers.append(currentUser)
-                    }
-                case .failure(let error):
-                    print("Failed to fetch current user: \(error)")
+
+    func selectCurrentUser() {
+        if let userId = UserSession.shared.userId {
+            // Find the current user in the members list
+            if let currentUser = members.first(where: { $0.id == userId }) {
+                self.currentUser = currentUser
+                if !selectedMembers.contains(where: { $0.id == currentUser.id }) {
+                    selectedMembers.append(currentUser)
                 }
+            } else {
+                print("Current user is not in the group members list")
             }
+        } else {
+            print("User ID is not available")
         }
     }
 
@@ -192,11 +191,6 @@ struct AddExpenseView: View {
         }
         
         let refundRecipientIds = selectedMembers.map { $0.id }
-        
-        // Add current user to selected members by default if available
-        if let currentUser = currentUser, !selectedMembers.contains(where: { $0.id == currentUser.id }) {
-            selectedMembers.append(currentUser)
-        }
 
         var attachment: [String: Any]?
         if let base64ImageString = base64ImageString, let selectedImage = selectedImage {
@@ -305,3 +299,4 @@ struct DocumentPicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 }
+
