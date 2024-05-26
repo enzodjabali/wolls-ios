@@ -95,6 +95,14 @@ struct EditExpenseView: View {
                         if let fileName = fileName {
                             Text("Selected file: \(fileName)")
                         }
+                        if let base64FileString = base64FileString,
+                           let imageData = Data(base64Encoded: base64FileString),
+                           let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 200)
+                        }
                     }
                     
                     if let error = createError {
@@ -247,3 +255,5 @@ struct EditExpenseView: View {
         }
     }
 }
+
+               
