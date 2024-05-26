@@ -32,7 +32,7 @@ struct EditExpenseView: View {
     var onUpdate: (Expense) -> Void
 
     var body: some View {
-        NavigationView {
+        VStack {
             Form {
                 if isLoading {
                     ProgressView("Loading...")
@@ -111,12 +111,6 @@ struct EditExpenseView: View {
                     }
                 }
             }
-            .navigationTitle("Edit Expense")
-            .navigationBarItems(leading: Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
-            }, trailing: Button("Save") {
-                updateExpense()
-            })
             .onAppear {
                 fetchGroupMembers()
                 fetchCurrentUser()
@@ -145,6 +139,12 @@ struct EditExpenseView: View {
                 DocumentPicker(base64FileString: self.$base64FileString, fileName: self.$fileName)
             }
         }
+        .navigationTitle("Expense")
+        .navigationBarItems(
+            trailing: Button("Save") {
+                updateExpense()
+            }
+        )
     }
     
     var filteredMembers: [User] {
