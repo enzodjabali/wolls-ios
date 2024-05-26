@@ -40,53 +40,39 @@ class ExpenseController {
     func fetchExpense(groupId: String, expenseId: String, completion: @escaping (Result<Expense, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/expenses/\(groupId)/\(expenseId)") else {
-            let urlError = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])
-            completion(.failure(urlError))
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue(token, forHTTPHeaderField: "Authorization")
-        
+
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                print("Fetch expense error:", error.localizedDescription)
                 completion(.failure(error))
                 return
             }
-            
-            guard let httpResponse = response as? HTTPURLResponse else {
-                let unknownError = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Unknown error"])
-                print("Unknown error: No HTTPURLResponse")
-                completion(.failure(unknownError))
-                return
-            }
-            
-            print("HTTP status code:", httpResponse.statusCode)
-            
+
             guard let data = data else {
-                let missingDataError = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])
-                print("Fetch expense error:", missingDataError.localizedDescription)
-                completion(.failure(missingDataError))
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 return
             }
-            
-            print("Received data:", String(data: data, encoding: .utf8) ?? "Unable to print data")
-            
+
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+
             do {
-                let decoder = JSONDecoder()
                 let expenseResponse = try decoder.decode(ExpenseResponse.self, from: data)
                 let expense = expenseResponse.expense
-                
-                print("Fetched expense successfully:", expense)
                 completion(.success(expense))
+                print(data)
             } catch {
-                print("Expense decoding error:", error.localizedDescription)
                 completion(.failure(error))
             }
         }.resume()
     }
+
 
     func createExpense(with newExpense: [String: Any], completion: @escaping (Result<Expense, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),

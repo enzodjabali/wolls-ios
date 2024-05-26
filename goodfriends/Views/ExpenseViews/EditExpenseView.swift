@@ -14,6 +14,7 @@ struct EditExpenseView: View {
     @State private var selectedMembers = [User]()
     @State private var searchText = ""
     @State private var currentUser: User?
+    
     @State private var showImagePicker = false
     @State private var showDocumentPicker = false
     @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
@@ -21,6 +22,7 @@ struct EditExpenseView: View {
     @State private var base64ImageString: String?
     @State private var base64FileString: String?
     @State private var fileName: String?
+    
     @State private var showActionSheet = false
     @State private var isLoading = true
     @State private var isRefunded = false
@@ -150,26 +152,29 @@ struct EditExpenseView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let expense):
-                    print("Fetched expense details successfully:", expense)
+                    // Populate the UI with fetched expense details
                     self.title = expense.title
                     self.amountString = String(expense.amount)
                     self.selectedCategory = expense.category
                     self.isRefunded = expense.isRefunded
                     self.selectedMembers = self.members.filter { expense.refund_recipients.contains($0.id) }
+                    
                     if let attachment = expense.attachment {
                         self.fileName = attachment.fileName
                         self.base64FileString = attachment.content
                     }
-                    self.isLoading = false
+                    
+                    // Handle recipients if needed
                 case .failure(let error):
-                    print("Failed to fetch expense details:", error.localizedDescription)
+                    // Handle error
                     self.createError = error.localizedDescription
-                    self.isLoading = false
                 }
+                // Set isLoading to false to indicate that loading is finished
+                self.isLoading = false
             }
         }
     }
-
+    
     func fetchGroupMembers() {
         GroupMembershipController.shared.fetchGroupMembers(groupId: groupId) { result in
             DispatchQueue.main.async {
