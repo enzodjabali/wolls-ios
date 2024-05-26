@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct AddExpenseView: View {
     let groupId: String
@@ -11,6 +12,11 @@ struct AddExpenseView: View {
     @State private var selectedMembers = [User]()
     @State private var searchText = ""
     @State private var currentUser: User? // Track current user
+    @State private var showImagePicker = false
+    @State private var imagePickerSourceType: UIImagePickerController.SourceType = .photoLibrary
+    @State private var selectedImage: UIImage?
+    @State private var base64ImageString: String?
+
     var onAdd: (Expense) -> Void
 
     let categories = ["No category", "Accommodation", "Entertainment", "Groceries", "Restaurants & Bars", "Shopping", "Transport", "Healthcare", "Insurance"]
@@ -57,7 +63,24 @@ struct AddExpenseView: View {
                         }
                     }
                 }
-                
+
+                Section {
+                    Button("Select Image") {
+                        self.showImagePicker = true
+                        self.imagePickerSourceType = .photoLibrary
+                    }
+                    Button("Take Picture") {
+                        self.showImagePicker = true
+                        self.imagePickerSourceType = .camera
+                    }
+                    if let selectedImage = selectedImage {
+                        Image(uiImage: selectedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
+                    }
+                }
+
                 if let error = createError {
                     Text(error)
                         .foregroundColor(.red)
@@ -72,6 +95,9 @@ struct AddExpenseView: View {
             .onAppear {
                 fetchGroupMembers()
                 fetchCurrentUser()
+            }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePicker(sourceType: self.imagePickerSourceType, selectedImage: self.$selectedImage, base64ImageString: self.$base64ImageString)
             }
         }
     }
@@ -127,7 +153,27 @@ struct AddExpenseView: View {
             selectedMembers.append(currentUser)
         }
 
-        ExpenseController.shared.createExpense(groupId: groupId, title: title, amount: amount, category: selectedCategory, refundRecipients: refundRecipientIds) { result in
+        var attachment: [String: Any]?
+        if let base64ImageString = base64ImageString, let selectedImage = selectedImage {
+            attachment = [
+                "filename": "image.png",
+                "content": base64ImageString
+            ]
+        }
+
+        var newExpense: [String: Any] = [
+            "title": title,
+            "amount": amount,
+            "group_id": groupId,
+            "category": selectedCategory,
+            "refund_recipients": refundRecipientIds
+        ]
+
+        if let attachment = attachment {
+            newExpense["attachment"] = attachment
+        }
+
+        ExpenseController.shared.createExpense(with: newExpense) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let newExpense):
@@ -139,4 +185,41 @@ struct AddExpenseView: View {
             }
         }
     }
+}
+
+struct ImagePicker: UIViewControllerRepresentable {
+    var sourceType: UIImagePickerController.SourceType
+    @Binding var selectedImage: UIImage?
+    @Binding var base64ImageString: String?
+
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        var parent: ImagePicker
+
+        init(parent: ImagePicker) {
+            self.parent = parent
+        }
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let uiImage = info[.originalImage] as? UIImage {
+                parent.selectedImage = uiImage
+                if let imageData = uiImage.pngData() {
+                    parent.base64ImageString = imageData.base64EncodedString()
+                }
+            }
+            picker.dismiss(animated: true)
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        return Coordinator(parent: self)
+    }
+
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = sourceType
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 }
