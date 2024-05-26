@@ -31,15 +31,17 @@ struct AddExpenseView: View {
             Form {
                 Section(header: Text("Expense Details")) {
                     TextField("Title", text: $title)
-                    TextField("Amount", text: $amountString)
-                        .keyboardType(.decimalPad)
-                }
-
-                Section(header: Text("Category")) {
                     Picker("Category", selection: $selectedCategory) {
                         ForEach(categories, id: \.self) {
                             Text($0)
                         }
+                    }
+                    HStack {
+                        TextField("Amount", text: $amountString)
+                            .keyboardType(.decimalPad)
+                        Text("€")
+                            .font(.headline)
+                            .foregroundColor(.secondary)
                     }
                 }
 
@@ -69,18 +71,39 @@ struct AddExpenseView: View {
                     }
                 }
 
-                Section {
-                    Button("Add Attachment") {
-                        self.showActionSheet = true
+                Section(header: Text("Receipt")) {
+                    if selectedImage == nil && fileName == nil {
+                        Button(action: {
+                            self.showActionSheet = true
+                        }) {
+                            Text("Add a receipt")
+                        }
                     }
                     if let selectedImage = selectedImage {
                         Image(uiImage: selectedImage)
                             .resizable()
                             .scaledToFit()
                             .frame(height: 200)
+                        Button(action: {
+                            self.selectedImage = nil
+                            base64ImageString = nil
+                        }) {
+                            Text("Remove Image")
+                                .foregroundColor(.red)
+                        }
                     }
                     if let fileName = fileName {
-                        Text("Selected file: \(fileName)")
+                        Text("\(fileName)")
+                        Button(action: {
+                            self.fileName = nil
+                            base64FileString = nil
+                        }) {
+                            HStack {
+                                Image(systemName: "minus.circle")
+                                Text("Remove")
+                            }
+                            .foregroundColor(.red)
+                        }
                     }
                 }
 
@@ -89,7 +112,7 @@ struct AddExpenseView: View {
                         .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Add Expense")
+            .navigationTitle("Expense")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Save") {

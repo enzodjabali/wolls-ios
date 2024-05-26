@@ -1,5 +1,4 @@
 import SwiftUI
-import Foundation
 
 struct ExpensesView: View {
     let groupId: String
@@ -9,6 +8,19 @@ struct ExpensesView: View {
     @State private var isLoading: Bool = true
     @State private var searchText: String = ""
     @State private var showAddExpenseSheet = false
+    @State private var selectedExpense: Expense?
+    
+    private let categoryColors: [String: Color] = [
+        "No category": Color.gray,
+        "Accommodation": Color.brown,
+        "Entertainment": Color.orange,
+        "Groceries": Color.green,
+        "Restaurants & Bars": Color.red,
+        "Shopping": Color.purple,
+        "Transport": Color.yellow,
+        "Healthcare": Color.pink,
+        "Insurance": Color.black
+    ]
 
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
@@ -33,28 +45,50 @@ struct ExpensesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(filteredExpenses.isEmpty ? expenses : filteredExpenses) { expense in
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(expense.title)
-                                .font(.headline)
-                            Spacer()
-                            Text(String(format: "%.2f", expense.amount))
-                                .font(.headline)
-                        }
-                        HStack {
-                            if let pseudonym = expense.creator_pseudonym {
-                                Text("Paid by \(pseudonym)")
-                                    .font(.subheadline)
-                            } else {
-                                Text("Paid by Unknown")
-                                    .font(.subheadline)
+                List {
+                    ForEach(filteredExpenses.isEmpty ? expenses : filteredExpenses, id: \.id) { expense in
+                        NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
+                            if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
+                                expenses[index] = updatedExpense
                             }
-                            Spacer()
-                            Text(formatDate(expense.date))
-                                .font(.subheadline)
+                        })) {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    // Badge with category color
+                                    let badgeColor = categoryColors[expense.category] ?? Color.gray
+                                    Text("•")
+                                        .font(.system(size: 40)) // Adjust the font size here
+                                        .foregroundColor(badgeColor)
+                                    
+                                    Text(expense.title)
+                                        .font(.headline)
+                                        .padding(.leading, 5) // Adjust the padding here if needed
+                                    
+                                    Spacer()
+    
+                                    Text("\(String(format: "%.2f", expense.amount)) €")
+                                        .font(.headline)
+                                }
+                                
+                                HStack {
+                                    if let pseudonym = expense.creator_pseudonym {
+                                        Text("Paid by \(pseudonym)")
+                                            .font(.subheadline)
+                                    } else {
+                                        Text("Paid by Unknown")
+                                            .font(.subheadline)
+                                    }
+                                    Spacer()
+                                    Text(formatDate(expense.date))
+                                        .font(.subheadline)
+                                }
+                            }
                         }
                     }
+                    .onDelete(perform: deleteExpense)
+                }
+                .refreshable {
+                    self.fetchExpenses()
                 }
             }
         }
@@ -73,6 +107,7 @@ struct ExpensesView: View {
         .sheet(isPresented: $showAddExpenseSheet) {
             AddExpenseView(groupId: groupId) { newExpense in
                 expenses.append(newExpense)
+                fetchExpenses()
             }
         }
     }
@@ -98,6 +133,31 @@ struct ExpensesView: View {
             filteredExpenses = expenses
         } else {
             filteredExpenses = expenses.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+
+    func deleteExpense(at offsets: IndexSet) {
+        guard let expenseIndex = offsets.first else { return }
+        let expenseId = filteredExpenses.isEmpty ? expenses[expenseIndex].id : filteredExpenses[expenseIndex].id
+
+        // Perform the delete API call
+        ExpenseController.shared.deleteExpense(expenseId: expenseId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Remove the expense from the local array
+                    if filteredExpenses.isEmpty {
+                        expenses.remove(at: expenseIndex)
+                    } else {
+                        if let index = expenses.firstIndex(where: { $0.id == expenseId }) {
+                            expenses.remove(at: index)
+                        }
+                    }
+                case .failure(let error):
+                    // Handle error
+                    print("Error deleting expense: \(error)")
+                }
+            }
         }
     }
 }
