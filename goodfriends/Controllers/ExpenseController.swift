@@ -37,7 +37,7 @@ class ExpenseController {
         }.resume()
     }
     
-    func fetchExpense(groupId: String, expenseId: String, completion: @escaping (Result<Expense, Error>) -> Void) {
+    func fetchExpense(groupId: String, expenseId: String, completion: @escaping (Result<FetchedExpense, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/expenses/\(groupId)/\(expenseId)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
