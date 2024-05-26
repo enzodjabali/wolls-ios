@@ -65,6 +65,9 @@ struct ExpensesView: View {
                     }
                     .onDelete(perform: deleteExpense)
                 }
+                .refreshable {
+                    self.fetchExpenses()
+                }
             }
         }
         .onAppear {
