@@ -1,3 +1,7 @@
+struct ExpenseResponse: Decodable {
+    let expense: Expense
+}
+
 struct Expense: Identifiable, Decodable {
     let id: String
     let title: String
@@ -9,6 +13,7 @@ struct Expense: Identifiable, Decodable {
     let category: String
     let refund_recipients: [String]
     let isRefunded: Bool
+    let attachment: Attachment?
     let __v: Int
     
     private enum CodingKeys: String, CodingKey {
@@ -22,6 +27,17 @@ struct Expense: Identifiable, Decodable {
         case category
         case refund_recipients
         case isRefunded
+        case attachment
         case __v
+    }
+}
+
+struct Attachment: Decodable {
+    let fileName: String
+    var content: String // Change 'let' to 'var'
+
+    private enum CodingKeys: String, CodingKey {
+        case fileName
+        case content
     }
 }

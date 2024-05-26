@@ -1,5 +1,4 @@
 import SwiftUI
-import Foundation
 
 struct ExpensesView: View {
     let groupId: String
@@ -9,6 +8,7 @@ struct ExpensesView: View {
     @State private var isLoading: Bool = true
     @State private var searchText: String = ""
     @State private var showAddExpenseSheet = false
+    @State private var selectedExpense: Expense?
 
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
@@ -34,25 +34,31 @@ struct ExpensesView: View {
                     .padding()
             } else {
                 List(filteredExpenses.isEmpty ? expenses : filteredExpenses) { expense in
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(expense.title)
-                                .font(.headline)
-                            Spacer()
-                            Text(String(format: "%.2f", expense.amount))
-                                .font(.headline)
+                    NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
+                        if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
+                            expenses[index] = updatedExpense
                         }
-                        HStack {
-                            if let pseudonym = expense.creator_pseudonym {
-                                Text("Paid by \(pseudonym)")
-                                    .font(.subheadline)
-                            } else {
-                                Text("Paid by Unknown")
+                    })) {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(expense.title)
+                                    .font(.headline)
+                                Spacer()
+                                Text(String(format: "%.2f", expense.amount))
+                                    .font(.headline)
+                            }
+                            HStack {
+                                if let pseudonym = expense.creator_pseudonym {
+                                    Text("Paid by \(pseudonym)")
+                                        .font(.subheadline)
+                                } else {
+                                    Text("Paid by Unknown")
+                                        .font(.subheadline)
+                                }
+                                Spacer()
+                                Text(formatDate(expense.date))
                                     .font(.subheadline)
                             }
-                            Spacer()
-                            Text(formatDate(expense.date))
-                                .font(.subheadline)
                         }
                     }
                 }
