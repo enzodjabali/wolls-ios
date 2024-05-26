@@ -33,34 +33,37 @@ struct ExpensesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(filteredExpenses.isEmpty ? expenses : filteredExpenses) { expense in
-                    NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
-                        if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
-                            expenses[index] = updatedExpense
-                        }
-                    })) {
-                        VStack(alignment: .leading) {
-                            HStack {
-                                Text(expense.title)
-                                    .font(.headline)
-                                Spacer()
-                                Text(String(format: "%.2f", expense.amount))
-                                    .font(.headline)
+                List {
+                    ForEach(filteredExpenses.isEmpty ? expenses : filteredExpenses, id: \.id) { expense in
+                        NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
+                            if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
+                                expenses[index] = updatedExpense
                             }
-                            HStack {
-                                if let pseudonym = expense.creator_pseudonym {
-                                    Text("Paid by \(pseudonym)")
-                                        .font(.subheadline)
-                                } else {
-                                    Text("Paid by Unknown")
+                        })) {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Text(expense.title)
+                                        .font(.headline)
+                                    Spacer()
+                                    Text(String(format: "%.2f", expense.amount))
+                                        .font(.headline)
+                                }
+                                HStack {
+                                    if let pseudonym = expense.creator_pseudonym {
+                                        Text("Paid by \(pseudonym)")
+                                            .font(.subheadline)
+                                    } else {
+                                        Text("Paid by Unknown")
+                                            .font(.subheadline)
+                                    }
+                                    Spacer()
+                                    Text(formatDate(expense.date))
                                         .font(.subheadline)
                                 }
-                                Spacer()
-                                Text(formatDate(expense.date))
-                                    .font(.subheadline)
                             }
                         }
                     }
+                    .onDelete(perform: deleteExpense)
                 }
             }
         }
@@ -104,6 +107,31 @@ struct ExpensesView: View {
             filteredExpenses = expenses
         } else {
             filteredExpenses = expenses.filter { $0.title.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+
+    func deleteExpense(at offsets: IndexSet) {
+        guard let expenseIndex = offsets.first else { return }
+        let expenseId = filteredExpenses.isEmpty ? expenses[expenseIndex].id : filteredExpenses[expenseIndex].id
+
+        // Perform the delete API call
+        ExpenseController.shared.deleteExpense(expenseId: expenseId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Remove the expense from the local array
+                    if filteredExpenses.isEmpty {
+                        expenses.remove(at: expenseIndex)
+                    } else {
+                        if let index = expenses.firstIndex(where: { $0.id == expenseId }) {
+                            expenses.remove(at: index)
+                        }
+                    }
+                case .failure(let error):
+                    // Handle error
+                    print("Error deleting expense: \(error)")
+                }
+            }
         }
     }
 }
