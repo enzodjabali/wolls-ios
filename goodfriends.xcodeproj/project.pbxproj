@@ -41,6 +41,7 @@
 		C60EA1712C011EB600C5E23F /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1702C011EB600C5E23F /* AddExpenseView.swift */; };
 		C60EA1732C0162A000C5E23F /* InvitationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1722C0162A000C5E23F /* InvitationsView.swift */; };
 		C60EA1752C02216E00C5E23F /* GroupMembershipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */; };
+		C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1762C02A6C200C5E23F /* EditGroupView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +99,7 @@
 		C60EA1702C011EB600C5E23F /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
 		C60EA1722C0162A000C5E23F /* InvitationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitationsView.swift; sourceTree = "<group>"; };
 		C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembershipController.swift; sourceTree = "<group>"; };
+		C60EA1762C02A6C200C5E23F /* EditGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,6 +244,7 @@
 				C60EA1532C00D24100C5E23F /* GroupBoxView.swift */,
 				C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */,
 				C60EA1722C0162A000C5E23F /* InvitationsView.swift */,
+				C60EA1762C02A6C200C5E23F /* EditGroupView.swift */,
 			);
 			path = GroupViews;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
 				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
+				C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */,
 				C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
