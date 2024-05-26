@@ -99,14 +99,18 @@ struct EditExpenseView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
-                            HStack {
-                                Button("Share") {
-                                    shareAttachment()
+                            Button(action: shareAttachment) {
+                                HStack {
+                                    Image(systemName: "square.and.arrow.up")
+                                    Text("Share")
                                 }
+                                .foregroundColor(.blue)
                             }
-                            HStack {
-                                Button("Remove") {
-                                    removeAttachment()
+
+                            Button(action: removeAttachment) {
+                                HStack {
+                                    Image(systemName: "minus.circle")
+                                    Text("Remove")
                                 }
                                 .foregroundColor(.red)
                             }
@@ -114,14 +118,18 @@ struct EditExpenseView: View {
                             if let fileName = fileName {
                                 Text("Selected file: \(fileName)")
                             }
-                            HStack {
-                                Button("Share") {
-                                    shareAttachment()
+                            Button(action: shareAttachment) {
+                                HStack {
+                                    Image(systemName: "square.and.arrow.up")
+                                    Text("Share")
                                 }
+                                .foregroundColor(.blue)
                             }
-                            HStack {
-                                Button("Remove") {
-                                    removeAttachment()
+
+                            Button(action: removeAttachment) {
+                                HStack {
+                                    Image(systemName: "minus.circle")
+                                    Text("Remove")
                                 }
                                 .foregroundColor(.red)
                             }
