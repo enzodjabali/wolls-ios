@@ -118,9 +118,9 @@ struct EditExpenseView: View {
                 updateExpense()
             })
             .onAppear {
-                fetchExpenseDetails()
                 fetchGroupMembers()
                 fetchCurrentUser()
+                fetchExpenseDetails()
             }
             .actionSheet(isPresented: $showActionSheet) {
                 ActionSheet(title: Text("Add Attachment"), buttons: [
@@ -160,24 +160,22 @@ struct EditExpenseView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let expense):
-                    // Populate the UI with fetched expense details
                     self.title = expense.title
                     self.amountString = String(expense.amount)
                     self.selectedCategory = expense.category
                     self.isRefunded = expense.isRefunded
-                    self.selectedMembers = self.members.filter { expense.refund_recipients.contains($0.id) }
-                    
+
                     if let attachment = expense.attachment {
                         self.fileName = attachment.fileName
                         self.base64FileString = attachment.content
                     }
+
+                    // Set selectedMembers based on refund_recipients
+                    self.selectedMembers = self.members.filter { expense.refund_recipients.contains($0.id) }
                     
-                    // Handle recipients if needed
                 case .failure(let error):
-                    // Handle error
                     self.createError = error.localizedDescription
                 }
-                // Set isLoading to false to indicate that loading is finished
                 self.isLoading = false
             }
         }
@@ -189,6 +187,7 @@ struct EditExpenseView: View {
                 switch result {
                 case .success(let users):
                     self.members = users
+                    self.fetchExpenseDetails() // Fetch expense details after members have been fetched
                 case .failure(let error):
                     self.createError = error.localizedDescription
                 }
@@ -255,5 +254,3 @@ struct EditExpenseView: View {
         }
     }
 }
-
-               
