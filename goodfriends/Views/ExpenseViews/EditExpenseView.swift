@@ -83,7 +83,7 @@ struct EditExpenseView: View {
                     }
                     
                     Section {
-                        Button("Add Attachment") {
+                        Button("Add a receipt") {
                             self.showActionSheet = true
                         }
                         if let selectedImage = selectedImage {
@@ -92,9 +92,6 @@ struct EditExpenseView: View {
                                 .scaledToFit()
                                 .frame(height: 200)
                         }
-                        if let fileName = fileName {
-                            Text("Selected file: \(fileName)")
-                        }
                         if let base64FileString = base64FileString,
                            let imageData = Data(base64Encoded: base64FileString),
                            let uiImage = UIImage(data: imageData) {
@@ -102,9 +99,35 @@ struct EditExpenseView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
+                            HStack {
+                                Button("Share") {
+                                    shareAttachment()
+                                }
+                            }
+                            HStack {
+                                Button("Remove") {
+                                    removeAttachment()
+                                }
+                                .foregroundColor(.red)
+                            }
+                        } else {
+                            if let fileName = fileName {
+                                Text("Selected file: \(fileName)")
+                            }
+                            HStack {
+                                Button("Share") {
+                                    shareAttachment()
+                                }
+                            }
+                            HStack {
+                                Button("Remove") {
+                                    removeAttachment()
+                                }
+                                .foregroundColor(.red)
+                            }
                         }
                     }
-                    
+                
                     if let error = createError {
                         Text(error)
                             .foregroundColor(.red)
@@ -252,5 +275,21 @@ struct EditExpenseView: View {
                 }
             }
         }
+    }
+    
+    func shareAttachment() {
+        guard let base64FileString = base64FileString else {
+            return
+        }
+
+        let imageData = Data(base64Encoded: base64FileString)
+        let activityViewController = UIActivityViewController(activityItems: [imageData!], applicationActivities: nil)
+
+        UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
+    }
+    
+    func removeAttachment() {
+        base64FileString = nil
+        fileName = nil
     }
 }
