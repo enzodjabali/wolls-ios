@@ -111,7 +111,7 @@ struct EditExpenseView: View {
                                     .frame(height: 200)
                             } else {
                                 if let fileName = fileName {
-                                    Text("Selected file: \(fileName)")
+                                    Text("\(fileName)")
                                 }
                             }
                             
