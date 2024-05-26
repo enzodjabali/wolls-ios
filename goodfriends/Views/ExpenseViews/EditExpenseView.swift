@@ -83,22 +83,40 @@ struct EditExpenseView: View {
                     }
                     
                     Section {
-                        Button("Add a receipt") {
-                            self.showActionSheet = true
-                        }
                         if let selectedImage = selectedImage {
                             Image(uiImage: selectedImage)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 200)
-                        }
-                        if let base64FileString = base64FileString,
-                           let imageData = Data(base64Encoded: base64FileString),
-                           let uiImage = UIImage(data: imageData) {
-                            Image(uiImage: uiImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
+                            
+                            Button(action: shareAttachment) {
+                                HStack {
+                                    Image(systemName: "square.and.arrow.up")
+                                    Text("Share")
+                                }
+                                .foregroundColor(.blue)
+                            }
+
+                            Button(action: removeAttachment) {
+                                HStack {
+                                    Image(systemName: "minus.circle")
+                                    Text("Remove")
+                                }
+                                .foregroundColor(.red)
+                            }
+                        } else if let base64FileString = base64FileString {
+                            if let imageData = Data(base64Encoded: base64FileString),
+                               let uiImage = UIImage(data: imageData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 200)
+                            } else {
+                                if let fileName = fileName {
+                                    Text("Selected file: \(fileName)")
+                                }
+                            }
+                            
                             Button(action: shareAttachment) {
                                 HStack {
                                     Image(systemName: "square.and.arrow.up")
@@ -115,23 +133,8 @@ struct EditExpenseView: View {
                                 .foregroundColor(.red)
                             }
                         } else {
-                            if let fileName = fileName {
-                                Text("Selected file: \(fileName)")
-                            }
-                            Button(action: shareAttachment) {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.up")
-                                    Text("Share")
-                                }
-                                .foregroundColor(.blue)
-                            }
-
-                            Button(action: removeAttachment) {
-                                HStack {
-                                    Image(systemName: "minus.circle")
-                                    Text("Remove")
-                                }
-                                .foregroundColor(.red)
+                            Button("Add a receipt") {
+                                self.showActionSheet = true
                             }
                         }
                     }
