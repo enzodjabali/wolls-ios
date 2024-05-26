@@ -297,7 +297,19 @@ struct EditExpenseView: View {
     }
     
     func removeAttachment() {
-        base64FileString = nil
-        fileName = nil
+        ExpenseController.shared.deleteExpenseAttachment(expenseId: expenseId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Reset the attachment related states
+                    self.selectedImage = nil
+                    self.base64ImageString = nil
+                    self.base64FileString = nil
+                    self.fileName = nil
+                case .failure(let error):
+                    createError = error.localizedDescription
+                }
+            }
+        }
     }
 }
