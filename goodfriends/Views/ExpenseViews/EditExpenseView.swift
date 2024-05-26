@@ -27,6 +27,8 @@ struct EditExpenseView: View {
     @State private var isLoading = true
     @State private var isRefunded = false
     
+    @State private var isCreator = false
+    
     let categories = ["No category", "Accommodation", "Entertainment", "Groceries", "Restaurants & Bars", "Shopping", "Transport", "Healthcare", "Insurance"]
     
     var onUpdate: (Expense) -> Void
@@ -40,14 +42,17 @@ struct EditExpenseView: View {
                 } else {
                     Section(header: Text("Expense Details")) {
                         TextField("Title", text: $title)
+                            .disabled(!isCreator)
                         Picker("Category", selection: $selectedCategory) {
                             ForEach(categories, id: \.self) {
                                 Text($0)
                             }
                         }
+                        .disabled(!isCreator)
                         HStack {
                             TextField("Amount", text: $amountString)
                                 .keyboardType(.decimalPad)
+                                .disabled(!isCreator)
                             Text("€")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
@@ -70,10 +75,12 @@ struct EditExpenseView: View {
                                 }
                                 .contentShape(Rectangle())
                                 .onTapGesture {
-                                    if let index = selectedMembers.firstIndex(where: { $0.id == member.id }) {
-                                        selectedMembers.remove(at: index)
-                                    } else {
-                                        selectedMembers.append(member)
+                                    if isCreator {
+                                        if let index = selectedMembers.firstIndex(where: { $0.id == member.id }) {
+                                            selectedMembers.remove(at: index)
+                                        } else {
+                                            selectedMembers.append(member)
+                                        }
                                     }
                                 }
                             }
@@ -87,20 +94,22 @@ struct EditExpenseView: View {
                                 .scaledToFit()
                                 .frame(height: 200)
                             
-                            Button(action: shareAttachment) {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.up")
-                                    Text("Share")
+                            if isCreator {
+                                Button(action: shareAttachment) {
+                                    HStack {
+                                        Image(systemName: "square.and.arrow.up")
+                                        Text("Share")
+                                    }
+                                    .foregroundColor(.blue)
                                 }
-                                .foregroundColor(.blue)
-                            }
 
-                            Button(action: removeAttachment) {
-                                HStack {
-                                    Image(systemName: "minus.circle")
-                                    Text("Remove")
+                                Button(action: removeAttachment) {
+                                    HStack {
+                                        Image(systemName: "minus.circle")
+                                        Text("Remove")
+                                    }
+                                    .foregroundColor(.red)
                                 }
-                                .foregroundColor(.red)
                             }
                         } else if let base64FileString = base64FileString {
                             if let imageData = Data(base64Encoded: base64FileString),
@@ -115,30 +124,35 @@ struct EditExpenseView: View {
                                 }
                             }
                             
-                            Button(action: shareAttachment) {
-                                HStack {
-                                    Image(systemName: "square.and.arrow.up")
-                                    Text("Share")
+                            if isCreator {
+                                Button(action: shareAttachment) {
+                                    HStack {
+                                        Image(systemName: "square.and.arrow.up")
+                                        Text("Share")
+                                    }
+                                    .foregroundColor(.blue)
                                 }
-                                .foregroundColor(.blue)
-                            }
 
-                            Button(action: removeAttachment) {
-                                HStack {
-                                    Image(systemName: "minus.circle")
-                                    Text("Remove")
+                                Button(action: removeAttachment) {
+                                    HStack {
+                                        Image(systemName: "minus.circle")
+                                        Text("Remove")
+                                    }
+                                    .foregroundColor(.red)
                                 }
-                                .foregroundColor(.red)
                             }
                         } else {
-                            Button("Add a receipt") {
-                                self.showActionSheet = true
+                            if isCreator {
+                                Button("Add a receipt") {
+                                    self.showActionSheet = true
+                                }
                             }
                         }
                     }
                     
                     Section {
                         Toggle("Refunded", isOn: $isRefunded)
+                            .disabled(!isCreator)
                     }
                 
                     if let error = createError {
@@ -178,8 +192,11 @@ struct EditExpenseView: View {
         .navigationTitle("Expense")
         .navigationBarItems(
             trailing: Button("Save") {
-                updateExpense()
+                if isCreator {
+                    updateExpense()
+                }
             }
+            .disabled(!isCreator)
         )
     }
     
@@ -208,6 +225,11 @@ struct EditExpenseView: View {
 
                     // Set selectedMembers based on refund_recipients
                     self.selectedMembers = self.members.filter { expense.refund_recipients.contains($0.id) }
+                    
+                    // Check if the current user is the creator of the expense
+                    if let currentUserId = UserSession.shared.userId {
+                        self.isCreator = (currentUserId == expense.creator_id)
+                    }
                     
                 case .failure(let error):
                     self.createError = error.localizedDescription
@@ -269,8 +291,9 @@ struct EditExpenseView: View {
             "title": title,
             "amount": amount,
             "category": selectedCategory,
-            "refund_recipients": refundRecipientIds,
-            "isRefunded": isRefunded
+            "refund_recipients":
+                refundRecipientIds,
+                "isRefunded": isRefunded
         ]
 
         if let attachment = attachment {
@@ -289,7 +312,7 @@ struct EditExpenseView: View {
             }
         }
     }
-    
+        
     func shareAttachment() {
         guard let base64FileString = base64FileString else {
             return
@@ -300,7 +323,7 @@ struct EditExpenseView: View {
 
         UIApplication.shared.windows.first?.rootViewController?.present(activityViewController, animated: true, completion: nil)
     }
-    
+        
     func removeAttachment() {
         ExpenseController.shared.deleteExpenseAttachment(expenseId: expenseId) { result in
             DispatchQueue.main.async {
