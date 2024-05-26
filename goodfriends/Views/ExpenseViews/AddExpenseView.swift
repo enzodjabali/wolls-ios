@@ -23,16 +23,18 @@ struct AddExpenseView: View {
                     TextField("Category", text: $category)
                 }
                 
-                Section(header: Text("Refund Recipients")) {
-                    TextField("Search", text: $searchText)
+                Section(header: Text("Recipients")) {
+                    TextField("Search users by username", text: $searchText)
                     
                     List {
                         ForEach(filteredMembers) { member in
                             HStack {
                                 Text(member.pseudonym)
+                                    .foregroundColor(.blue) // Apply blue color here
                                 Spacer()
                                 if selectedMembers.contains(where: { $0.id == member.id }) {
                                     Image(systemName: "checkmark")
+                                        .foregroundColor(.blue) // Apply blue color here
                                 }
                             }
                             .contentShape(Rectangle())
