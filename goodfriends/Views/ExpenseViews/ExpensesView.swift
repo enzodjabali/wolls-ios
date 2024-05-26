@@ -9,6 +9,18 @@ struct ExpensesView: View {
     @State private var searchText: String = ""
     @State private var showAddExpenseSheet = false
     @State private var selectedExpense: Expense?
+    
+    private let categoryColors: [String: Color] = [
+        "No category": Color.gray,
+        "Accommodation": Color.brown,
+        "Entertainment": Color.orange,
+        "Groceries": Color.green,
+        "Restaurants & Bars": Color.red,
+        "Shopping": Color.purple,
+        "Transport": Color.yellow,
+        "Healthcare": Color.pink,
+        "Insurance": Color.black
+    ]
 
     private func formatDate(_ dateString: String) -> String {
         let dateFormatter = DateFormatter()
@@ -42,12 +54,22 @@ struct ExpensesView: View {
                         })) {
                             VStack(alignment: .leading) {
                                 HStack {
+                                    // Badge with category color
+                                    let badgeColor = categoryColors[expense.category] ?? Color.gray
+                                    Text("•")
+                                        .font(.system(size: 40)) // Adjust the font size here
+                                        .foregroundColor(badgeColor)
+                                    
                                     Text(expense.title)
                                         .font(.headline)
+                                        .padding(.leading, 5) // Adjust the padding here if needed
+                                    
                                     Spacer()
-                                    Text(String(format: "%.2f", expense.amount))
+    
+                                    Text("\(String(format: "%.2f", expense.amount)) €")
                                         .font(.headline)
                                 }
+                                
                                 HStack {
                                     if let pseudonym = expense.creator_pseudonym {
                                         Text("Paid by \(pseudonym)")
