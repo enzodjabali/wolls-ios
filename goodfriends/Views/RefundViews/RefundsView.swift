@@ -71,8 +71,6 @@ struct RefundsView: View {
 
                                         Spacer()
                                     }
-                                    Text("Category: \(refund.expenseCategory)")
-                                        .font(.subheadline)
                                     ForEach(refund.refundRecipients) { recipient in
                                         HStack {
                                             Text("\(recipient.recipientPseudonym) owes")
