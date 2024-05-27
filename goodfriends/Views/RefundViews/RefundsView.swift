@@ -9,6 +9,18 @@ struct RefundsView: View {
 
     let groupId: String
 
+    private let categoryColors: [String: Color] = [
+        "No category": Color.gray,
+        "Accommodation": Color.brown,
+        "Entertainment": Color.orange,
+        "Groceries": Color.green,
+        "Restaurants & Bars": Color.red,
+        "Shopping": Color.purple,
+        "Transport": Color.yellow,
+        "Healthcare": Color.pink,
+        "Insurance": Color.black
+    ]
+
     var body: some View {
         NavigationView {
             VStack {
@@ -46,8 +58,19 @@ struct RefundsView: View {
                         } else {
                             List(refundsDetailed) { refund in
                                 VStack(alignment: .leading) {
-                                    Text(refund.expenseTitle)
-                                        .font(.headline)
+                                    HStack {
+                                        // Badge with category color
+                                        let badgeColor = categoryColors[refund.expenseCategory] ?? Color.gray
+                                        Text("•")
+                                            .font(.system(size: 40)) // Adjust the font size here
+                                            .foregroundColor(badgeColor)
+
+                                        Text(refund.expenseTitle)
+                                            .font(.headline)
+                                            .padding(.leading, 5) // Adjust the padding here if needed
+
+                                        Spacer()
+                                    }
                                     Text("Category: \(refund.expenseCategory)")
                                         .font(.subheadline)
                                     ForEach(refund.refundRecipients) { recipient in
