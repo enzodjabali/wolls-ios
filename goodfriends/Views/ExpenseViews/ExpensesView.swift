@@ -35,7 +35,7 @@ struct ExpensesView: View {
 
     var body: some View {
         VStack {
-            SearchBar(text: $searchText, placeholder: "Search Expenses")
+            SearchBar(text: $searchText, placeholder: "Search")
             
             if isLoading {
                 ProgressView("Loading...")

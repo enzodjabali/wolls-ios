@@ -24,6 +24,8 @@ struct RefundsView: View {
 
     var body: some View {
         VStack {
+            SearchBar(text: $searchText, placeholder: "Search")
+            
             if isLoading {
                 ProgressView("Loading refunds...")
                     .progressViewStyle(CircularProgressViewStyle())
@@ -32,9 +34,6 @@ struct RefundsView: View {
                     .foregroundColor(.red)
                     .multilineTextAlignment(.center)
             } else {
-                SearchBar(text: $searchText, placeholder: "Search refunds")
-                    .padding([.leading, .trailing, .top])
-
                 if showSimplified {
                     if refundsSimplified.isEmpty {
                         Text("No simplified refunds to display.")
