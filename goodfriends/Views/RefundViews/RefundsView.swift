@@ -22,41 +22,43 @@ struct RefundsView: View {
     ]
 
     var body: some View {
-        NavigationView {
-            VStack {
-                if isLoading {
-                    ProgressView("Loading refunds...")
-                        .progressViewStyle(CircularProgressViewStyle())
-                } else if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                } else {
-                    if showSimplified {
-                        if refundsSimplified.isEmpty {
-                            Text("No simplified refunds to display.")
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.center)
-                        } else {
-                            List(refundsSimplified) { refund in
-                                HStack {
-                                    VStack(alignment: .leading) {
-                                        Text("\(refund.recipientPseudonym) owes \(refund.creatorPseudonym)")
-                                            .font(.headline)
-                                        Text("\(refund.refundAmount, specifier: "%.2f") €")
-                                            .font(.subheadline)
-                                    }
-                                    Spacer()
+        VStack {
+            if isLoading {
+                ProgressView("Loading refunds...")
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else if let errorMessage = errorMessage {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .multilineTextAlignment(.center)
+            } else {
+                if showSimplified {
+                    if refundsSimplified.isEmpty {
+                        Text("No simplified refunds to display.")
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                    } else {
+                        List(refundsSimplified) { refund in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text("\(refund.recipientPseudonym) owes \(refund.creatorPseudonym)")
+                                        .font(.headline)
+                                    Text("\(refund.refundAmount, specifier: "%.2f") €")
+                                        .font(.subheadline)
                                 }
+                                Spacer()
                             }
                         }
+                    }
+                } else {
+                    if refundsDetailed.isEmpty {
+                        Text("No detailed refunds to display.")
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
                     } else {
-                        if refundsDetailed.isEmpty {
-                            Text("No detailed refunds to display.")
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.center)
-                        } else {
-                            List(refundsDetailed) { refund in
+                        List(refundsDetailed) { refund in
+                            NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: refund.expenseId, onUpdate: { updatedExpense in
+                                // Handle the update
+                            })) {
                                 VStack(alignment: .leading) {
                                     HStack(spacing: 3) {
                                         // Badge with category color
@@ -74,7 +76,7 @@ struct RefundsView: View {
                                     }
                                     .padding(.bottom, -15)
                                     .padding(.top, -15)
-                                    
+
                                     ForEach(refund.refundRecipients) { recipient in
                                         HStack {
                                             Text("\(recipient.recipientPseudonym) owes")
@@ -90,15 +92,15 @@ struct RefundsView: View {
                         }
                     }
                 }
-
-                Toggle("Simplified view", isOn: $showSimplified)
-                    .padding()
-                    .onChange(of: showSimplified) { _ in
-                        loadRefunds()
-                    }
             }
-            .onAppear(perform: loadRefunds)
+
+            Toggle("Simplified view", isOn: $showSimplified)
+                .padding()
+                .onChange(of: showSimplified) { _ in
+                    loadRefunds()
+                }
         }
+        .onAppear(perform: loadRefunds)
     }
 
     private func loadRefunds() {
