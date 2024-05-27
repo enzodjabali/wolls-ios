@@ -29,7 +29,7 @@ struct RefundsView: View {
                             List(refundsSimplified) { refund in
                                 HStack {
                                     VStack(alignment: .leading) {
-                                        Text("\(refund.creatorPseudonym) owes \(refund.recipientPseudonym)")
+                                        Text("\(refund.recipientPseudonym) owes \(refund.creatorPseudonym)")
                                             .font(.headline)
                                         Text("\(refund.refundAmount, specifier: "%.2f") €")
                                             .font(.subheadline)
@@ -62,8 +62,8 @@ struct RefundsView: View {
                         }
                     }
                 }
-                
-                Toggle("Show Simplified", isOn: $showSimplified)
+
+                Toggle("Simplified view", isOn: $showSimplified)
                     .padding()
                     .onChange(of: showSimplified) { _ in
                         loadRefunds()
