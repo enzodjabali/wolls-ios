@@ -170,8 +170,8 @@ struct ExpensesView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let amounts):
-                    self.userTotalAmount = amounts.userTotalAmount / 100.0
-                    self.groupTotalAmount = amounts.groupTotalAmount / 100.0
+                    self.userTotalAmount = amounts.userTotalAmount
+                    self.groupTotalAmount = amounts.groupTotalAmount
                 case .failure(let error):
                     self.amountsError = error.localizedDescription
                 }
