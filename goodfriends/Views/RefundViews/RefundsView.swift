@@ -46,7 +46,7 @@ struct RefundsView: View {
                         } else {
                             List(refundsDetailed) { refund in
                                 VStack(alignment: .leading) {
-                                    Text("\(refund.creatorPseudonym)'s expense: \(refund.expenseTitle)")
+                                    Text(refund.expenseTitle)
                                         .font(.headline)
                                     Text("Category: \(refund.expenseCategory)")
                                         .font(.subheadline)
@@ -57,6 +57,9 @@ struct RefundsView: View {
                                             Text("\(recipient.refundAmount, specifier: "%.2f") €")
                                         }
                                     }
+                                    Text("To \(refund.creatorPseudonym)")
+                                        .font(.footnote)
+                                        .foregroundColor(.gray)
                                 }
                             }
                         }
