@@ -45,6 +45,8 @@
 		C60EA17F2C0361A500C5E23F /* EditExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA17E2C0361A500C5E23F /* EditExpenseView.swift */; };
 		C60EA1812C047D8E00C5E23F /* RefundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1802C047D8E00C5E23F /* RefundController.swift */; };
 		C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1822C047DA200C5E23F /* RefundModel.swift */; };
+		C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1842C051A3500C5E23F /* BalanceController.swift */; };
+		C60EA1872C051ADC00C5E23F /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1862C051ADC00C5E23F /* BalanceModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +108,8 @@
 		C60EA17E2C0361A500C5E23F /* EditExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExpenseView.swift; sourceTree = "<group>"; };
 		C60EA1802C047D8E00C5E23F /* RefundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundController.swift; sourceTree = "<group>"; };
 		C60EA1822C047DA200C5E23F /* RefundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundModel.swift; sourceTree = "<group>"; };
+		C60EA1842C051A3500C5E23F /* BalanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceController.swift; sourceTree = "<group>"; };
+		C60EA1862C051ADC00C5E23F /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -200,6 +204,7 @@
 				C60EA1452C00C78B00C5E23F /* UserModel.swift */,
 				C60EA1472C00C7CA00C5E23F /* ExpenseModel.swift */,
 				C60EA1822C047DA200C5E23F /* RefundModel.swift */,
+				C60EA1862C051ADC00C5E23F /* BalanceModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -212,6 +217,7 @@
 				C60EA16E2C011D9400C5E23F /* ExpenseController.swift */,
 				C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */,
 				C60EA1802C047D8E00C5E23F /* RefundController.swift */,
+				C60EA1842C051A3500C5E23F /* BalanceController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -426,6 +432,7 @@
 				C60EA1752C02216E00C5E23F /* GroupMembershipController.swift in Sources */,
 				C60EA1442C00C75900C5E23F /* GroupModel.swift in Sources */,
 				C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */,
+				C60EA1872C051ADC00C5E23F /* BalanceModel.swift in Sources */,
 				C60EA17F2C0361A500C5E23F /* EditExpenseView.swift in Sources */,
 				C60EA1732C0162A000C5E23F /* InvitationsView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
@@ -438,6 +445,7 @@
 				C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */,
 				C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
+				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,

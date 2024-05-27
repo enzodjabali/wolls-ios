@@ -47,7 +47,7 @@ struct GroupDetailsView: View {
         case 1:
             RefundsView(groupId: groupId)
         case 2:
-            BalancesView()
+            BalancesView(groupId: groupId)
         default:
             Text("Select a tab")
         }
