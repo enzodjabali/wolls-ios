@@ -53,22 +53,25 @@ struct ExpensesView: View {
                             }
                         })) {
                             VStack(alignment: .leading) {
-                                HStack {
+                                HStack(spacing: 3) {
                                     // Badge with category color
                                     let badgeColor = categoryColors[expense.category] ?? Color.gray
                                     Text("•")
                                         .font(.system(size: 40)) // Adjust the font size here
                                         .foregroundColor(badgeColor)
+                                        .padding(.bottom, 3)
                                     
                                     Text(expense.title)
                                         .font(.headline)
-                                        .padding(.leading, 5) // Adjust the padding here if needed
+                                        .padding(.leading, -3) // Adjust the padding here if needed
                                     
                                     Spacer()
     
                                     Text("\(String(format: "%.2f", expense.amount)) €")
                                         .font(.headline)
                                 }
+                                .padding(.bottom, -15)
+                                .padding(.top, -15)
                                 
                                 HStack {
                                     if let pseudonym = expense.creator_pseudonym {
