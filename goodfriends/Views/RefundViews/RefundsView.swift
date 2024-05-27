@@ -58,19 +58,23 @@ struct RefundsView: View {
                         } else {
                             List(refundsDetailed) { refund in
                                 VStack(alignment: .leading) {
-                                    HStack {
+                                    HStack(spacing: 3) {
                                         // Badge with category color
                                         let badgeColor = categoryColors[refund.expenseCategory] ?? Color.gray
                                         Text("•")
                                             .font(.system(size: 40)) // Adjust the font size here
                                             .foregroundColor(badgeColor)
+                                            .padding(.bottom, 3)
 
                                         Text(refund.expenseTitle)
                                             .font(.headline)
-                                            .padding(.leading, 5) // Adjust the padding here if needed
+                                            .padding(.leading, -3) // Adjust the padding here if needed
 
                                         Spacer()
                                     }
+                                    .padding(.bottom, -15)
+                                    .padding(.top, -15)
+                                    
                                     ForEach(refund.refundRecipients) { recipient in
                                         HStack {
                                             Text("\(recipient.recipientPseudonym) owes")
