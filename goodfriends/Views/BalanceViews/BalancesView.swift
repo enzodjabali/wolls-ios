@@ -18,9 +18,18 @@ struct BalancesView: View {
             } else {
                 List(balances) { balance in
                     VStack(alignment: .leading) {
-                        Text(balance.username)
-                            .font(.headline)
-                            .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
+                        if balance.amount < 0 {
+                            Text(balance.username)
+                                .font(.headline)
+                                .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
+                        } else {
+                            HStack {
+                                Spacer()
+                                Text(balance.username)
+                                    .font(.headline)
+                                    .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
+                            }
+                        }
                         
                         HStack {
                             if balance.amount < 0 {
@@ -35,6 +44,7 @@ struct BalancesView: View {
                                     )
                             }
                             if balance.amount > 0 {
+                                Spacer()
                                 Rectangle()
                                     .fill(Color.green.opacity(0.8)) // Set opacity here
                                     .cornerRadius(5) // Set corner radius here
