@@ -104,7 +104,8 @@ struct RefundsView: View {
             }
 
             Toggle("Simplified view", isOn: $showSimplified)
-                .padding()
+                .padding(.horizontal, 30)
+                .padding(.top, 5)
                 .onChange(of: showSimplified) { _ in
                     loadRefunds()
                 }
