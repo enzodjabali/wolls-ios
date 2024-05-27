@@ -225,4 +225,40 @@ class ExpenseController {
             }
         }.resume()
     }
+    
+    func fetchTotalAmounts(groupId: String, completion: @escaping (Result<(userTotalAmount: Double, groupTotalAmount: Double), Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/expenses/\(groupId)/amount") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Double],
+                   let userTotalAmount = json["userTotalAmount"],
+                   let groupTotalAmount = json["groupTotalAmount"] {
+                    completion(.success((userTotalAmount, groupTotalAmount)))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
 }

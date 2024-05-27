@@ -9,7 +9,10 @@ struct ExpensesView: View {
     @State private var searchText: String = ""
     @State private var showAddExpenseSheet = false
     @State private var selectedExpense: Expense?
-    
+    @State private var userTotalAmount: Double = 0
+    @State private var groupTotalAmount: Double = 0
+    @State private var amountsError: String?
+
     private let categoryColors: [String: Color] = [
         "No category": Color.gray,
         "Accommodation": Color.brown,
@@ -93,10 +96,40 @@ struct ExpensesView: View {
                 .refreshable {
                     self.fetchExpenses()
                 }
+                
+                if let amountsError = amountsError {
+                    Text(amountsError)
+                        .foregroundColor(.red)
+                        .padding()
+                } else {
+                    HStack {
+                        VStack {
+                            Text("My total".uppercased())
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                            Text("\(String(format: "%.2f", userTotalAmount)) €")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+
+                        VStack {
+                            Text("Group total".uppercased())
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                            Text("\(String(format: "%.2f", groupTotalAmount)) €")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding()
+                    }
+                    .padding(.vertical, -10)
+                }
             }
         }
         .onAppear {
             fetchExpenses()
+            fetchTotalAmounts()
         }
         .onChange(of: searchText) { value in
             filterExpenses()
@@ -111,6 +144,7 @@ struct ExpensesView: View {
             AddExpenseView(groupId: groupId) { newExpense in
                 expenses.append(newExpense)
                 fetchExpenses()
+                fetchTotalAmounts()
             }
         }
     }
@@ -126,6 +160,20 @@ struct ExpensesView: View {
                 case .failure(let error):
                     self.fetchError = error.localizedDescription
                     self.isLoading = false
+                }
+            }
+        }
+    }
+
+    func fetchTotalAmounts() {
+        ExpenseController.shared.fetchTotalAmounts(groupId: groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let amounts):
+                    self.userTotalAmount = amounts.userTotalAmount / 100.0
+                    self.groupTotalAmount = amounts.groupTotalAmount / 100.0
+                case .failure(let error):
+                    self.amountsError = error.localizedDescription
                 }
             }
         }
@@ -156,6 +204,7 @@ struct ExpensesView: View {
                             expenses.remove(at: index)
                         }
                     }
+                    fetchTotalAmounts()
                 case .failure(let error):
                     // Handle error
                     print("Error deleting expense: \(error)")
