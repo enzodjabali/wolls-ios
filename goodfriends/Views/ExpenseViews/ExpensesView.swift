@@ -95,6 +95,7 @@ struct ExpensesView: View {
                 }
                 .refreshable {
                     self.fetchExpenses()
+                    self.fetchTotalAmounts()
                 }
                 
                 if let amountsError = amountsError {
