@@ -9,7 +9,10 @@ struct ExpensesView: View {
     @State private var searchText: String = ""
     @State private var showAddExpenseSheet = false
     @State private var selectedExpense: Expense?
-    
+    @State private var userTotalAmount: Double = 0
+    @State private var groupTotalAmount: Double = 0
+    @State private var amountsError: String?
+
     private let categoryColors: [String: Color] = [
         "No category": Color.gray,
         "Accommodation": Color.brown,
@@ -35,7 +38,7 @@ struct ExpensesView: View {
 
     var body: some View {
         VStack {
-            SearchBar(text: $searchText, placeholder: "Search Expenses")
+            SearchBar(text: $searchText, placeholder: "Search")
             
             if isLoading {
                 ProgressView("Loading...")
@@ -53,22 +56,25 @@ struct ExpensesView: View {
                             }
                         })) {
                             VStack(alignment: .leading) {
-                                HStack {
+                                HStack(spacing: 3) {
                                     // Badge with category color
                                     let badgeColor = categoryColors[expense.category] ?? Color.gray
                                     Text("•")
                                         .font(.system(size: 40)) // Adjust the font size here
                                         .foregroundColor(badgeColor)
+                                        .padding(.bottom, 3)
                                     
                                     Text(expense.title)
                                         .font(.headline)
-                                        .padding(.leading, 5) // Adjust the padding here if needed
+                                        .padding(.leading, -3) // Adjust the padding here if needed
                                     
                                     Spacer()
     
                                     Text("\(String(format: "%.2f", expense.amount)) €")
                                         .font(.headline)
                                 }
+                                .padding(.bottom, -15)
+                                .padding(.top, -15)
                                 
                                 HStack {
                                     if let pseudonym = expense.creator_pseudonym {
@@ -89,11 +95,42 @@ struct ExpensesView: View {
                 }
                 .refreshable {
                     self.fetchExpenses()
+                    self.fetchTotalAmounts()
+                }
+                
+                if let amountsError = amountsError {
+                    Text(amountsError)
+                        .foregroundColor(.red)
+                        .padding()
+                } else {
+                    HStack {
+                        VStack {
+                            Text("My total".uppercased())
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                            Text("\(String(format: "%.2f", userTotalAmount)) €")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+
+                        VStack {
+                            Text("Group total".uppercased())
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                            Text("\(String(format: "%.2f", groupTotalAmount)) €")
+                                .font(.subheadline)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .padding()
+                    }
+                    .padding(.vertical, -10)
                 }
             }
         }
         .onAppear {
             fetchExpenses()
+            fetchTotalAmounts()
         }
         .onChange(of: searchText) { value in
             filterExpenses()
@@ -108,6 +145,7 @@ struct ExpensesView: View {
             AddExpenseView(groupId: groupId) { newExpense in
                 expenses.append(newExpense)
                 fetchExpenses()
+                fetchTotalAmounts()
             }
         }
     }
@@ -123,6 +161,20 @@ struct ExpensesView: View {
                 case .failure(let error):
                     self.fetchError = error.localizedDescription
                     self.isLoading = false
+                }
+            }
+        }
+    }
+
+    func fetchTotalAmounts() {
+        ExpenseController.shared.fetchTotalAmounts(groupId: groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let amounts):
+                    self.userTotalAmount = amounts.userTotalAmount
+                    self.groupTotalAmount = amounts.groupTotalAmount
+                case .failure(let error):
+                    self.amountsError = error.localizedDescription
                 }
             }
         }
@@ -153,6 +205,7 @@ struct ExpensesView: View {
                             expenses.remove(at: index)
                         }
                     }
+                    fetchTotalAmounts()
                 case .failure(let error):
                     // Handle error
                     print("Error deleting expense: \(error)")
