@@ -6,6 +6,7 @@ struct RefundsView: View {
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var showSimplified = true
+    @State private var searchText = ""
 
     let groupId: String
 
@@ -31,18 +32,21 @@ struct RefundsView: View {
                     .foregroundColor(.red)
                     .multilineTextAlignment(.center)
             } else {
+                SearchBar(text: $searchText, placeholder: "Search refunds")
+                    .padding([.leading, .trailing, .top])
+
                 if showSimplified {
                     if refundsSimplified.isEmpty {
                         Text("No simplified refunds to display.")
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
                     } else {
-                        List(refundsSimplified) { refund in
+                        List(filteredSimplifiedRefunds) { refund in
                             HStack {
                                 VStack(alignment: .leading) {
                                     Text("\(refund.recipientPseudonym) owes \(refund.creatorPseudonym)")
                                         .font(.headline)
-                                    Text("\(refund.refundAmount, specifier: "%.2f") €")
+                                    Text(String(format: "%.2f €", refund.refundAmount))
                                         .font(.subheadline)
                                 }
                                 Spacer()
@@ -55,7 +59,7 @@ struct RefundsView: View {
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
                     } else {
-                        List(refundsDetailed) { refund in
+                        List(filteredDetailedRefunds) { refund in
                             NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: refund.expenseId, onUpdate: { updatedExpense in
                                 // Handle the update
                             })) {
@@ -81,7 +85,7 @@ struct RefundsView: View {
                                         HStack {
                                             Text("\(recipient.recipientPseudonym) owes")
                                             Spacer()
-                                            Text("\(recipient.refundAmount, specifier: "%.2f") €")
+                                            Text(String(format: "%.2f €", recipient.refundAmount))
                                         }
                                     }
                                     Text("To \(refund.creatorPseudonym)")
@@ -101,6 +105,33 @@ struct RefundsView: View {
                 }
         }
         .onAppear(perform: loadRefunds)
+    }
+
+    private var filteredSimplifiedRefunds: [RefundSimplified] {
+        if searchText.isEmpty {
+            return refundsSimplified
+        } else {
+            return refundsSimplified.filter { refund in
+                refund.recipientPseudonym.lowercased().contains(searchText.lowercased()) ||
+                refund.creatorPseudonym.lowercased().contains(searchText.lowercased()) ||
+                String(format: "%.2f", refund.refundAmount).contains(searchText)
+            }
+        }
+    }
+
+    private var filteredDetailedRefunds: [RefundDetailed] {
+        if searchText.isEmpty {
+            return refundsDetailed
+        } else {
+            return refundsDetailed.filter { refund in
+                refund.expenseTitle.lowercased().contains(searchText.lowercased()) ||
+                refund.creatorPseudonym.lowercased().contains(searchText.lowercased()) ||
+                refund.refundRecipients.contains(where: { recipient in
+                    recipient.recipientPseudonym.lowercased().contains(searchText.lowercased()) ||
+                    String(format: "%.2f", recipient.refundAmount).contains(searchText)
+                })
+            }
+        }
     }
 
     private func loadRefunds() {
