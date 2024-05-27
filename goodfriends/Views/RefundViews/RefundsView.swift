@@ -51,6 +51,9 @@ struct RefundsView: View {
                                 Spacer()
                             }
                         }
+                        .refreshable {
+                            loadRefunds()
+                        }
                     }
                 } else {
                     if refundsDetailed.isEmpty {
@@ -92,6 +95,9 @@ struct RefundsView: View {
                                         .foregroundColor(.gray)
                                 }
                             }
+                        }
+                        .refreshable {
+                            loadRefunds()
                         }
                     }
                 }
