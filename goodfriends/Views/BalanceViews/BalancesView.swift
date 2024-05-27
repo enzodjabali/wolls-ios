@@ -17,31 +17,36 @@ struct BalancesView: View {
                     .padding()
             } else {
                 List(balances) { balance in
-                    HStack {
+                    VStack(alignment: .leading) {
                         Text(balance.username)
                             .font(.headline)
-                        
-                        Spacer()
+                            .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
                         
                         HStack {
                             if balance.amount < 0 {
                                 Rectangle()
-                                    .fill(Color.red)
-                                    .frame(width: CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth, height: 20)
-                            } else {
-                                Spacer().frame(width: maxBarWidth)
+                                    .fill(Color.red.opacity(0.8)) // Set opacity here
+                                    .cornerRadius(5) // Set corner radius here
+                                    .frame(width: CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                    .overlay(
+                                        Text("\(String(format: "%.2f", balance.amount)) €")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white)
+                                    )
                             }
-                            
                             if balance.amount > 0 {
                                 Rectangle()
-                                    .fill(Color.green)
-                                    .frame(width: CGFloat(balance.amount / maxBalance) * maxBarWidth, height: 20)
+                                    .fill(Color.green.opacity(0.8)) // Set opacity here
+                                    .cornerRadius(5) // Set corner radius here
+                                    .frame(width: CGFloat(balance.amount / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                    .overlay(
+                                        Text("\(String(format: "%.2f", balance.amount)) €")
+                                            .font(.subheadline)
+                                            .foregroundColor(.white)
+                                    )
+                                    .padding(.vertical, 5)
                             }
                         }
-                        
-                        Text("\(String(format: "%.2f", balance.amount)) €")
-                            .font(.subheadline)
-                            .padding(.leading, 8)
                     }
                 }
             }
