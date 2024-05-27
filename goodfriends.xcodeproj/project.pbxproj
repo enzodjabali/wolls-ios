@@ -43,6 +43,8 @@
 		C60EA1752C02216E00C5E23F /* GroupMembershipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */; };
 		C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1762C02A6C200C5E23F /* EditGroupView.swift */; };
 		C60EA17F2C0361A500C5E23F /* EditExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA17E2C0361A500C5E23F /* EditExpenseView.swift */; };
+		C60EA1812C047D8E00C5E23F /* RefundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1802C047D8E00C5E23F /* RefundController.swift */; };
+		C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1822C047DA200C5E23F /* RefundModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,8 @@
 		C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembershipController.swift; sourceTree = "<group>"; };
 		C60EA1762C02A6C200C5E23F /* EditGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGroupView.swift; sourceTree = "<group>"; };
 		C60EA17E2C0361A500C5E23F /* EditExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExpenseView.swift; sourceTree = "<group>"; };
+		C60EA1802C047D8E00C5E23F /* RefundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundController.swift; sourceTree = "<group>"; };
+		C60EA1822C047DA200C5E23F /* RefundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -195,6 +199,7 @@
 				C60EA1432C00C75900C5E23F /* GroupModel.swift */,
 				C60EA1452C00C78B00C5E23F /* UserModel.swift */,
 				C60EA1472C00C7CA00C5E23F /* ExpenseModel.swift */,
+				C60EA1822C047DA200C5E23F /* RefundModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -206,6 +211,7 @@
 				C60EA14D2C00CDAE00C5E23F /* GroupController.swift */,
 				C60EA16E2C011D9400C5E23F /* ExpenseController.swift */,
 				C60EA1742C02216E00C5E23F /* GroupMembershipController.swift */,
+				C60EA1802C047D8E00C5E23F /* RefundController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -441,11 +447,13 @@
 				C60EA1712C011EB600C5E23F /* AddExpenseView.swift in Sources */,
 				C60EA16D2C011AFF00C5E23F /* EditPasswordView.swift in Sources */,
 				C60EA1412BFFB9F500C5E23F /* SidebarView.swift in Sources */,
+				C60EA1812C047D8E00C5E23F /* RefundController.swift in Sources */,
 				C60EA1522C00D07A00C5E23F /* CreateGroupView.swift in Sources */,
 				C60EA1692C010F6700C5E23F /* Config.swift in Sources */,
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
 				C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */,
 				C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */,
+				C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */,
 				C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
