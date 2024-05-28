@@ -28,7 +28,8 @@ struct GroupDetailsView: View {
                 Button(action: {
                     isEditing.toggle()
                 }) {
-                    Text(isEditing ? "Done" : "Edit")
+                    Image(systemName: "gear")
+                        .imageScale(.large)
                 }
             }
         )
@@ -48,6 +49,7 @@ struct GroupDetailsView: View {
         }
     }
 }
+
 
 class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
