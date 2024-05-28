@@ -59,6 +59,9 @@ struct BalancesView: View {
                         }
                     }
                 }
+                .refreshable {
+                    fetchBalances()
+                }
             }
         }
         .onAppear {
