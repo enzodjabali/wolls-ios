@@ -23,15 +23,14 @@ struct GroupDetailsView: View {
         }
         .navigationTitle(groupName)
         .navigationBarItems(trailing:
-            Button(action: {
-                isEditing.toggle()
-            }) {
-                Text(isEditing ? "Done" : "Edit")
+            NavigationLink(destination: EditGroupView(groupId: groupId, groupName: groupName, isEditing: $isEditing, newName: $newName, newDescription: $newDescription), isActive: $isEditing) {
+                Button(action: {
+                    isEditing.toggle()
+                }) {
+                    Text(isEditing ? "Done" : "Edit")
+                }
             }
         )
-        .sheet(isPresented: $isEditing) {
-            EditGroupView(groupId: groupId, groupName: groupName, isEditing: $isEditing, newName: $newName, newDescription: $newDescription)
-        }
         .onAppear {
             // Prefill the fields with current data
             newName = groupName
@@ -53,4 +52,3 @@ struct GroupDetailsView: View {
         }
     }
 }
-
