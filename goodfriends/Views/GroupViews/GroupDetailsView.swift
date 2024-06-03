@@ -5,6 +5,7 @@ struct GroupDetailsView: View {
     @StateObject private var viewModel: GroupDetailsViewModel
     @State private var selectedTab = 0
     @State private var isEditing = false
+    @State private var isInviting = false
     
     init(groupId: String, groupName: String, groupDescription: String) {
         _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription))
@@ -23,7 +24,7 @@ struct GroupDetailsView: View {
             viewForSelectedTab()
         }
         .navigationTitle(viewModel.groupName)
-        .navigationBarItems(trailing:
+        .navigationBarItems(trailing: HStack {
             NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing), isActive: $isEditing) {
                 Button(action: {
                     isEditing.toggle()
@@ -32,7 +33,16 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-        )
+            Button(action: {
+                isInviting.toggle()
+            }) {
+                Image(systemName: "person.badge.plus")
+                    .imageScale(.large)
+            }
+            .sheet(isPresented: $isInviting) {
+                CreateInvitationView(groupId: viewModel.groupId)
+            }
+        })
     }
     
     @ViewBuilder
@@ -50,12 +60,11 @@ struct GroupDetailsView: View {
     }
 }
 
-
 class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
     @Published var groupName: String
     @Published var groupDescription: String
-    
+
     init(groupId: String, groupName: String, groupDescription: String) {
         self.groupId = groupId
         self.groupName = groupName
