@@ -429,7 +429,7 @@ class UserController {
         }.resume()
     }
     
-    func inviteUsers(to groupId: String, userIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+    func inviteUsers(to groupId: String, usernames: [String], completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/groups/\(groupId)/invite") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -441,7 +441,7 @@ class UserController {
         request.setValue(token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let inviteDetails = ["userIds": userIds]
+        let inviteDetails: [String: Any] = ["group_id": groupId, "invited_users": usernames]
         guard let httpBody = try? JSONSerialization.data(withJSONObject: inviteDetails, options: []) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request body"])))
             return

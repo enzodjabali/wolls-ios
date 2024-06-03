@@ -8,18 +8,22 @@ struct CreateInvitationView: View {
 
     var body: some View {
         VStack {
+            // Search bar to filter users
             SearchBar(text: $viewModel.searchText, placeholder: "Search users")
 
+            // List of filtered users
             List(viewModel.filteredUsers) { user in
                 HStack {
                     Text(user.pseudonym)
                     Spacer()
+                    // Display checkmark if user is selected
                     if viewModel.selectedUsers.contains(user.id) {
                         Image(systemName: "checkmark")
                     }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
+                    // Toggle selection on tap
                     if viewModel.selectedUsers.contains(user.id) {
                         viewModel.selectedUsers.remove(user.id)
                     } else {
@@ -28,9 +32,11 @@ struct CreateInvitationView: View {
                 }
             }
             .onAppear {
+                // Fetch users when the view appears
                 viewModel.fetchUsers()
             }
 
+            // Button to send invitations
             Button(action: {
                 viewModel.inviteUsers(to: groupId)
             }) {
@@ -44,6 +50,7 @@ struct CreateInvitationView: View {
             }
             .padding()
 
+            // Show error message if applicable
             if viewModel.showError {
                 Text(viewModel.errorMessage ?? "An error occurred")
                     .foregroundColor(.red)
@@ -61,6 +68,7 @@ class CreateInvitationViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var showError = false
 
+    // Filtered users based on search text
     var filteredUsers: [User] {
         if searchText.isEmpty {
             return users
@@ -69,30 +77,39 @@ class CreateInvitationViewModel: ObservableObject {
         }
     }
 
+    // Fetch users from the server
     func fetchUsers() {
+        print("Fetching users...")
         UserController.shared.fetchUsers { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
                     self.users = users
+                    print("Users fetched successfully:", users)
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     self.showError = true
+                    print("Failed to fetch users:", error)
                 }
             }
         }
     }
 
+    // Invite selected users to the specified group
     func inviteUsers(to groupId: String) {
-        let userIds = Array(selectedUsers)
-        UserController.shared.inviteUsers(to: groupId, userIds: userIds) { result in
+        print("Inviting users to group with ID:", groupId)
+        let selectedUsernames = users.filter { selectedUsers.contains($0.id) }.map { $0.pseudonym }
+        print("Selected usernames:", selectedUsernames)
+        UserController.shared.inviteUsers(to: groupId, usernames: selectedUsernames) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     self.selectedUsers.removeAll()
+                    print("Invitations sent successfully.")
                 case .failure(let error):
                     self.errorMessage = error.localizedDescription
                     self.showError = true
+                    print("Failed to send invitations:", error)
                 }
             }
         }
