@@ -3,113 +3,108 @@ import SwiftUI
 import Combine
 
 struct CreateInvitationView: View {
-    @ObservedObject var viewModel = CreateInvitationViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @State private var invitedUsernames: Set<String> = []
+    @State private var filteredUsers: [User] = []
+    @State private var searchPseudonym = ""
+    @State private var createError: String?
     var groupId: String
+    var onCreate: () -> Void
+    
+    // Store the fetched users
+    @State private var fetchedUsers: [User] = []
+    @State private var usersFetched = false
 
     var body: some View {
-        VStack {
-            // Search bar to filter users
-            SearchBar(text: $viewModel.searchText, placeholder: "Search users")
-
-            // List of filtered users
-            List(viewModel.filteredUsers) { user in
-                HStack {
-                    Text(user.pseudonym)
-                    Spacer()
-                    // Display checkmark if user is selected
-                    if viewModel.selectedUsers.contains(user.id) {
-                        Image(systemName: "checkmark")
+        NavigationView {
+            Form {
+                Section(header: Text("Invite Users")) {
+                    TextField("Search users by username", text: $searchPseudonym)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                    
+                    List(filteredUsers, id: \.id) { user in
+                        Button(action: {
+                            inviteUser(user)
+                        }) {
+                            HStack {
+                                Text(user.pseudonym)
+                                Spacer()
+                                if invitedUsernames.contains(user.pseudonym) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.blue)
+                                }
+                            }
+                        }
                     }
                 }
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    // Toggle selection on tap
-                    if viewModel.selectedUsers.contains(user.id) {
-                        viewModel.selectedUsers.remove(user.id)
-                    } else {
-                        viewModel.selectedUsers.insert(user.id)
-                    }
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
                 }
             }
+            .navigationTitle("Invite Users")
+            .navigationBarItems(leading: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            }, trailing: Button("Send Invitations") {
+                sendInvitations()
+            })
             .onAppear {
-                // Fetch users when the view appears
-                viewModel.fetchUsers()
+                if !usersFetched {
+                    fetchUsers()
+                    usersFetched = true
+                }
             }
-
-            // Button to send invitations
-            Button(action: {
-                viewModel.inviteUsers(to: groupId)
-            }) {
-                Text("Send Invites")
-                    .bold()
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            .onChange(of: searchPseudonym) { _ in
+                searchUsers()
             }
-            .padding()
-
-            // Show error message if applicable
-            if viewModel.showError {
-                Text(viewModel.errorMessage ?? "An error occurred")
-                    .foregroundColor(.red)
-                    .padding()
-            }
-        }
-        .navigationBarTitle("Invite Users")
-    }
-}
-
-class CreateInvitationViewModel: ObservableObject {
-    @Published var searchText = ""
-    @Published var users = [User]()
-    @Published var selectedUsers = Set<String>()
-    @Published var errorMessage: String?
-    @Published var showError = false
-
-    // Filtered users based on search text
-    var filteredUsers: [User] {
-        if searchText.isEmpty {
-            return users
-        } else {
-            return users.filter { $0.pseudonym.lowercased().contains(searchText.lowercased()) }
         }
     }
 
-    // Fetch users from the server
     func fetchUsers() {
-        print("Fetching users...")
         UserController.shared.fetchUsers { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let users):
-                    self.users = users
-                    print("Users fetched successfully:", users)
+                    fetchedUsers = users
+                    filteredUsers = users // Initialize filteredUsers with all users
                 case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    self.showError = true
-                    print("Failed to fetch users:", error)
+                    createError = error.localizedDescription
                 }
             }
         }
     }
 
-    // Invite selected users to the specified group
-    func inviteUsers(to groupId: String) {
-        print("Inviting users to group with ID:", groupId)
-        let selectedUsernames = users.filter { selectedUsers.contains($0.id) }.map { $0.pseudonym }
-        print("Selected usernames:", selectedUsernames)
-        UserController.shared.inviteUsers(to: groupId, usernames: selectedUsernames) { result in
+    func searchUsers() {
+        let searchText = searchPseudonym.lowercased()
+        
+        if searchText.isEmpty {
+            filteredUsers = fetchedUsers // Reset to display all users
+        } else {
+            filteredUsers = fetchedUsers.filter { user in
+                user.pseudonym.lowercased().contains(searchText)
+            }
+        }
+    }
+
+    func inviteUser(_ user: User) {
+        if invitedUsernames.contains(user.pseudonym) {
+            invitedUsernames.remove(user.pseudonym)
+        } else {
+            invitedUsernames.insert(user.pseudonym)
+        }
+    }
+
+    func sendInvitations() {
+        let usernames = Array(invitedUsernames)
+        UserController.shared.inviteUsers(to: groupId, usernames: usernames) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.selectedUsers.removeAll()
-                    print("Invitations sent successfully.")
+                    onCreate()
+                    presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
-                    self.errorMessage = error.localizedDescription
-                    self.showError = true
-                    print("Failed to send invitations:", error)
+                    createError = error.localizedDescription
                 }
             }
         }

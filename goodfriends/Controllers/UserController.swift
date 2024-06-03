@@ -431,7 +431,7 @@ class UserController {
     
     func inviteUsers(to groupId: String, usernames: [String], completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "\(API.baseURL)/v1/groups/\(groupId)/invite") else {
+              let url = URL(string: "\(API.baseURL)/v1/groups/memberships") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
@@ -454,12 +454,27 @@ class UserController {
                 return
             }
 
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to send invitations"])))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response"])))
                 return
             }
+            
+            print(httpResponse.statusCode)
 
-            completion(.success(()))
+            if httpResponse.statusCode == 200 || httpResponse.statusCode == 201 {
+                completion(.success(()))
+            } else {
+                if let data = data,
+                   let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    print("API Error: \(errorMessage)")
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    // No error message printed if status code is not 200 or 201
+                    completion(.failure(NSError(domain: "", code: httpResponse.statusCode)))
+                }
+            }
         }.resume()
     }
+
 }

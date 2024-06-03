@@ -40,7 +40,7 @@ struct GroupDetailsView: View {
                     .imageScale(.large)
             }
             .sheet(isPresented: $isInviting) {
-                CreateInvitationView(groupId: viewModel.groupId)
+                CreateInvitationView(groupId: viewModel.groupId, onCreate: {})
             }
         })
     }

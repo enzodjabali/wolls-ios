@@ -11,7 +11,7 @@
 
 struct User: Identifiable, Decodable {
     let id: String
-    let pseudonym: String
+    var pseudonym: String
     let firstname: String?
     let lastname: String?
     let email: String?
