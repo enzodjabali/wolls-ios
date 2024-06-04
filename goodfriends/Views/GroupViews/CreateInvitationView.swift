@@ -18,7 +18,7 @@ struct CreateInvitationView: View {
     var body: some View {
         VStack {
             Form {
-                Section(header: Text("Invite Users")) {
+                Section() {
                     TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
@@ -39,7 +39,7 @@ struct CreateInvitationView: View {
                     }
                 }
             }
-            
+            .navigationTitle("Invite users")
             .onAppear {
                 if !usersFetched {
                     fetchUsers()

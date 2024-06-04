@@ -33,14 +33,13 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-            Button(action: {
-                isInviting.toggle()
-            }) {
-                Image(systemName: "person.badge.plus")
-                    .imageScale(.large)
-            }
-            .sheet(isPresented: $isInviting) {
-                CreateInvitationView(groupId: viewModel.groupId, onCreate: {})
+            NavigationLink(destination: CreateInvitationView(groupId: viewModel.groupId, onCreate: {}), isActive: $isInviting) {
+                Button(action: {
+                    isInviting.toggle()
+                }) {
+                    Image(systemName: "person.badge.plus")
+                        .imageScale(.large)
+                }
             }
         })
     }
