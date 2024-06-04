@@ -16,7 +16,7 @@ struct CreateInvitationView: View {
     @State private var usersFetched = false
 
     var body: some View {
-        NavigationView {
+        VStack {
             Form {
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
@@ -38,17 +38,8 @@ struct CreateInvitationView: View {
                         }
                     }
                 }
-                if let error = createError {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
             }
-            .navigationTitle("Invite Users")
-            .navigationBarItems(leading: Button("Cancel") {
-                presentationMode.wrappedValue.dismiss()
-            }, trailing: Button("Send Invitations") {
-                sendInvitations()
-            })
+            
             .onAppear {
                 if !usersFetched {
                     fetchUsers()
@@ -57,6 +48,26 @@ struct CreateInvitationView: View {
             }
             .onChange(of: searchPseudonym) { _ in
                 searchUsers()
+            }
+            
+            // Button to send invitations
+            Button(action: {
+                sendInvitations()
+            }) {
+                Text("Send Invites")
+                    .bold()
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding()
+            
+            // Show error message if applicable
+            if let error = createError {
+                Text(error)
+                    .foregroundColor(.red)
             }
         }
     }
@@ -97,7 +108,7 @@ struct CreateInvitationView: View {
 
     func sendInvitations() {
         let usernames = Array(invitedUsernames)
-        UserController.shared.inviteUsers(to: groupId, usernames: usernames) { result in
+        GroupMembershipController.shared.inviteUsers(to: groupId, usernames: usernames) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
