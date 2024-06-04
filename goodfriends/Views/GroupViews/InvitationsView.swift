@@ -3,7 +3,8 @@ import SwiftUI
 struct InvitationsView: View {
     @ObservedObject var groupMembershipController = GroupMembershipController.shared
     @State private var invitations: [Group] = []
-    
+    @Environment(\.colorScheme) var colorScheme
+
     var body: some View {
         ScrollView {
             if invitations.isEmpty {
@@ -25,7 +26,7 @@ struct InvitationsView: View {
             } else {
                 VStack(spacing: 20) {
                     ForEach(invitations, id: \.id) { group in
-                        InvitationRow(group: group) { accept in
+                        InvitationRow(group: group, colorScheme: colorScheme) { accept in
                             // Respond to invitation
                             self.respondToInvitation(group: group, accept: accept)
                         }
@@ -44,7 +45,7 @@ struct InvitationsView: View {
             self.fetchInvitations()
         }
     }
-    
+
     private func fetchInvitations() {
         groupMembershipController.fetchInvitations { result in
             switch result {
@@ -56,7 +57,7 @@ struct InvitationsView: View {
             }
         }
     }
-    
+
     private func respondToInvitation(group: Group, accept: Bool) {
         groupMembershipController.respondToInvitation(groupId: group.id, accept: accept) { result in
             switch result {
@@ -73,8 +74,9 @@ struct InvitationsView: View {
 
 struct InvitationRow: View {
     let group: Group
+    let colorScheme: ColorScheme
     let respondAction: (Bool) -> Void
-    
+
     var body: some View {
         HStack {
             VStack(alignment: .leading, spacing: 8) {
@@ -83,7 +85,7 @@ struct InvitationRow: View {
                     + Text(group.name)
                     .font(.body)
                     .bold()
-                
+
                 HStack(spacing: 20) {
                     Button(action: {
                         self.respondAction(true) // Accept action
@@ -96,7 +98,7 @@ struct InvitationRow: View {
                             .cornerRadius(20)
                     }
                     .padding(.top, 5) // Add padding above the button
-                    
+
                     Button(action: {
                         self.respondAction(false) // Decline action
                     }) {
@@ -108,7 +110,7 @@ struct InvitationRow: View {
                                 RoundedRectangle(cornerRadius: 15)
                                     .stroke(Color.blue, lineWidth: 2)
                             )
-                            .background(Color.white)
+                            .background(colorScheme == .dark ? Color(red: 0.10, green: 0.10, blue: 0.10) : Color.white)
                             .cornerRadius(20)
                     }
                     .padding(.top, 5) // Add padding above the button
@@ -117,7 +119,7 @@ struct InvitationRow: View {
             Spacer() // Add spacer to push buttons to the left
         }
         .padding()
-        .background(Color.white) // Background color for the box
+        .background(colorScheme == .dark ? Color(red: 0.10, green: 0.10, blue: 0.10) : Color.white) // Background color for the box
         .cornerRadius(10) // Border radius for the box
         .padding(.horizontal) // Horizontal padding for the box
         .frame(maxWidth: .infinity) // Ensure the container takes up the whole width
