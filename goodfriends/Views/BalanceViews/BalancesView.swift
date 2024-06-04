@@ -16,51 +16,67 @@ struct BalancesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List(balances) { balance in
-                    VStack(alignment: .leading) {
-                        if balance.amount < 0 {
-                            Text(balance.username)
-                                .font(.headline)
-                                .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
-                        } else {
-                            HStack {
-                                Spacer()
+                if balances.isEmpty {
+                    ScrollView {
+                        ZStack {
+                            Spacer().containerRelativeFrame([.horizontal, .vertical])
+                            VStack {
+                                Text("No balances to display.")
+                                    .foregroundColor(.gray)
+                            }
+                            .padding()
+                        }
+                    }
+                    .refreshable {
+                        fetchBalances()
+                    }
+                } else {
+                    List(balances) { balance in
+                        VStack(alignment: .leading) {
+                            if balance.amount < 0 {
                                 Text(balance.username)
                                     .font(.headline)
                                     .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
+                            } else {
+                                HStack {
+                                    Spacer()
+                                    Text(balance.username)
+                                        .font(.headline)
+                                        .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
+                                }
                             }
-                        }
-                        
-                        HStack {
-                            if balance.amount < 0 {
-                                Rectangle()
-                                    .fill(Color.red.opacity(0.8)) // Set opacity here
-                                    .cornerRadius(5) // Set corner radius here
-                                    .frame(width: CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth * 1.5, height: 25)
-                                    .overlay(
-                                        Text("\(String(format: "%.2f", balance.amount)) €")
-                                            .font(.subheadline)
-                                            .foregroundColor(.white)
-                                    )
-                            }
-                            if balance.amount > 0 {
-                                Spacer()
-                                Rectangle()
-                                    .fill(Color.green.opacity(0.8)) // Set opacity here
-                                    .cornerRadius(5) // Set corner radius here
-                                    .frame(width: CGFloat(balance.amount / maxBalance) * maxBarWidth * 1.5, height: 25)
-                                    .overlay(
-                                        Text("\(String(format: "%.2f", balance.amount)) €")
-                                            .font(.subheadline)
-                                            .foregroundColor(.white)
-                                    )
-                                    .padding(.vertical, 5)
+                            
+                            HStack {
+                                if balance.amount < 0 {
+                                    Rectangle()
+                                        .fill(Color.red.opacity(0.8)) // Set opacity here
+                                        .cornerRadius(5) // Set corner radius here
+                                        .frame(width: CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                        .overlay(
+                                            Text("\(String(format: "%.2f", balance.amount)) €")
+                                                .font(.subheadline)
+                                                .foregroundColor(.white)
+                                        )
+                                }
+                                if balance.amount > 0 {
+                                    Spacer()
+                                    Rectangle()
+                                        .fill(Color.green.opacity(0.8)) // Set opacity here
+                                        .cornerRadius(5) // Set corner radius here
+                                        .frame(width: CGFloat(balance.amount / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                        .overlay(
+                                            Text("\(String(format: "%.2f", balance.amount)) €")
+                                                .font(.subheadline)
+                                                .foregroundColor(.white)
+                                        )
+                                        .padding(.vertical, 5)
+                                }
                             }
                         }
                     }
-                }
-                .refreshable {
-                    fetchBalances()
+                    .refreshable {
+                        fetchBalances()
+                    }
                 }
             }
         }

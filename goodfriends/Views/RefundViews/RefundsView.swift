@@ -36,11 +36,19 @@ struct RefundsView: View {
             } else {
                 if showSimplified {
                     if refundsSimplified.isEmpty {
-                        Spacer()
-                        Text("No simplified refunds to display.")
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                        Spacer()
+                        ScrollView {
+                            ZStack {
+                                Spacer().containerRelativeFrame([.horizontal, .vertical])
+                                VStack {
+                                    Text("No simplified refunds to display.")
+                                        .foregroundColor(.gray)
+                                }
+                                .padding()
+                            }
+                        }
+                        .refreshable {
+                            loadRefunds()
+                        }
                     } else {
                         List(filteredSimplifiedRefunds) { refund in
                             HStack {
@@ -59,11 +67,19 @@ struct RefundsView: View {
                     }
                 } else {
                     if refundsDetailed.isEmpty {
-                        Spacer()
-                        Text("No detailed refunds to display.")
-                            .foregroundColor(.gray)
-                            .multilineTextAlignment(.center)
-                        Spacer()
+                        ScrollView {
+                            ZStack {
+                                Spacer().containerRelativeFrame([.horizontal, .vertical])
+                                VStack {
+                                    Text("No detailed refunds to display.")
+                                        .foregroundColor(.gray)
+                                }
+                                .padding()
+                            }
+                        }
+                        .refreshable {
+                            loadRefunds()
+                        }
                     } else {
                         List(filteredDetailedRefunds) { refund in
                             NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: refund.expenseId, onUpdate: { updatedExpense in

@@ -48,54 +48,85 @@ struct ExpensesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                List {
-                    ForEach(filteredExpenses.isEmpty ? expenses : filteredExpenses, id: \.id) { expense in
-                        NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
-                            if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
-                                expenses[index] = updatedExpense
-                            }
-                        })) {
-                            VStack(alignment: .leading) {
-                                HStack(spacing: 3) {
-                                    // Badge with category color
-                                    let badgeColor = categoryColors[expense.category] ?? Color.gray
-                                    Text("•")
-                                        .font(.system(size: 40)) // Adjust the font size here
-                                        .foregroundColor(badgeColor)
-                                        .padding(.bottom, 3)
-                                    
-                                    Text(expense.title)
-                                        .font(.headline)
-                                        .padding(.leading, -3) // Adjust the padding here if needed
-                                    
-                                    Spacer()
-    
-                                    Text("\(String(format: "%.2f", expense.amount)) €")
-                                        .font(.headline)
+                if expenses.isEmpty {
+                    ScrollView {
+                        ZStack {
+                            Spacer().containerRelativeFrame([.horizontal, .vertical])
+                            VStack {
+                                Image("create-expense")
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 150, height: 150)
+                                    .foregroundColor(.gray)
+
+                                Text("There isn't any expenses yet.")
+                                    .foregroundColor(.gray)
+
+                                Button(action: {
+                                    showAddExpenseSheet.toggle()
+                                }) {
+                                    Text("Create The First Expense")
+                                        .foregroundColor(.blue)
+                                        .padding()
                                 }
-                                .padding(.bottom, -15)
-                                .padding(.top, -15)
-                                
-                                HStack {
-                                    if let pseudonym = expense.creator_pseudonym {
-                                        Text("Paid by \(pseudonym)")
-                                            .font(.subheadline)
-                                    } else {
-                                        Text("Paid by Unknown")
+                            }
+                            .padding()
+                        }
+                    }
+                    .refreshable {
+                        self.fetchExpenses()
+                        self.fetchTotalAmounts()
+                    }
+                } else {
+                    List {
+                        ForEach(filteredExpenses.isEmpty ? expenses : filteredExpenses, id: \.id) { expense in
+                            NavigationLink(destination: EditExpenseView(groupId: groupId, expenseId: expense.id, onUpdate: { updatedExpense in
+                                if let index = expenses.firstIndex(where: { $0.id == updatedExpense.id }) {
+                                    expenses[index] = updatedExpense
+                                }
+                            })) {
+                                VStack(alignment: .leading) {
+                                    HStack(spacing: 3) {
+                                        // Badge with category color
+                                        let badgeColor = categoryColors[expense.category] ?? Color.gray
+                                        Text("•")
+                                            .font(.system(size: 40)) // Adjust the font size here
+                                            .foregroundColor(badgeColor)
+                                            .padding(.bottom, 3)
+                                        
+                                        Text(expense.title)
+                                            .font(.headline)
+                                            .padding(.leading, -3) // Adjust the padding here if needed
+                                        
+                                        Spacer()
+                                        
+                                        Text("\(String(format: "%.2f", expense.amount)) €")
+                                            .font(.headline)
+                                    }
+                                    .padding(.bottom, -15)
+                                    .padding(.top, -15)
+                                    
+                                    HStack {
+                                        if let pseudonym = expense.creator_pseudonym {
+                                            Text("Paid by \(pseudonym)")
+                                                .font(.subheadline)
+                                        } else {
+                                            Text("Paid by Unknown")
+                                                .font(.subheadline)
+                                        }
+                                        Spacer()
+                                        Text(formatDate(expense.date))
                                             .font(.subheadline)
                                     }
-                                    Spacer()
-                                    Text(formatDate(expense.date))
-                                        .font(.subheadline)
                                 }
                             }
                         }
+                        .onDelete(perform: deleteExpense)
                     }
-                    .onDelete(perform: deleteExpense)
-                }
-                .refreshable {
-                    self.fetchExpenses()
-                    self.fetchTotalAmounts()
+                    .refreshable {
+                        self.fetchExpenses()
+                        self.fetchTotalAmounts()
+                    }
                 }
                 
                 if let amountsError = amountsError {
