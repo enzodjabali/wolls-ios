@@ -7,13 +7,17 @@ struct InvitationsView: View {
     var body: some View {
         ScrollView {
             if invitations.isEmpty {
-                VStack(spacing: 20) {
-                    Text("You have no pending invitations.")
-                        .font(.headline)
-                        .foregroundColor(.gray)
-                        .frame(maxWidth: .infinity) // Ensure the container takes up the whole width
+                ZStack {
+                    // Reserve space matching the scroll view's frame
+                    Spacer().containerRelativeFrame([.horizontal, .vertical])
+
+                    // Form content
+                    VStack {
+                        Text("You have no pending invitations yet.")
+                            .foregroundColor(.gray)
+                    }
+                    .padding()
                 }
-                .padding()
                 .onAppear {
                     // Fetch invitations when the view appears
                     self.fetchInvitations()
