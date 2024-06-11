@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 struct CreateInvitationView: View {
@@ -84,18 +83,20 @@ struct CreateInvitationView: View {
                 }
             }
             
-            Button(action: {
-                sendInvitations()
-            }) {
-                Text("Send Invites")
-                    .bold()
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            if !invitedUsernames.isEmpty {
+                Button(action: {
+                    sendInvitations()
+                }) {
+                    Text("Send Invites")
+                        .bold()
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .padding()
             }
-            .padding()
             
             if let error = createError {
                 Text(error)
