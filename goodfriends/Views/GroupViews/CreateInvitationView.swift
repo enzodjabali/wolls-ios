@@ -9,10 +9,12 @@ struct CreateInvitationView: View {
     @State private var userStatuses: [UserStatus] = []
     var groupId: String
     var onCreate: () -> Void
-    
+
     @State private var members: [UserStatus] = []
     @State private var pendingMembers: [UserStatus] = []
     @State private var usersFetched = false
+
+    @State private var showAlert = false
 
     var body: some View {
         VStack {
@@ -37,7 +39,7 @@ struct CreateInvitationView: View {
                         )
                     }
                 }
-                
+
                 if pendingMembers.count > 0 {
                     Section(header: Text("Pending Invitations")) {
                         List(pendingMembers, id: \.id) { user in
@@ -50,7 +52,7 @@ struct CreateInvitationView: View {
                         }
                     }
                 }
-                
+
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
@@ -58,7 +60,7 @@ struct CreateInvitationView: View {
                         .onChange(of: searchPseudonym) { _ in
                             searchUsers()
                         }
-                    
+
                     List(filteredUsers, id: \.id) { user in
                         Button(action: {
                             inviteUser(user)
@@ -82,7 +84,7 @@ struct CreateInvitationView: View {
                     usersFetched = true
                 }
             }
-            
+
             if !invitedUsernames.isEmpty {
                 Button(action: {
                     sendInvitations()
@@ -97,11 +99,18 @@ struct CreateInvitationView: View {
                 }
                 .padding()
             }
-            
+
             if let error = createError {
                 Text(error)
                     .foregroundColor(.red)
             }
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Invitations Sent"),
+                message: Text("The invitations have been successfully sent."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
 
@@ -138,7 +147,7 @@ struct CreateInvitationView: View {
 
     func searchUsers() {
         let searchText = searchPseudonym.lowercased()
-        
+
         if searchText.isEmpty {
             filteredUsers = userStatuses.filter { status in
                 return !status.hasAcceptedInvitation && !status.hasPendingInvitation
@@ -166,6 +175,7 @@ struct CreateInvitationView: View {
                 case .success:
                     onCreate()
                     presentationMode.wrappedValue.dismiss()
+                    showAlert = true
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
