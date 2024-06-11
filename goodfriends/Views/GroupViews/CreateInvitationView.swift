@@ -1,20 +1,18 @@
 import Foundation
 import SwiftUI
-import Combine
 
 struct CreateInvitationView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var invitedUsernames: Set<String> = []
-    @State private var filteredUsers: [User] = []
+    @State private var filteredUsers: [UserStatus] = []
     @State private var searchPseudonym = ""
     @State private var createError: String?
-    @State private var userStatuses: [String: UserStatus] = [:]
+    @State private var userStatuses: [UserStatus] = []
     var groupId: String
     var onCreate: () -> Void
     
-    @State private var fetchedUsers: [User] = []
-    @State private var members: [User] = []
-    @State private var pendingMembers: [User] = []
+    @State private var members: [UserStatus] = []
+    @State private var pendingMembers: [UserStatus] = []
     @State private var usersFetched = false
 
     var body: some View {
@@ -77,7 +75,6 @@ struct CreateInvitationView: View {
             .navigationTitle("Invite users")
             .onAppear {
                 if !usersFetched {
-                    fetchUsers()
                     fetchUserStatuses()
                     usersFetched = true
                 }
@@ -103,26 +100,12 @@ struct CreateInvitationView: View {
         }
     }
 
-    func fetchUsers() {
-        UserController.shared.fetchUsers { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let users):
-                    fetchedUsers = users
-                    fetchUserStatuses() // Fetch statuses after users are fetched
-                case .failure(let error):
-                    createError = error.localizedDescription
-                }
-            }
-        }
-    }
-    
     func fetchUserStatuses() {
         GroupMembershipController.shared.fetchUserStatuses(groupId: groupId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let statuses):
-                    userStatuses = Dictionary(uniqueKeysWithValues: statuses.map { ($0.pseudonym, $0) })
+                    userStatuses = statuses
                     categorizeUsers()
                 case .failure(let error):
                     createError = error.localizedDescription
@@ -136,17 +119,13 @@ struct CreateInvitationView: View {
         pendingMembers = []
         filteredUsers = [] // Reset filtered users
 
-        for user in fetchedUsers {
-            if let status = userStatuses[user.pseudonym] {
-                if status.hasAcceptedInvitation {
-                    members.append(user)
-                } else if status.hasPendingInvitation {
-                    pendingMembers.append(user)
-                } else {
-                    filteredUsers.append(user) // Add to filtered users if not a member or pending
-                }
+        for status in userStatuses {
+            if status.hasAcceptedInvitation {
+                members.append(status)
+            } else if status.hasPendingInvitation {
+                pendingMembers.append(status)
             } else {
-                filteredUsers.append(user) // Add to filtered users if no status
+                filteredUsers.append(status)
             }
         }
         searchUsers() // Update the filtered users list based on search criteria
@@ -156,19 +135,17 @@ struct CreateInvitationView: View {
         let searchText = searchPseudonym.lowercased()
         
         if searchText.isEmpty {
-            filteredUsers = fetchedUsers.filter { user in
-                guard let status = userStatuses[user.pseudonym] else { return true }
+            filteredUsers = userStatuses.filter { status in
                 return !status.hasAcceptedInvitation && !status.hasPendingInvitation
             }
         } else {
-            filteredUsers = fetchedUsers.filter { user in
-                guard let status = userStatuses[user.pseudonym] else { return false }
-                return !status.hasAcceptedInvitation && !status.hasPendingInvitation && user.pseudonym.lowercased().contains(searchText)
+            filteredUsers = userStatuses.filter { status in
+                return !status.hasAcceptedInvitation && !status.hasPendingInvitation && status.pseudonym.lowercased().contains(searchText)
             }
         }
     }
 
-    func inviteUser(_ user: User) {
+    func inviteUser(_ user: UserStatus) {
         if invitedUsernames.contains(user.pseudonym) {
             invitedUsernames.remove(user.pseudonym)
         } else {
