@@ -37,7 +37,7 @@ struct GroupDetailsView: View {
                 Button(action: {
                     isInviting.toggle()
                 }) {
-                    Image(systemName: "person.badge.plus")
+                    Image(systemName: "person.2")
                         .imageScale(.large)
                 }
             }

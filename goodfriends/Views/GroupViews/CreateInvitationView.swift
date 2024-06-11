@@ -84,7 +84,7 @@ struct CreateInvitationView: View {
                     }
                 }
             }
-            .navigationTitle("Invite users")
+            .navigationTitle("Users")
             .onAppear {
                 if !usersFetched {
                     fetchUserStatuses()
