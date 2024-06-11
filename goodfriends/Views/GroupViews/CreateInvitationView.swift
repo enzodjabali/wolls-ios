@@ -13,45 +13,64 @@ struct CreateInvitationView: View {
     var onCreate: () -> Void
     
     @State private var fetchedUsers: [User] = []
+    @State private var members: [User] = []
+    @State private var pendingMembers: [User] = []
     @State private var usersFetched = false
 
     var body: some View {
         VStack {
             Form {
-                Section {
-                    TextField("Search users by username", text: $searchPseudonym)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
-                    
-                    List(filteredUsers, id: \.id) { user in
-                        let status = userStatuses[user.pseudonym]
-                        let isDisabled = status?.hasAcceptedInvitation == true || status?.hasPendingInvitation == true
-                        
+                Section(header: Text("Members")) {
+                    List(members, id: \.id) { user in
                         Button(action: {
-                            if !isDisabled {
-                                inviteUser(user)
-                            }
+                            // Navigate to member details
                         }) {
                             HStack {
                                 Text(user.pseudonym)
                                 Spacer()
-                                if let status = status {
-                                    if status.hasAcceptedInvitation {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.green)
-                                        Text("Member")
-                                            .foregroundColor(.green)
-                                    } else if status.hasPendingInvitation {
-                                        Text("Pending")
-                                            .foregroundColor(.orange)
-                                    } else if invitedUsernames.contains(user.pseudonym) {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.blue)
-                                    }
+                                Image(systemName: "checkmark")
+                                    .foregroundColor(.green)
+                            }
+                        }
+                        .background(
+                            NavigationLink("", destination: Text("Hello World"))
+                                .opacity(0)
+                        )
+                    }
+                }
+
+                Section(header: Text("Pending Invitations")) {
+                    List(pendingMembers, id: \.id) { user in
+                        HStack {
+                            Text(user.pseudonym)
+                            Spacer()
+                            Text("Pending")
+                                .foregroundColor(.orange)
+                        }
+                    }
+                }
+
+                Section(header: Text("Invite Users")) {
+                    TextField("Search users by username", text: $searchPseudonym)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .onChange(of: searchPseudonym) { _ in
+                            searchUsers()
+                        }
+                    
+                    List(filteredUsers, id: \.id) { user in
+                        Button(action: {
+                            inviteUser(user)
+                        }) {
+                            HStack {
+                                Text(user.pseudonym)
+                                Spacer()
+                                if invitedUsernames.contains(user.pseudonym) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.blue)
                                 }
                             }
                         }
-                        .disabled(isDisabled)
                     }
                 }
             }
@@ -62,9 +81,6 @@ struct CreateInvitationView: View {
                     fetchUserStatuses()
                     usersFetched = true
                 }
-            }
-            .onChange(of: searchPseudonym) { _ in
-                searchUsers()
             }
             
             Button(action: {
@@ -93,7 +109,7 @@ struct CreateInvitationView: View {
                 switch result {
                 case .success(let users):
                     fetchedUsers = users
-                    filteredUsers = users
+                    fetchUserStatuses() // Fetch statuses after users are fetched
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -107,6 +123,7 @@ struct CreateInvitationView: View {
                 switch result {
                 case .success(let statuses):
                     userStatuses = Dictionary(uniqueKeysWithValues: statuses.map { ($0.pseudonym, $0) })
+                    categorizeUsers()
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -114,14 +131,39 @@ struct CreateInvitationView: View {
         }
     }
 
+    func categorizeUsers() {
+        members = []
+        pendingMembers = []
+        filteredUsers = [] // Reset filtered users
+
+        for user in fetchedUsers {
+            if let status = userStatuses[user.pseudonym] {
+                if status.hasAcceptedInvitation {
+                    members.append(user)
+                } else if status.hasPendingInvitation {
+                    pendingMembers.append(user)
+                } else {
+                    filteredUsers.append(user) // Add to filtered users if not a member or pending
+                }
+            } else {
+                filteredUsers.append(user) // Add to filtered users if no status
+            }
+        }
+        searchUsers() // Update the filtered users list based on search criteria
+    }
+
     func searchUsers() {
         let searchText = searchPseudonym.lowercased()
         
         if searchText.isEmpty {
-            filteredUsers = fetchedUsers
+            filteredUsers = fetchedUsers.filter { user in
+                guard let status = userStatuses[user.pseudonym] else { return true }
+                return !status.hasAcceptedInvitation && !status.hasPendingInvitation
+            }
         } else {
             filteredUsers = fetchedUsers.filter { user in
-                user.pseudonym.lowercased().contains(searchText)
+                guard let status = userStatuses[user.pseudonym] else { return false }
+                return !status.hasAcceptedInvitation && !status.hasPendingInvitation && user.pseudonym.lowercased().contains(searchText)
             }
         }
     }
