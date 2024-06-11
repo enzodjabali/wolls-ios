@@ -1,3 +1,4 @@
+import Foundation
 import SwiftUI
 
 struct CreateInvitationView: View {
@@ -7,14 +8,15 @@ struct CreateInvitationView: View {
     @State private var searchPseudonym = ""
     @State private var createError: String?
     @State private var userStatuses: [UserStatus] = []
+    @State private var showSuccessAlert = false
+    @State private var showPendingAlert = false
+    @State private var pendingUser: UserStatus?
     var groupId: String
     var onCreate: () -> Void
-
+    
     @State private var members: [UserStatus] = []
     @State private var pendingMembers: [UserStatus] = []
     @State private var usersFetched = false
-
-    @State private var showAlert = false
 
     var body: some View {
         VStack {
@@ -39,20 +41,25 @@ struct CreateInvitationView: View {
                         )
                     }
                 }
-
+                
                 if pendingMembers.count > 0 {
                     Section(header: Text("Pending Invitations")) {
                         List(pendingMembers, id: \.id) { user in
-                            HStack {
-                                Text(user.pseudonym)
-                                Spacer()
-                                Text("Pending")
-                                    .foregroundColor(.orange)
+                            Button(action: {
+                                pendingUser = user
+                                showPendingAlert = true
+                            }) {
+                                HStack {
+                                    Text(user.pseudonym)
+                                    Spacer()
+                                    Text("Pending")
+                                        .foregroundColor(.orange)
+                                }
                             }
                         }
                     }
                 }
-
+                
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
@@ -60,7 +67,7 @@ struct CreateInvitationView: View {
                         .onChange(of: searchPseudonym) { _ in
                             searchUsers()
                         }
-
+                    
                     List(filteredUsers, id: \.id) { user in
                         Button(action: {
                             inviteUser(user)
@@ -84,7 +91,7 @@ struct CreateInvitationView: View {
                     usersFetched = true
                 }
             }
-
+            
             if !invitedUsernames.isEmpty {
                 Button(action: {
                     sendInvitations()
@@ -99,16 +106,23 @@ struct CreateInvitationView: View {
                 }
                 .padding()
             }
-
+            
             if let error = createError {
                 Text(error)
                     .foregroundColor(.red)
             }
         }
-        .alert(isPresented: $showAlert) {
+        .alert(isPresented: $showSuccessAlert) {
             Alert(
                 title: Text("Invitations Sent"),
                 message: Text("The invitations have been successfully sent."),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .alert(isPresented: $showPendingAlert) {
+            Alert(
+                title: Text("Pending Invitation"),
+                message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expense."),
                 dismissButton: .default(Text("OK"))
             )
         }
@@ -147,7 +161,7 @@ struct CreateInvitationView: View {
 
     func searchUsers() {
         let searchText = searchPseudonym.lowercased()
-
+        
         if searchText.isEmpty {
             filteredUsers = userStatuses.filter { status in
                 return !status.hasAcceptedInvitation && !status.hasPendingInvitation
@@ -173,9 +187,9 @@ struct CreateInvitationView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+                    showSuccessAlert = true
                     onCreate()
                     presentationMode.wrappedValue.dismiss()
-                    showAlert = true
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
