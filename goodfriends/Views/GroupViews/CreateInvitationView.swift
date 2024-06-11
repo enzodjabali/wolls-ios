@@ -8,34 +8,50 @@ struct CreateInvitationView: View {
     @State private var filteredUsers: [User] = []
     @State private var searchPseudonym = ""
     @State private var createError: String?
+    @State private var userStatuses: [String: UserStatus] = [:]
     var groupId: String
     var onCreate: () -> Void
     
-    // Store the fetched users
     @State private var fetchedUsers: [User] = []
     @State private var usersFetched = false
 
     var body: some View {
         VStack {
             Form {
-                Section() {
+                Section {
                     TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                     
                     List(filteredUsers, id: \.id) { user in
+                        let status = userStatuses[user.pseudonym]
+                        let isDisabled = status?.hasAcceptedInvitation == true || status?.hasPendingInvitation == true
+                        
                         Button(action: {
-                            inviteUser(user)
+                            if !isDisabled {
+                                inviteUser(user)
+                            }
                         }) {
                             HStack {
                                 Text(user.pseudonym)
                                 Spacer()
-                                if invitedUsernames.contains(user.pseudonym) {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                                if let status = status {
+                                    if status.hasAcceptedInvitation {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.green)
+                                        Text("Member")
+                                            .foregroundColor(.green)
+                                    } else if status.hasPendingInvitation {
+                                        Text("Pending")
+                                            .foregroundColor(.orange)
+                                    } else if invitedUsernames.contains(user.pseudonym) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.blue)
+                                    }
                                 }
                             }
                         }
+                        .disabled(isDisabled)
                     }
                 }
             }
@@ -43,6 +59,7 @@ struct CreateInvitationView: View {
             .onAppear {
                 if !usersFetched {
                     fetchUsers()
+                    fetchUserStatuses()
                     usersFetched = true
                 }
             }
@@ -50,7 +67,6 @@ struct CreateInvitationView: View {
                 searchUsers()
             }
             
-            // Button to send invitations
             Button(action: {
                 sendInvitations()
             }) {
@@ -64,7 +80,6 @@ struct CreateInvitationView: View {
             }
             .padding()
             
-            // Show error message if applicable
             if let error = createError {
                 Text(error)
                     .foregroundColor(.red)
@@ -78,7 +93,20 @@ struct CreateInvitationView: View {
                 switch result {
                 case .success(let users):
                     fetchedUsers = users
-                    filteredUsers = users // Initialize filteredUsers with all users
+                    filteredUsers = users
+                case .failure(let error):
+                    createError = error.localizedDescription
+                }
+            }
+        }
+    }
+    
+    func fetchUserStatuses() {
+        GroupMembershipController.shared.fetchUserStatuses(groupId: groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let statuses):
+                    userStatuses = Dictionary(uniqueKeysWithValues: statuses.map { ($0.pseudonym, $0) })
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -90,7 +118,7 @@ struct CreateInvitationView: View {
         let searchText = searchPseudonym.lowercased()
         
         if searchText.isEmpty {
-            filteredUsers = fetchedUsers // Reset to display all users
+            filteredUsers = fetchedUsers
         } else {
             filteredUsers = fetchedUsers.filter { user in
                 user.pseudonym.lowercased().contains(searchText)

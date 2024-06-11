@@ -208,4 +208,36 @@ class GroupMembershipController: ObservableObject {
             }
         }.resume()
     }
+    
+    func fetchUserStatuses(groupId: String, completion: @escaping (Result<[UserStatus], Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/groups/memberships/\(groupId)/members/status") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+
+            do {
+                let statuses = try JSONDecoder().decode([UserStatus].self, from: data)
+                completion(.success(statuses))
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
 }

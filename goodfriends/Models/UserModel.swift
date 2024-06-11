@@ -19,3 +19,17 @@ struct User: Identifiable, Decodable {
         case has_accepted_invitation
     }
 }
+
+struct UserStatus: Codable {
+    let id: String
+    let pseudonym: String
+    let hasAcceptedInvitation: Bool
+    let hasPendingInvitation: Bool
+
+    private enum CodingKeys: String, CodingKey {
+        case id = "_id"
+        case pseudonym
+        case hasAcceptedInvitation = "has_accepted_invitation"
+        case hasPendingInvitation = "has_pending_invitation"
+    }
+}
