@@ -28,6 +28,8 @@ struct CreateInvitationView: View {
                                 Spacer()
                                 Image(systemName: "checkmark")
                                     .foregroundColor(.green)
+                                Text("Member")
+                                    .foregroundColor(.green)
                             }
                         }
                         .background(
@@ -36,18 +38,20 @@ struct CreateInvitationView: View {
                         )
                     }
                 }
-
-                Section(header: Text("Pending Invitations")) {
-                    List(pendingMembers, id: \.id) { user in
-                        HStack {
-                            Text(user.pseudonym)
-                            Spacer()
-                            Text("Pending")
-                                .foregroundColor(.orange)
+                
+                if pendingMembers.count > 0 {
+                    Section(header: Text("Pending Invitations")) {
+                        List(pendingMembers, id: \.id) { user in
+                            HStack {
+                                Text(user.pseudonym)
+                                Spacer()
+                                Text("Pending")
+                                    .foregroundColor(.orange)
+                            }
                         }
                     }
                 }
-
+                
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
                         .autocapitalization(.none)
