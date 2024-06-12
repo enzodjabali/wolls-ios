@@ -47,6 +47,9 @@
 		C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1822C047DA200C5E23F /* RefundModel.swift */; };
 		C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1842C051A3500C5E23F /* BalanceController.swift */; };
 		C60EA1872C051ADC00C5E23F /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1862C051ADC00C5E23F /* BalanceModel.swift */; };
+		C689A8D32C0E142D00879FDA /* CreateInvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */; };
+		C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A762C1990E900F242F5 /* UserDetailView.swift */; };
+		C68D4A792C199D9800F242F5 /* AvatarViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +113,9 @@
 		C60EA1822C047DA200C5E23F /* RefundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundModel.swift; sourceTree = "<group>"; };
 		C60EA1842C051A3500C5E23F /* BalanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceController.swift; sourceTree = "<group>"; };
 		C60EA1862C051ADC00C5E23F /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
+		C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvitationView.swift; sourceTree = "<group>"; };
+		C68D4A762C1990E900F242F5 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
+		C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewProfile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +252,8 @@
 				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
 				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
 				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
+				C68D4A762C1990E900F242F5 /* UserDetailView.swift */,
+				C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */,
 			);
 			path = UserViews;
 			sourceTree = "<group>";
@@ -259,6 +267,7 @@
 				C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */,
 				C60EA1722C0162A000C5E23F /* InvitationsView.swift */,
 				C60EA1762C02A6C200C5E23F /* EditGroupView.swift */,
+				C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */,
 			);
 			path = GroupViews;
 			sourceTree = "<group>";
@@ -437,6 +446,7 @@
 				C60EA1732C0162A000C5E23F /* InvitationsView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
 				C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */,
+				C689A8D32C0E142D00879FDA /* CreateInvitationView.swift in Sources */,
 				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
 				C60EA16F2C011D9400C5E23F /* ExpenseController.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
@@ -447,6 +457,7 @@
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
+				C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
 				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,
@@ -461,6 +472,7 @@
 				C60EA1392BFE6D9800C5E23F /* RefundsView.swift in Sources */,
 				C60EA1462C00C78B00C5E23F /* UserModel.swift in Sources */,
 				C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */,
+				C68D4A792C199D9800F242F5 /* AvatarViewProfile.swift in Sources */,
 				C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */,
 				C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */,
 			);

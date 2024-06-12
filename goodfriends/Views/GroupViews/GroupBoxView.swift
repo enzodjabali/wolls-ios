@@ -9,16 +9,16 @@ struct GroupBoxView: View {
 
         switch group.theme {
         case "city":
-            backgroundImageName = "group-theme-city"
-            overlayColor = Color.blue.opacity(0.3)
+            backgroundImageName = "group-theme-city-dark"
+            overlayColor = Color.blue.opacity(0.0)
         case "desert":
-            backgroundImageName = "group-theme-desert"
-            overlayColor = Color.orange.opacity(0.3)
+            backgroundImageName = "group-theme-desert-dark"
+            overlayColor = Color.orange.opacity(0.0)
         case "forest":
-            backgroundImageName = "group-theme-forest"
-            overlayColor = Color.green.opacity(0.3)
+            backgroundImageName = "group-theme-forest-dark"
+            overlayColor = Color.green.opacity(0.0)
         default:
-            backgroundImageName = "group-theme-city" // default theme
+            backgroundImageName = "group-theme-city-light" // default theme
             overlayColor = Color.blue.opacity(0.3)
         }
 
