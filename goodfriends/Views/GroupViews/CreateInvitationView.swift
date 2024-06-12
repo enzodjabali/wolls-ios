@@ -1,4 +1,3 @@
-import Foundation
 import SwiftUI
 
 struct CreateInvitationView: View {
@@ -9,8 +8,7 @@ struct CreateInvitationView: View {
     @State private var createError: String?
     @State private var userStatuses: [UserStatus] = []
     @State private var showSuccessAlert = false
-    @State private var showPendingAlert = false
-    @State private var pendingUser: UserStatus?
+    @State private var pendingUser: UserStatus? // Removed showPendingAlert
     @State private var showUserDetail = false
     @State private var selectedUserId: String?
     @State private var selectedUser: User?
@@ -48,8 +46,7 @@ struct CreateInvitationView: View {
                     Section(header: Text("Pending Invitations")) {
                         List(pendingMembers, id: \.id) { user in
                             Button(action: {
-                                pendingUser = user
-                                showPendingAlert = true
+                                pendingUser = user // Set the pendingUser
                             }) {
                                 HStack {
                                     Text(user.pseudonym)
@@ -58,6 +55,18 @@ struct CreateInvitationView: View {
                                         .foregroundColor(.orange)
                                 }
                             }
+                        }
+                        .alert(isPresented: Binding<Bool>(
+                            get: { pendingUser != nil },
+                            set: { if !$0 { pendingUser = nil } } // Reset pendingUser when alert is dismissed
+                        )) {
+                            Alert(
+                                title: Text("Pending Invitation"),
+                                message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expenses."),
+                                dismissButton: .default(Text("OK")) {
+                                    pendingUser = nil // Reset pendingUser when alert is dismissed
+                                }
+                            )
                         }
                     }
                 }
@@ -118,13 +127,6 @@ struct CreateInvitationView: View {
             Alert(
                 title: Text("Invitations Sent"),
                 message: Text("The invitations have been successfully sent."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-        .alert(isPresented: $showPendingAlert) {
-            Alert(
-                title: Text("Pending Invitation"),
-                message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expense."),
                 dismissButton: .default(Text("OK"))
             )
         }
