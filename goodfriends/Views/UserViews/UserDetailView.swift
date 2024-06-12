@@ -9,21 +9,23 @@ struct UserDetailView: View {
             VStack(spacing: 16) {
                 Spacer() // Pushes content to the top
                 
-                AvatarView(initials: userInitials(user))
-                    .frame(width: 100, height: 100)
+                AvatarViewProfile(initials: userInitials(user))
+                    .frame(width: 200, height: 200)
                     .background(
                         LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.8), Color.white.opacity(0.4)]), startPoint: .bottom, endPoint: .top)
                             .clipShape(Circle())
                     )
                 
-                Text(user.pseudonym)
-                    .font(.title)
-                    .fontWeight(.bold)
-                
                 if let firstname = user.firstname, let lastname = user.lastname {
                     Text("\(firstname) \(lastname)")
-                        .font(.subheadline)
+                        .font(.title)
+                        .fontWeight(.bold)
                 }
+                
+                Text("@" + user.pseudonym)
+                    .font(.subheadline)
+                    .foregroundColor(.gray)
+                    .padding(.top, -10)
                 
                 if let email = user.email {
                     Text("Email: \(email)")
