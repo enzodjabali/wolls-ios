@@ -3,6 +3,9 @@ import SwiftUI
 struct SidebarView: View {
     let user: User
     @Binding var isLoggedIn: Bool // Add binding to update login status
+    @State private var showAlert = false
+    @State private var alertMessage = ""
+    @State private var showDeleteConfirmation = false
 
     var body: some View {
         List {
@@ -33,7 +36,7 @@ struct SidebarView: View {
                             .foregroundColor(.gray)
                     }
                 }
-                
+
                 NavigationLink(destination: EditIbanView(iban: user.iban ?? "")) {
                     VStack(alignment: .leading) {
                         Text("IBAN")
@@ -48,7 +51,7 @@ struct SidebarView: View {
                         }
                     }
                 }
-                
+
                 NavigationLink(destination: EditPasswordView()) {
                     VStack(alignment: .leading) {
                         Text("Password")
@@ -60,6 +63,23 @@ struct SidebarView: View {
             }
 
             Section {
+                Button(action: {
+                    showDeleteConfirmation = true
+                }) {
+                    Label("Delete Account", systemImage: "trash")
+                        .foregroundColor(.red)
+                }
+                .alert(isPresented: $showDeleteConfirmation) {
+                    Alert(
+                        title: Text("Delete Account"),
+                        message: Text("Are you sure you want to delete your account? This action is irreversible."),
+                        primaryButton: .destructive(Text("Delete")) {
+                            deleteUserAccount()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+
                 Button(action: {
                     // Handle settings action
                 }) {
@@ -77,5 +97,26 @@ struct SidebarView: View {
         }
         .listStyle(SidebarListStyle())
         .navigationTitle("Menu")
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+    }
+
+    private func deleteUserAccount() {
+        UserController.shared.deleteAccount { result in
+            switch result {
+            case .success:
+                isLoggedIn = false // Update login status
+            case .failure(let error):
+                switch error {
+                case .ownsGroups(let groups):
+                    let groupNames = groups.map { $0.name }.joined(separator: ", ")
+                    alertMessage = "You need to delete your groups (\(groupNames)) before deleting your account."
+                default:
+                    alertMessage = error.localizedDescription
+                }
+                showAlert = true
+            }
+        }
     }
 }

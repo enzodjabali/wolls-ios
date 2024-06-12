@@ -22,6 +22,13 @@ struct User: Identifiable, Decodable {
     }
 }
 
+// This is used for the delete account
+enum UserDeletionError: Error {
+    case network(Error)
+    case ownsGroups([Group])
+    case unknown
+}
+
 struct UserStatus: Codable {
     let id: String
     let pseudonym: String

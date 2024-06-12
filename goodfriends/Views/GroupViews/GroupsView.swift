@@ -179,8 +179,8 @@ struct GroupsView: View {
                     // Save user ID to UserSession
                     UserSession.shared.userId = currentUser.id
                     self.currentUser = currentUser
-                    let firstNameInitial = currentUser.firstname?.first ?? Character("")
-                    let lastNameInitial = currentUser.lastname?.first ?? Character("")
+                    let firstNameInitial = currentUser.firstname?.first ?? Character("?")
+                    let lastNameInitial = currentUser.lastname?.first ?? Character("?")
                     currentUserInitials = "\(firstNameInitial)\(lastNameInitial)"
                     fetchInvitationCount() // Fetch invitation count after fetching the current user
                 case .failure(let error):

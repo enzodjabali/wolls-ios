@@ -469,4 +469,47 @@ class UserController {
             }
         }.resume()
     }
+    
+    func deleteAccount(completion: @escaping (Result<Void, UserDeletionError>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/users") else {
+            completion(.failure(.unknown))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.network(error)))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.unknown))
+                return
+            }
+
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                UserDefaults.standard.removeObject(forKey: "userToken")
+                completion(.success(()))
+            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 403 {
+                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let groupsData = jsonResponse["groups"] as? [[String: Any]] {
+                    let groups = groupsData.compactMap { groupDict -> Group? in
+                        guard let id = groupDict["group_id"] as? String,
+                              let name = groupDict["group_name"] as? String else { return nil }
+                        return Group(_id: id, name: name, description: "", theme: "")
+                    }
+                    completion(.failure(.ownsGroups(groups)))
+                } else {
+                    completion(.failure(.unknown))
+                }
+            } else {
+                completion(.failure(.unknown))
+            }
+        }.resume()
+    }
 }
