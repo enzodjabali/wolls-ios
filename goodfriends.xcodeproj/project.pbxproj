@@ -48,6 +48,7 @@
 		C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1842C051A3500C5E23F /* BalanceController.swift */; };
 		C60EA1872C051ADC00C5E23F /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1862C051ADC00C5E23F /* BalanceModel.swift */; };
 		C689A8D32C0E142D00879FDA /* CreateInvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */; };
+		C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A762C1990E900F242F5 /* UserDetailView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		C60EA1842C051A3500C5E23F /* BalanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceController.swift; sourceTree = "<group>"; };
 		C60EA1862C051ADC00C5E23F /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
 		C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvitationView.swift; sourceTree = "<group>"; };
+		C68D4A762C1990E900F242F5 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,6 +250,7 @@
 				C60EA16C2C011AFF00C5E23F /* EditPasswordView.swift */,
 				C60EA12F2BFE576D00C5E23F /* RegisterView.swift */,
 				C60EA12D2BFE548100C5E23F /* LoginView.swift */,
+				C68D4A762C1990E900F242F5 /* UserDetailView.swift */,
 			);
 			path = UserViews;
 			sourceTree = "<group>";
@@ -451,6 +454,7 @@
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
+				C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
 				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,

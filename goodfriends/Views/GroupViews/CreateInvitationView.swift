@@ -11,6 +11,10 @@ struct CreateInvitationView: View {
     @State private var showSuccessAlert = false
     @State private var showPendingAlert = false
     @State private var pendingUser: UserStatus?
+    @State private var showUserDetail = false
+    @State private var selectedUserId: String?
+    @State private var selectedUser: User?
+    
     var groupId: String
     var onCreate: () -> Void
     
@@ -24,7 +28,9 @@ struct CreateInvitationView: View {
                 Section(header: Text("Members")) {
                     List(members, id: \.id) { user in
                         Button(action: {
-                            // Navigate to member details
+                            selectedUserId = user.id
+                            showUserDetail = true
+                            fetchUserDetails(userId: user.id)
                         }) {
                             HStack {
                                 Text(user.pseudonym)
@@ -35,10 +41,6 @@ struct CreateInvitationView: View {
                                     .foregroundColor(.green)
                             }
                         }
-                        .background(
-                            NavigationLink("", destination: Text("Hello World"))
-                                .opacity(0)
-                        )
                     }
                 }
                 
@@ -126,6 +128,11 @@ struct CreateInvitationView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
+        .sheet(isPresented: $showUserDetail) {
+            if let selectedUser = selectedUser {
+                UserDetailView(user: selectedUser)
+            }
+        }
     }
 
     func fetchUserStatuses() {
@@ -156,19 +163,17 @@ struct CreateInvitationView: View {
                 filteredUsers.append(status)
             }
         }
-        searchUsers() // Update the filtered users list based on search criteria
+        searchUsers() // Update search results with the new data
     }
 
     func searchUsers() {
-        let searchText = searchPseudonym.lowercased()
-        
-        if searchText.isEmpty {
+        if searchPseudonym.isEmpty {
             filteredUsers = userStatuses.filter { status in
-                return !status.hasAcceptedInvitation && !status.hasPendingInvitation
+                !status.hasAcceptedInvitation && !status.hasPendingInvitation
             }
         } else {
             filteredUsers = userStatuses.filter { status in
-                return !status.hasAcceptedInvitation && !status.hasPendingInvitation && status.pseudonym.lowercased().contains(searchText)
+                !status.hasAcceptedInvitation && !status.hasPendingInvitation && status.pseudonym.lowercased().contains(searchPseudonym.lowercased())
             }
         }
     }
@@ -192,6 +197,19 @@ struct CreateInvitationView: View {
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
                     createError = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func fetchUserDetails(userId: String) {
+        UserController.shared.fetchUserDetails(userId: userId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self.selectedUser = user
+                case .failure(let error):
+                    self.createError = error.localizedDescription
                 }
             }
         }
