@@ -3,7 +3,8 @@ import SwiftUI
 struct UserDetailView: View {
     var user: User
     @Environment(\.presentationMode) var presentationMode
-    
+    @State private var copiedIBAN = false
+
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
@@ -34,9 +35,34 @@ struct UserDetailView: View {
                 }
                 
                 if let iban = user.iban {
-                    Text("IBAN: \(iban)")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    if !iban.isEmpty {
+                        Text("IBAN: \(iban)")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                    } else {
+                        Text("IBAN not provided by the user.")
+                            .font(.subheadline)
+                            .foregroundColor(.orange)
+                    }
+                }
+                
+                if let iban = user.iban, !iban.isEmpty {
+                    Button(action: {
+                        UIPasteboard.general.string = iban
+                        copiedIBAN = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            copiedIBAN = false
+                        }
+                    }) {
+                        Text("Copy IBAN")
+                            .foregroundColor(.blue)
+                    }
+                    .alert(isPresented: $copiedIBAN) {
+                        Alert(
+                            title: Text("IBAN Copied"),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    }
                 }
                 
                 Spacer() // Pushes content to the top
