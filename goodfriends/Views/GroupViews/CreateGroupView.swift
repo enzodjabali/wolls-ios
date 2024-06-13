@@ -105,7 +105,7 @@ struct CreateGroupView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let newGroup):
-                    onCreate(newGroup)
+                    onCreate(newGroup) // Call onCreate with the newGroup
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
                     createError = error.localizedDescription

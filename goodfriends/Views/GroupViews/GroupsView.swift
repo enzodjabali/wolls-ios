@@ -162,7 +162,7 @@ struct GroupsView: View {
                 )
                 .sheet(isPresented: $showCreateGroupSheet) {
                     CreateGroupView { newGroup in
-                        groups.append(newGroup)
+                        groups.insert(newGroup, at: 0) // Prepend newGroup to the groups array
                     }
                 }
             }
