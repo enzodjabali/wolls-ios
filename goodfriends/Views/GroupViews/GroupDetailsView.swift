@@ -7,8 +7,8 @@ struct GroupDetailsView: View {
     @State private var isEditing = false
     @State private var isInviting = false
     
-    init(groupId: String, groupName: String, groupDescription: String) {
-        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription))
+    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String) {
+        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription, createdAt: groupCreatedAt))
     }
     
     var body: some View {
@@ -63,11 +63,13 @@ class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
     @Published var groupName: String
     @Published var groupDescription: String
+    @Published var createdAt: String // Store createdAt as String
 
-    init(groupId: String, groupName: String, groupDescription: String) {
+    init(groupId: String, groupName: String, groupDescription: String, createdAt: String) {
         self.groupId = groupId
         self.groupName = groupName
         self.groupDescription = groupDescription
+        self.createdAt = createdAt
     }
     
     func updateGroupName(_ newName: String) {

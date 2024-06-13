@@ -501,7 +501,7 @@ class UserController {
                     let groups = groupsData.compactMap { groupDict -> Group? in
                         guard let id = groupDict["group_id"] as? String,
                               let name = groupDict["group_name"] as? String else { return nil }
-                        return Group(_id: id, name: name, description: "", theme: "")
+                        return Group(_id: id, name: name, description: "", theme: "", createdAt: "")
                     }
                     completion(.failure(.ownsGroups(groups)))
                 } else {
