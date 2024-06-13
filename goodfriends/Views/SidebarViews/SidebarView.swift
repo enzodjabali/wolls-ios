@@ -6,6 +6,7 @@ struct SidebarView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var showDeleteConfirmation = false
+    @State private var ownedGroups: [Group] = []
 
     var body: some View {
         List {
@@ -64,20 +65,28 @@ struct SidebarView: View {
 
             Section {
                 Button(action: {
-                    showDeleteConfirmation = true
+                    deleteUserAccount()
                 }) {
                     Label("Delete Account", systemImage: "trash")
                         .foregroundColor(.red)
                 }
-                .alert(isPresented: $showDeleteConfirmation) {
-                    Alert(
-                        title: Text("Delete Account"),
-                        message: Text("Are you sure you want to delete your account? This action is irreversible."),
-                        primaryButton: .destructive(Text("Delete")) {
-                            deleteUserAccount()
-                        },
-                        secondaryButton: .cancel()
-                    )
+                .alert(isPresented: $showAlert) {
+                    if !ownedGroups.isEmpty {
+                        return Alert(
+                            title: Text("Cannot Delete Account"),
+                            message: Text("You need to delete your groups before deleting your account:\n" + ownedGroups.map { "- \($0.name)" }.joined(separator: "\n")),
+                            dismissButton: .default(Text("OK"))
+                        )
+                    } else {
+                        return Alert(
+                            title: Text("Delete Account"),
+                            message: Text("Are you sure you want to delete your account? This action is irreversible."),
+                            primaryButton: .destructive(Text("Delete")) {
+                                deleteUserAccount()
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
                 }
 
                 Button(action: {
@@ -110,12 +119,12 @@ struct SidebarView: View {
             case .failure(let error):
                 switch error {
                 case .ownsGroups(let groups):
-                    let groupNames = groups.map { $0.name }.joined(separator: ", ")
-                    alertMessage = "You need to delete your groups (\(groupNames)) before deleting your account."
+                    ownedGroups = groups
+                    showAlert = true
                 default:
                     alertMessage = error.localizedDescription
+                    showAlert = true
                 }
-                showAlert = true
             }
         }
     }
