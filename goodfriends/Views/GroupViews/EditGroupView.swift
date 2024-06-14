@@ -5,23 +5,34 @@ struct EditGroupView: View {
     @Binding var isEditing: Bool
     @State private var newName: String
     @State private var newDescription: String
+    @State private var createdAtDate: Date? // New state variable for createdAt
+
     @State private var editError: String?
     @Environment(\.presentationMode) var presentationMode
-    
+
     init(viewModel: GroupDetailsViewModel, isEditing: Binding<Bool>) {
         self._viewModel = ObservedObject(wrappedValue: viewModel)
         self._isEditing = isEditing
         self._newName = State(initialValue: viewModel.groupName)
         self._newDescription = State(initialValue: viewModel.groupDescription)
+        self._createdAtDate = State(initialValue: DateFormatter.iso8601Full.date(from: viewModel.createdAt)) // Initialize createdAtDate
     }
-    
+
     var body: some View {
         Form {
-            Section(header: Text("New Name")) {
+            Section(header: Text("Name")) {
                 TextField("Enter new name", text: $newName)
             }
-            Section(header: Text("New Description")) {
+            Section(header: Text("Description")) {
                 TextField("Enter new description", text: $newDescription)
+            }
+            Section(header: Text("Creation Date")) {
+                if let createdAtDate = createdAtDate {
+                    Text("\(createdAtDate, formatter: dateFormatter)")
+                        .foregroundColor(.gray) // Make the text look disabled
+                } else {
+                    Text("Invalid date")
+                }
             }
             if let error = editError {
                 Text(error)
@@ -33,7 +44,7 @@ struct EditGroupView: View {
             editGroup()
         })
     }
-    
+
     func editGroup() {
         GroupController.shared.editGroup(groupId: viewModel.groupId, newName: newName, newDescription: newDescription) { result in
             DispatchQueue.main.async {
@@ -49,4 +60,22 @@ struct EditGroupView: View {
             }
         }
     }
+
+    // DateFormatter to format createdAtDate
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter
+    }()
+}
+
+extension DateFormatter {
+    static let iso8601Full: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
 }

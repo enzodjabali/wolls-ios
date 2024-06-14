@@ -58,7 +58,7 @@ struct GroupsView: View {
                             } else {
                                 List {
                                     ForEach(groups) { group in
-                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description)) {
+                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description ?? "", groupCreatedAt: group.createdAt ?? "")) {
                                             GroupBoxView(group: group)
                                         }
                                     }
@@ -162,7 +162,7 @@ struct GroupsView: View {
                 )
                 .sheet(isPresented: $showCreateGroupSheet) {
                     CreateGroupView { newGroup in
-                        groups.append(newGroup)
+                        groups.insert(newGroup, at: 0) // Prepend newGroup to the groups array
                     }
                 }
             }
@@ -179,8 +179,8 @@ struct GroupsView: View {
                     // Save user ID to UserSession
                     UserSession.shared.userId = currentUser.id
                     self.currentUser = currentUser
-                    let firstNameInitial = currentUser.firstname?.first ?? Character("")
-                    let lastNameInitial = currentUser.lastname?.first ?? Character("")
+                    let firstNameInitial = currentUser.firstname?.first ?? Character("?")
+                    let lastNameInitial = currentUser.lastname?.first ?? Character("?")
                     currentUserInitials = "\(firstNameInitial)\(lastNameInitial)"
                     fetchInvitationCount() // Fetch invitation count after fetching the current user
                 case .failure(let error):
