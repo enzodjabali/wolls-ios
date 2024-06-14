@@ -4,6 +4,7 @@ struct SidebarView: View {
     let user: User
     @Binding var isLoggedIn: Bool
     @State private var showAlert = false
+    @State private var alertMessageTitle = ""
     @State private var alertMessage = ""
     @State private var showDeleteConfirmation = false
     @State private var ownedGroups: [Group] = []
@@ -20,10 +21,10 @@ struct SidebarView: View {
                     }
                 }
 
-                NavigationLink(destination: EditUsernameView(username: user.pseudonym ?? "")) {
+                NavigationLink(destination: EditUsernameView(username: user.pseudonym)) {
                     VStack(alignment: .leading) {
                         Text("Username")
-                        Text(user.pseudonym ?? "")
+                        Text(user.pseudonym)
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -86,7 +87,7 @@ struct SidebarView: View {
                 }
             }
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Hold on!"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                Alert(title: Text(alertMessageTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
         }
         .listStyle(SidebarListStyle())
@@ -113,6 +114,7 @@ struct SidebarView: View {
                     print("Owned groups fetched: \(groups)")
                     if !groups.isEmpty {
                         ownedGroups = groups
+                        alertMessageTitle = "Hold on!"
                         alertMessage = "You need to delete your groups before deleting your account:\n" + ownedGroups.map { "- \($0.name)" }.joined(separator: "\n")
                         print("Alert message: \(alertMessage)") // Debug statement
                         showAlert = true
@@ -123,6 +125,7 @@ struct SidebarView: View {
                     }
                 case .failure(let error):
                     print("Error fetching owned groups: \(error.localizedDescription)")
+                    alertMessageTitle = "Error"
                     alertMessage = "Error fetching owned groups: \(error.localizedDescription)"
                     showAlert = true
                 }
@@ -140,6 +143,7 @@ struct SidebarView: View {
                     isLoggedIn = false // Update login status
                 case .failure(let error):
                     print("Error deleting account: \(error.localizedDescription)")
+                    alertMessageTitle = "Error"
                     alertMessage = error.localizedDescription
                     showAlert = true
                 }
