@@ -472,33 +472,32 @@ class UserController {
     
     func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let userId = UserSession.shared.userId,
-              let url = URL(string: "\(API.baseURL)/v1/users/\(userId)") else {
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL, user ID, or token"])))
+              let url = URL(string: "\(API.baseURL)/v1/users") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue(token, forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
-            guard let data = data else {
-                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid server response"])))
                 return
             }
-
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 204 {
+            
+            switch httpResponse.statusCode {
+            case 200:
                 completion(.success(()))
-            } else {
-                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let errorMessage = jsonResponse["error"] as? String {
+            default:
+                if let data = data,
+                   let errorMessage = String(data: data, encoding: .utf8) {
                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
                 } else {
                     completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to delete account"])))
