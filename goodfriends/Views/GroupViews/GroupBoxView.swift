@@ -7,7 +7,7 @@ struct GroupBoxView: View {
         let backgroundImageName: String
         let overlayColor: Color
 
-        switch group.theme {
+        switch group.theme ?? "" {
         case "city":
             backgroundImageName = "group-theme-city-dark"
             overlayColor = Color.blue.opacity(0.0)
@@ -40,11 +40,19 @@ struct GroupBoxView: View {
                     .padding([.top, .leading], 8)
                     .shadow(radius: 3)
 
-                Text(group.description)
-                    .font(.subheadline)
-                    .foregroundColor(.white)
-                    .padding([.leading, .bottom], 8)
-                    .shadow(radius: 3)
+                if let description = group.description {
+                    Text(description)
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding([.leading, .bottom], 8)
+                        .shadow(radius: 3)
+                } else {
+                    Text("No description available")
+                        .font(.subheadline)
+                        .foregroundColor(.white)
+                        .padding([.leading, .bottom], 8)
+                        .shadow(radius: 3)
+                }
             }
         }
         .frame(height: 150)

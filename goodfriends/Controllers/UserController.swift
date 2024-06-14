@@ -470,45 +470,39 @@ class UserController {
         }.resume()
     }
     
-    func deleteAccount(completion: @escaping (Result<Void, UserDeletionError>) -> Void) {
+    func deleteAccount(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "\(API.baseURL)/v1/users") else {
-            completion(.failure(.unknown))
+              let userId = UserSession.shared.userId,
+              let url = URL(string: "\(API.baseURL)/v1/users/\(userId)") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL, user ID, or token"])))
             return
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue(token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
-                completion(.failure(.network(error)))
+                completion(.failure(error))
                 return
             }
 
             guard let data = data else {
-                completion(.failure(.unknown))
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 return
             }
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                UserDefaults.standard.removeObject(forKey: "userToken")
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 204 {
                 completion(.success(()))
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 403 {
-                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let groupsData = jsonResponse["groups"] as? [[String: Any]] {
-                    let groups = groupsData.compactMap { groupDict -> Group? in
-                        guard let id = groupDict["group_id"] as? String,
-                              let name = groupDict["group_name"] as? String else { return nil }
-                        return Group(_id: id, name: name, description: "", theme: "", createdAt: "")
-                    }
-                    completion(.failure(.ownsGroups(groups)))
-                } else {
-                    completion(.failure(.unknown))
-                }
             } else {
-                completion(.failure(.unknown))
+                if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let errorMessage = jsonResponse["error"] as? String {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                } else {
+                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to delete account"])))
+                }
             }
         }.resume()
     }
