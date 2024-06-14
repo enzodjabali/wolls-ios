@@ -124,6 +124,7 @@ struct SidebarView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
+                    UserController.shared.signOut()
                     isLoggedIn = false // Update login status after successful deletion
                 case .failure(let error):
                     showAlert(title: "Error", message: error.localizedDescription)
