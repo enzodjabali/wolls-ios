@@ -85,6 +85,9 @@ struct SidebarView: View {
                     Label("Sign Out", systemImage: "arrowshape.turn.up.left")
                 }
             }
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Hold on!"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
         }
         .listStyle(SidebarListStyle())
         .navigationTitle("Menu")
@@ -98,10 +101,6 @@ struct SidebarView: View {
                 },
                 secondaryButton: .cancel()
             )
-        }
-        
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text("Owned Groups"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
 
