@@ -7,7 +7,7 @@ struct SidebarView: View {
     @State private var alertMessage = ""
     @State private var showAlert = false
     @State private var showDeleteConfirmation = false
-    @State private var ownedGroups: [Group] = []
+    @State private var onlyAdminGroups: [Group] = []
     
     var body: some View {
         List {
@@ -66,30 +66,25 @@ struct SidebarView: View {
             
             Section {
                 Button(action: {
-                    checkOnlyAdminGroups()
-                }) {
-                    Label("Delete Account", systemImage: "trash")
-                        .foregroundColor(.red)
-                }
-                
-                Button(action: {
-                    // Handle settings action
-                }) {
-                    Label("Settings", systemImage: "gear")
-                }
-                
-                Button(action: {
                     // Handle sign out action
                     UserController.shared.signOut()
                     isLoggedIn = false // Update login status
                 }) {
                     Label("Sign Out", systemImage: "arrowshape.turn.up.left")
+                        .foregroundColor(.blue)
+                }
+                
+                Button(action: {
+                    checkOnlyAdminGroups()
+                }) {
+                    Label("Delete Account", systemImage: "trash")
+                        .foregroundColor(.red)
                 }
             }
             .alert(isPresented: $showDeleteConfirmation) {
                 Alert(
                     title: Text("Delete Account"),
-                    message: Text("Are you sure you want to delete your account? This action is irreversible."),
+                    message: Text("Are you sure you want to delete your account? This will permanently erase your account."),
                     primaryButton: .destructive(Text("Delete")) {
                         deleteUserAccount()
                     },
@@ -110,15 +105,15 @@ struct SidebarView: View {
                 switch result {
                 case .success(let groups):
                     if !groups.isEmpty {
-                        ownedGroups = groups
+                        onlyAdminGroups = groups
                         alertMessageTitle = "Hold on!"
-                        alertMessage = "You need to delete your groups before deleting your account:\n" + ownedGroups.map { "- \($0.name)" }.joined(separator: "\n")
+                        alertMessage = "You are the only administrator of the following groups:\n" + onlyAdminGroups.map { "- \($0.name)" }.joined(separator: "\n") + " \n\nYou need to either delete them or make another user administrator before deleting your account."
                         showAlert = true
                     } else {
                         showDeleteConfirmation = true
                     }
                 case .failure(let error):
-                    showAlert(title: "Error", message: "Error fetching owned groups: \(error.localizedDescription)")
+                    showAlert(title: "Error", message: "Error fetching the groups: \(error.localizedDescription)")
                 }
             }
         }
