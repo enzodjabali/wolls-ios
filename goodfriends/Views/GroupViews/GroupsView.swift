@@ -58,7 +58,7 @@ struct GroupsView: View {
                             } else {
                                 List {
                                     ForEach(groups) { group in
-                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description ?? "", groupCreatedAt: group.createdAt ?? "")) {
+                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description ?? "", groupCreatedAt: group.createdAt ?? "", administrators: group.administrators ?? [])) {
                                             GroupBoxView(group: group)
                                         }
                                     }

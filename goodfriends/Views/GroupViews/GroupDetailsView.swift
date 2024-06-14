@@ -7,8 +7,8 @@ struct GroupDetailsView: View {
     @State private var isEditing = false
     @State private var isInviting = false
     
-    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String) {
-        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription, createdAt: groupCreatedAt))
+    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String, administrators: [String]) {
+        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription, createdAt: groupCreatedAt, administrators: administrators))
     }
     
     var body: some View {
@@ -25,6 +25,10 @@ struct GroupDetailsView: View {
         }
         .navigationTitle(viewModel.groupName)
         .navigationBarItems(trailing: HStack {
+            if viewModel.isAdmin {
+                Image(systemName: "person.badge.key")
+                    .imageScale(.large)
+            }
             NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing), isActive: $isEditing) {
                 Button(action: {
                     isEditing.toggle()
@@ -63,13 +67,23 @@ class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
     @Published var groupName: String
     @Published var groupDescription: String
-    @Published var createdAt: String // Store createdAt as String
-
-    init(groupId: String, groupName: String, groupDescription: String, createdAt: String) {
+    @Published var createdAt: String
+    @Published var administrators: [String]
+    
+    private var currentUserId: String? {
+        return UserSession.shared.userId
+    }
+    
+    init(groupId: String, groupName: String, groupDescription: String, createdAt: String, administrators: [String]) {
         self.groupId = groupId
         self.groupName = groupName
         self.groupDescription = groupDescription
         self.createdAt = createdAt
+        self.administrators = administrators
+    }
+    
+    var isAdmin: Bool {
+        return currentUserId != nil && administrators.contains(currentUserId!)
     }
     
     func updateGroupName(_ newName: String) {
