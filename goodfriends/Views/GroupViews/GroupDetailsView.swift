@@ -25,15 +25,11 @@ struct GroupDetailsView: View {
         }
         .navigationTitle(viewModel.groupName)
         .navigationBarItems(trailing: HStack {
-            if viewModel.isAdmin {
-                Image(systemName: "person.badge.key")
-                    .imageScale(.large)
-            }
             NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing), isActive: $isEditing) {
                 Button(action: {
                     isEditing.toggle()
                 }) {
-                    Image(systemName: "gear")
+                    Image(systemName: "info.circle")
                         .imageScale(.large)
                 }
             }
