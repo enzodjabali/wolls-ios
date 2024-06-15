@@ -37,7 +37,7 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-            NavigationLink(destination: CreateInvitationView(groupId: viewModel.groupId, onCreate: {}), isActive: $isInviting) {
+            NavigationLink(destination: CreateInvitationView(groupId: viewModel.groupId, onCreate: {}, administrators: viewModel.administrators), isActive: $isInviting) {
                 Button(action: {
                     isInviting.toggle()
                 }) {

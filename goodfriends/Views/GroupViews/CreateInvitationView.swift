@@ -8,14 +8,16 @@ struct CreateInvitationView: View {
     @State private var createError: String?
     @State private var userStatuses: [UserStatus] = []
     @State private var showSuccessAlert = false
-    @State private var pendingUser: UserStatus? // Removed showPendingAlert
+    @State private var pendingUser: UserStatus?
     @State private var showUserDetail = false
     @State private var selectedUserId: String?
     @State private var selectedUser: User?
     
     var groupId: String
     var onCreate: () -> Void
-    
+    var administrators: [String]
+    var isAdmin: Bool
+
     @State private var members: [UserStatus] = []
     @State private var pendingMembers: [UserStatus] = []
     @State private var usersFetched = false
@@ -32,11 +34,16 @@ struct CreateInvitationView: View {
                         }) {
                             HStack {
                                 Text(user.pseudonym)
+                                if user.id == UserSession.shared.userId {
+                                    Text("(me)")
+                                        .foregroundColor(.gray)
+                                }
                                 Spacer()
-                                Image(systemName: "checkmark")
-                                    .foregroundColor(.green)
-                                Text("Member")
-                                    .foregroundColor(.green)
+                                if administrators.contains(user.id) {
+                                    Image(systemName: "person.badge.key")
+                                } else {
+                                    Image(systemName: "person")
+                                }
                             }
                         }
                     }
@@ -46,7 +53,7 @@ struct CreateInvitationView: View {
                     Section(header: Text("Pending Invitations")) {
                         List(pendingMembers, id: \.id) { user in
                             Button(action: {
-                                pendingUser = user // Set the pendingUser
+                                pendingUser = user
                             }) {
                                 HStack {
                                     Text(user.pseudonym)
@@ -58,37 +65,39 @@ struct CreateInvitationView: View {
                         }
                         .alert(isPresented: Binding<Bool>(
                             get: { pendingUser != nil },
-                            set: { if !$0 { pendingUser = nil } } // Reset pendingUser when alert is dismissed
+                            set: { if !$0 { pendingUser = nil } }
                         )) {
                             Alert(
                                 title: Text("Pending Invitation"),
                                 message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expenses."),
                                 dismissButton: .default(Text("OK")) {
-                                    pendingUser = nil // Reset pendingUser when alert is dismissed
+                                    pendingUser = nil
                                 }
                             )
                         }
                     }
                 }
                 
-                Section(header: Text("Invite Users")) {
-                    TextField("Search users by username", text: $searchPseudonym)
-                        .autocapitalization(.none)
-                        .disableAutocorrection(true)
-                        .onChange(of: searchPseudonym) { _ in
-                            searchUsers()
-                        }
-                    
-                    List(filteredUsers, id: \.id) { user in
-                        Button(action: {
-                            inviteUser(user)
-                        }) {
-                            HStack {
-                                Text(user.pseudonym)
-                                Spacer()
-                                if invitedUsernames.contains(user.pseudonym) {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.blue)
+                if isAdmin {
+                    Section(header: Text("Invite Users")) {
+                        TextField("Search users by username", text: $searchPseudonym)
+                            .autocapitalization(.none)
+                            .disableAutocorrection(true)
+                            .onChange(of: searchPseudonym) { _ in
+                                searchUsers()
+                            }
+                        
+                        List(filteredUsers, id: \.id) { user in
+                            Button(action: {
+                                inviteUser(user)
+                            }) {
+                                HStack {
+                                    Text(user.pseudonym)
+                                    Spacer()
+                                    if invitedUsernames.contains(user.pseudonym) {
+                                        Image(systemName: "checkmark")
+                                            .foregroundColor(.blue)
+                                    }
                                 }
                             }
                         }
@@ -103,7 +112,7 @@ struct CreateInvitationView: View {
                 }
             }
             
-            if !invitedUsernames.isEmpty {
+            if isAdmin && !invitedUsernames.isEmpty {
                 Button(action: {
                     sendInvitations()
                 }) {
@@ -154,7 +163,7 @@ struct CreateInvitationView: View {
     func categorizeUsers() {
         members = []
         pendingMembers = []
-        filteredUsers = [] // Reset filtered users
+        filteredUsers = []
 
         for status in userStatuses {
             if status.hasAcceptedInvitation {
@@ -165,7 +174,7 @@ struct CreateInvitationView: View {
                 filteredUsers.append(status)
             }
         }
-        searchUsers() // Update search results with the new data
+        searchUsers()
     }
 
     func searchUsers() {
