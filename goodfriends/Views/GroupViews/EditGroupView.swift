@@ -6,8 +6,9 @@ struct EditGroupView: View {
     @State private var newName: String
     @State private var newDescription: String
     @State private var createdAtDate: Date? // New state variable for createdAt
-
     @State private var editError: String?
+    @State private var deleteError: String?
+    @State private var showDeleteAlert = false
     @Environment(\.presentationMode) var presentationMode
 
     init(viewModel: GroupDetailsViewModel, isEditing: Binding<Bool>) {
@@ -22,9 +23,11 @@ struct EditGroupView: View {
         Form {
             Section(header: Text("Name")) {
                 TextField("Enter new name", text: $newName)
+                    .disabled(!isAdmin)
             }
             Section(header: Text("Description")) {
                 TextField("Enter new description", text: $newDescription)
+                    .disabled(!isAdmin)
             }
             Section(header: Text("Creation Date")) {
                 if let createdAtDate = createdAtDate {
@@ -38,11 +41,43 @@ struct EditGroupView: View {
                 Text(error)
                     .foregroundColor(.red)
             }
+            if let error = deleteError {
+                Text(error)
+                    .foregroundColor(.red)
+            }
         }
         .navigationTitle("Group")
         .navigationBarItems(trailing: Button("Save") {
             editGroup()
-        })
+        }
+        .disabled(!isAdmin))
+        .alert(isPresented: $showDeleteAlert) {
+            Alert(
+                title: Text("Delete Group"),
+                message: Text("Are you sure you want to delete this group? This action cannot be undone."),
+                primaryButton: .destructive(Text("Delete")) {
+                    deleteGroup()
+                },
+                secondaryButton: .cancel()
+            )
+        }
+        if isAdmin {
+            Button(action: {
+                showDeleteAlert = true
+            }) {
+                Text("Delete Group")
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity)
+            }
+            .padding()
+        }
+    }
+
+    private var isAdmin: Bool {
+        guard let currentUserId = UserSession.shared.userId else {
+            return false
+        }
+        return viewModel.administrators.contains(currentUserId)
     }
 
     func editGroup() {
@@ -56,6 +91,19 @@ struct EditGroupView: View {
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
                     editError = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    func deleteGroup() {
+        GroupController.shared.deleteGroup(groupId: viewModel.groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    presentationMode.wrappedValue.dismiss()
+                case .failure(let error):
+                    deleteError = error.localizedDescription
                 }
             }
         }
