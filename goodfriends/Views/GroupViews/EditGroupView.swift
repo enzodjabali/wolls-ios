@@ -61,6 +61,12 @@ struct EditGroupView: View {
                 secondaryButton: .cancel()
             )
         }
+        if !isAdmin {
+            Text("You are not an administrator of this group and cannot edit it.")
+                .font(.caption)
+                .foregroundColor(.gray)
+                .padding()
+        }
         if isAdmin {
             Button(action: {
                 showDeleteAlert = true
@@ -81,6 +87,11 @@ struct EditGroupView: View {
     }
 
     func editGroup() {
+        guard isAdmin else {
+            editError = "You are not authorized to edit this group."
+            return
+        }
+        
         GroupController.shared.editGroup(groupId: viewModel.groupId, newName: newName, newDescription: newDescription) { result in
             DispatchQueue.main.async {
                 switch result {
@@ -97,6 +108,11 @@ struct EditGroupView: View {
     }
 
     func deleteGroup() {
+        guard isAdmin else {
+            deleteError = "You are not authorized to delete this group."
+            return
+        }
+        
         GroupController.shared.deleteGroup(groupId: viewModel.groupId) { result in
             DispatchQueue.main.async {
                 switch result {
