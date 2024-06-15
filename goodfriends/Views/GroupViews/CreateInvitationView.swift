@@ -16,7 +16,6 @@ struct CreateInvitationView: View {
     var groupId: String
     var onCreate: () -> Void
     var administrators: [String]
-    var isAdmin: Bool
 
     @State private var members: [UserStatus] = []
     @State private var pendingMembers: [UserStatus] = []
@@ -144,6 +143,13 @@ struct CreateInvitationView: View {
                 UserDetailView(user: selectedUser)
             }
         }
+    }
+
+    private var isAdmin: Bool {
+        guard let currentUserId = UserSession.shared.userId else {
+            return false
+        }
+        return administrators.contains(currentUserId)
     }
 
     func fetchUserStatuses() {
