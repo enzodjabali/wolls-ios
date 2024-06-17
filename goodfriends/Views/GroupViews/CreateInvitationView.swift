@@ -15,7 +15,6 @@ struct CreateInvitationView: View {
     
     var groupId: String
     var onCreate: () -> Void
-    var administrators: [String]
 
     @State private var members: [UserStatus] = []
     @State private var pendingMembers: [UserStatus] = []
@@ -38,7 +37,7 @@ struct CreateInvitationView: View {
                                         .foregroundColor(.gray)
                                 }
                                 Spacer()
-                                if administrators.contains(user.id) {
+                                if user.is_administrator {
                                     Image(systemName: "person.badge.key")
                                 } else {
                                     Image(systemName: "person")
@@ -149,7 +148,10 @@ struct CreateInvitationView: View {
         guard let currentUserId = UserSession.shared.userId else {
             return false
         }
-        return administrators.contains(currentUserId)
+        if let currentUserStatus = userStatuses.first(where: { $0.id == currentUserId }) {
+            return currentUserStatus.is_administrator
+        }
+        return false
     }
 
     func fetchUserStatuses() {
