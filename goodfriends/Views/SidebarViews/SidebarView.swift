@@ -91,6 +91,17 @@ struct SidebarView: View {
                     secondaryButton: .cancel()
                 )
             }
+            
+            Section {
+                VStack {
+                    Text("Wolls v1.0")
+                    Text("Made in France")
+                }
+                .font(.footnote)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 10)
+            }
         }
         .listStyle(SidebarListStyle())
         .navigationTitle("Menu")
