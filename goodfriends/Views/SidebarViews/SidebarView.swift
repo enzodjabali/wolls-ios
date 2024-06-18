@@ -49,7 +49,7 @@ struct SidebarView: View {
                         } else {
                             Text("Add your IBAN")
                                 .font(.subheadline)
-                                .foregroundColor(.red)
+                                .foregroundColor(.orange)
                         }
                     }
                 }
@@ -70,14 +70,13 @@ struct SidebarView: View {
                     UserController.shared.signOut()
                     isLoggedIn = false // Update login status
                 }) {
-                    Label("Sign Out", systemImage: "arrowshape.turn.up.left")
-                        .foregroundColor(.blue)
+                    Text("Sign Out")
                 }
                 
                 Button(action: {
                     checkOnlyAdminGroups()
                 }) {
-                    Label("Delete Account", systemImage: "trash")
+                    Text("Delete Account")
                         .foregroundColor(.red)
                 }
             }
