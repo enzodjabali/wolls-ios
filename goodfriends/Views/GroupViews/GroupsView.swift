@@ -166,6 +166,7 @@ struct GroupsView: View {
                     }
                 }
             }
+            .navigationBarBackButtonHidden(true)
         } else {
             LoginView(isLoggedIn: $isLoggedIn)
         }
