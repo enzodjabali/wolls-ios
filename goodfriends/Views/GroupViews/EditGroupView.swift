@@ -39,12 +39,38 @@ struct EditGroupView: View {
                 }
             }
             if let error = editError {
-                Text(error)
-                    .foregroundColor(.red)
+                Section {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
             }
             if let error = deleteError {
-                Text(error)
-                    .foregroundColor(.red)
+                Section {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+            }
+            if !isOnlyAdmin {
+                Section {
+                    Button(action: {
+                        showLeaveAlert = true
+                    }) {
+                        Text("Leave Group")
+                            .foregroundColor(.blue)
+                            .frame(maxWidth: .infinity)
+                    }
+                }
+            }
+            if isAdmin {
+                Section {
+                    Button(action: {
+                        showDeleteAlert = true
+                    }) {
+                        Text("Delete Group")
+                            .foregroundColor(.red)
+                            .frame(maxWidth: .infinity)
+                    }
+                }
             }
         }
         .navigationTitle("Group")
@@ -77,26 +103,6 @@ struct EditGroupView: View {
                 .font(.caption)
                 .foregroundColor(.gray)
                 .padding()
-        }
-        if isAdmin {
-            Button(action: {
-                showDeleteAlert = true
-            }) {
-                Text("Delete Group")
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-            }
-            .padding()
-        }
-        if !isOnlyAdmin {
-            Button(action: {
-                showLeaveAlert = true
-            }) {
-                Text("Leave Group")
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity)
-            }
-            .padding()
         }
     }
 
