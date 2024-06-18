@@ -99,14 +99,33 @@ struct CreateGroupView: View {
             invitedUsers.append(user)
         }
     }
-
+    
     func createGroup() {
+        // Safely unwrap UserSession.shared.userId or provide a default value
+        guard let currentUserId = UserSession.shared.userId else {
+            createError = "User ID not available"
+            return
+        }
+        
+        // Call GroupController to create the group
         GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let newGroup):
-                    onCreate(newGroup) // Call onCreate with the newGroup
+                case .success(var newGroup): // Capture newGroup as mutable
+                    let administrators = [currentUserId] // This assumes currentUserId is of type String
+
+                    // Append administrators to newGroup
+                    if var existingAdministrators = newGroup.administrators {
+                        existingAdministrators.append(contentsOf: administrators)
+                        newGroup.administrators = existingAdministrators
+                    } else {
+                        newGroup.administrators = administrators
+                    }
+                    
+                    // Call onCreate with the updated newGroupFinal
+                    onCreate(newGroup)
                     presentationMode.wrappedValue.dismiss()
+                    
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
