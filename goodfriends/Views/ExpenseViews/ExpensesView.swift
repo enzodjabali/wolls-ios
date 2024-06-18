@@ -53,11 +53,12 @@ struct ExpensesView: View {
                         ZStack {
                             Spacer().containerRelativeFrame([.horizontal, .vertical])
                             VStack {
-                                Image("create-expense")
+                                Image("no-expense")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 150, height: 150)
                                     .foregroundColor(.gray)
+                                    .padding()
 
                                 Text("There isn't any expenses yet.")
                                     .foregroundColor(.gray)
