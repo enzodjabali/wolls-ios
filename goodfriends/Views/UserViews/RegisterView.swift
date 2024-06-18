@@ -12,17 +12,17 @@ struct RegisterView: View {
     
     var body: some View {
         VStack {
-            TextField("First Name", text: $firstname)
+            TextField("First name", text: $firstname)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
                 .disableAutocorrection(true)
             
-            TextField("Last Name", text: $lastname)
+            TextField("Last name", text: $lastname)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
                 .disableAutocorrection(true)
             
-            TextField("Pseudonym", text: $pseudonym)
+            TextField("Username", text: $pseudonym)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .autocapitalization(.none)
                 .padding()
@@ -57,7 +57,7 @@ struct RegisterView: View {
                 Text("Register")
                     .frame(minWidth: 0, maxWidth: .infinity)
                     .padding()
-                    .background(Color.green)
+                    .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
@@ -92,7 +92,4 @@ struct RegisterView: View {
     }
 }
 
-#Preview {
-    RegisterView()
-}
 

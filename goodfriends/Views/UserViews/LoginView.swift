@@ -13,10 +13,15 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Image("login")
+                Image("logo-wolls")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 270, height: 270)
+                    .frame(width: 230, height: 230)
+                
+                Text("Wollscome!")
+                    .font(.custom("Arial Rounded MT Bold", size: 36)) // Custom font and size
+                    .foregroundColor(.blue)
+                    .padding(.top, 20)
 
                 TextField("Username", text: $pseudonym)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -52,7 +57,7 @@ struct LoginView: View {
                 }
             }
             .padding()
-            .navigationTitle("Login")
+            //.navigationTitle("Login")
         }
     }
 

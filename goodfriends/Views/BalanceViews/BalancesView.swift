@@ -36,13 +36,11 @@ struct BalancesView: View {
                             if balance.amount < 0 {
                                 Text(balance.username)
                                     .font(.headline)
-                                    .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
                             } else {
                                 HStack {
                                     Spacer()
                                     Text(balance.username)
                                         .font(.headline)
-                                        .foregroundColor(Color(red: 0.40, green: 0.40, blue: 0.40))
                                 }
                             }
                             
@@ -51,25 +49,26 @@ struct BalancesView: View {
                                     Rectangle()
                                         .fill(Color.red.opacity(0.8)) // Set opacity here
                                         .cornerRadius(5) // Set corner radius here
-                                        .frame(width: CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                        .frame(width: max(CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
                                         .overlay(
                                             Text("\(String(format: "%.2f", balance.amount)) €")
                                                 .font(.subheadline)
                                                 .foregroundColor(.white)
                                         )
+                                        .padding(.horizontal, 5) // Add horizontal padding for better spacing
                                 }
                                 if balance.amount > 0 {
                                     Spacer()
                                     Rectangle()
                                         .fill(Color.green.opacity(0.8)) // Set opacity here
                                         .cornerRadius(5) // Set corner radius here
-                                        .frame(width: CGFloat(balance.amount / maxBalance) * maxBarWidth * 1.5, height: 25)
+                                        .frame(width: max(CGFloat(balance.amount / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
                                         .overlay(
                                             Text("\(String(format: "%.2f", balance.amount)) €")
                                                 .font(.subheadline)
                                                 .foregroundColor(.white)
                                         )
-                                        .padding(.vertical, 5)
+                                        .padding(.horizontal, 5) // Add horizontal padding for better spacing
                                 }
                             }
                         }
