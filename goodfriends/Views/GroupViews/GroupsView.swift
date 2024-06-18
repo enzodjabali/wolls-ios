@@ -16,7 +16,7 @@ struct GroupsView: View {
     @State private var currentUserInitials = ""
     @State private var isSidebarOpen = false
     @State private var invitationCount: Int = 0
-    @State private var showAlert = false
+    @State private var showGroupAlert = false
     @State private var selectedGroup: Group?
     @State private var actionType: ActionType = .none
     @Binding var isLoggedIn: Bool
@@ -74,7 +74,7 @@ struct GroupsView: View {
                                             Button {
                                                 self.selectedGroup = group
                                                 self.actionType = isAdmin(of: group) ? .delete : .leave
-                                                self.showAlert = true
+                                                self.showGroupAlert = true
                                             } label: {
                                                 Text(isAdmin(of: group) ? "Delete" : "Leave")
                                             }
@@ -166,7 +166,7 @@ struct GroupsView: View {
                                     .opacity(isSidebarOpen ? 0 : 1) // Hide when sidebar is open
                             }
                         }
-                        
+
                         // Plus button
                         Button(action: {
                             showCreateGroupSheet.toggle()
@@ -183,7 +183,7 @@ struct GroupsView: View {
                         groups.insert(newGroup, at: 0) // Prepend newGroup to the groups array
                     }
                 }
-                .alert(isPresented: $showAlert) {
+                .alert(isPresented: $showGroupAlert) {
                     if actionType == .delete {
                         return Alert(
                             title: Text("Delete Group"),
@@ -272,6 +272,7 @@ struct GroupsView: View {
             }
         }
     }
+
 
     func leaveGroup(_ group: Group) {
         guard let userId = UserSession.shared.userId else {
