@@ -9,6 +9,7 @@ struct EditGroupView: View {
     @State private var editError: String?
     @State private var deleteError: String?
     @State private var showDeleteAlert = false
+    @State private var showLeaveAlert = false
     @Environment(\.presentationMode) var presentationMode
 
     init(viewModel: GroupDetailsViewModel, isEditing: Binding<Bool>) {
@@ -61,6 +62,16 @@ struct EditGroupView: View {
                 secondaryButton: .cancel()
             )
         }
+        .alert(isPresented: $showLeaveAlert) {
+            Alert(
+                title: Text("Leave Group"),
+                message: Text("Are you sure you want to leave this group?"),
+                primaryButton: .destructive(Text("Leave")) {
+                    leaveGroup()
+                },
+                secondaryButton: .cancel()
+            )
+        }
         if !isAdmin {
             Text("You are not an administrator of this group and cannot edit it.")
                 .font(.caption)
@@ -77,6 +88,16 @@ struct EditGroupView: View {
             }
             .padding()
         }
+        if !isOnlyAdmin {
+            Button(action: {
+                showLeaveAlert = true
+            }) {
+                Text("Leave Group")
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity)
+            }
+            .padding()
+        }
     }
 
     private var isAdmin: Bool {
@@ -84,6 +105,13 @@ struct EditGroupView: View {
             return false
         }
         return viewModel.administrators.contains(currentUserId)
+    }
+    
+    private var isOnlyAdmin: Bool {
+        guard let currentUserId = UserSession.shared.userId else {
+            return false
+        }
+        return viewModel.administrators.count == 1 && viewModel.administrators.contains(currentUserId)
     }
 
     func editGroup() {
@@ -114,6 +142,24 @@ struct EditGroupView: View {
         }
         
         GroupController.shared.deleteGroup(groupId: viewModel.groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    presentationMode.wrappedValue.dismiss()
+                case .failure(let error):
+                    deleteError = error.localizedDescription
+                }
+            }
+        }
+    }
+    
+    func leaveGroup() {
+        guard let userId = UserSession.shared.userId else {
+            deleteError = "User not logged in."
+            return
+        }
+        
+        GroupMembershipController.shared.deleteGroupMembership(groupId: viewModel.groupId, userId: userId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

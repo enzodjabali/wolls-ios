@@ -240,4 +240,30 @@ class GroupMembershipController: ObservableObject {
             }
         }.resume()
     }
+    
+    func deleteGroupMembership(groupId: String, userId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let token = UserDefaults.standard.string(forKey: "userToken"),
+              let url = URL(string: "\(API.baseURL)/v1/groups/memberships/\(groupId)/\(userId)") else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL, token, or userId"])))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue(token, forHTTPHeaderField: "Authorization")
+
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to delete the group membership"])))
+                return
+            }
+
+            completion(.success(()))
+        }.resume()
+    }
 }
