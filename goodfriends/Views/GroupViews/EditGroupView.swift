@@ -60,6 +60,16 @@ struct EditGroupView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
+                .alert(isPresented: $showLeaveAlert) {
+                    Alert(
+                        title: Text("Leave Group"),
+                        message: Text("Are you sure you want to leave this group?"),
+                        primaryButton: .destructive(Text("Leave")) {
+                            leaveGroup()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
             if isAdmin {
                 Section {
@@ -71,6 +81,16 @@ struct EditGroupView: View {
                             .frame(maxWidth: .infinity)
                     }
                 }
+                .alert(isPresented: $showDeleteAlert) {
+                    Alert(
+                        title: Text("Delete Group"),
+                        message: Text("Are you sure you want to delete this group? This action cannot be undone."),
+                        primaryButton: .destructive(Text("Delete")) {
+                            deleteGroup()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
             }
         }
         .navigationTitle("Group")
@@ -78,26 +98,7 @@ struct EditGroupView: View {
             editGroup()
         }
         .disabled(!isAdmin))
-        .alert(isPresented: $showDeleteAlert) {
-            Alert(
-                title: Text("Delete Group"),
-                message: Text("Are you sure you want to delete this group? This action cannot be undone."),
-                primaryButton: .destructive(Text("Delete")) {
-                    deleteGroup()
-                },
-                secondaryButton: .cancel()
-            )
-        }
-        .alert(isPresented: $showLeaveAlert) {
-            Alert(
-                title: Text("Leave Group"),
-                message: Text("Are you sure you want to leave this group?"),
-                primaryButton: .destructive(Text("Leave")) {
-                    leaveGroup()
-                },
-                secondaryButton: .cancel()
-            )
-        }
+
         if !isAdmin {
             Text("You are not an administrator of this group and cannot edit it.")
                 .font(.caption)
