@@ -6,9 +6,11 @@ struct GroupDetailsView: View {
     @State private var selectedTab = 0
     @State private var isEditing = false
     @State private var isInviting = false
+    @Binding var isLoggedIn: Bool // Add the isLoggedIn binding
     
-    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String, administrators: [String]) {
+    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String, administrators: [String], isLoggedIn: Binding<Bool>) {
         _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription, createdAt: groupCreatedAt, administrators: administrators))
+        _isLoggedIn = isLoggedIn // Initialize the binding
     }
     
     var body: some View {
@@ -25,7 +27,7 @@ struct GroupDetailsView: View {
         }
         .navigationTitle(viewModel.groupName)
         .navigationBarItems(trailing: HStack {
-            NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing), isActive: $isEditing) {
+            NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing, isLoggedIn: $isLoggedIn), isActive: $isEditing) {
                 Button(action: {
                     isEditing.toggle()
                 }) {

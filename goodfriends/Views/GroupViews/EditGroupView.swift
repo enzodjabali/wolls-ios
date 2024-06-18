@@ -11,13 +11,16 @@ struct EditGroupView: View {
     @State private var showDeleteAlert = false
     @State private var showLeaveAlert = false
     @Environment(\.presentationMode) var presentationMode
+    @State private var navigateToGroupsView = false // State variable for navigation
+    @Binding var isLoggedIn: Bool
 
-    init(viewModel: GroupDetailsViewModel, isEditing: Binding<Bool>) {
+    init(viewModel: GroupDetailsViewModel, isEditing: Binding<Bool>, isLoggedIn: Binding<Bool>) {
         self._viewModel = ObservedObject(wrappedValue: viewModel)
         self._isEditing = isEditing
         self._newName = State(initialValue: viewModel.groupName)
         self._newDescription = State(initialValue: viewModel.groupDescription)
         self._createdAtDate = State(initialValue: DateFormatter.iso8601Full.date(from: viewModel.createdAt)) // Initialize createdAtDate
+        self._isLoggedIn = isLoggedIn
     }
 
     var body: some View {
@@ -98,7 +101,13 @@ struct EditGroupView: View {
             editGroup()
         }
         .disabled(!isAdmin))
-
+        .background(
+            NavigationLink(
+                destination: GroupsView(isLoggedIn: $isLoggedIn), // Pass the binding
+                isActive: $navigateToGroupsView,
+                label: { EmptyView() }
+            )
+        )
         if !isAdmin {
             Text("You are not an administrator of this group and cannot edit it.")
                 .font(.caption)
@@ -152,7 +161,7 @@ struct EditGroupView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    presentationMode.wrappedValue.dismiss()
+                    navigateToGroupsView = true // Trigger navigation
                 case .failure(let error):
                     deleteError = error.localizedDescription
                 }
@@ -170,7 +179,7 @@ struct EditGroupView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    presentationMode.wrappedValue.dismiss()
+                    navigateToGroupsView = true // Trigger navigation
                 case .failure(let error):
                     deleteError = error.localizedDescription
                 }
