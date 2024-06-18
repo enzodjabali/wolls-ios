@@ -47,11 +47,12 @@ struct GroupsView: View {
                         } else {
                             if groups.isEmpty {
                                 VStack {
-                                    Image("nothing")
+                                    Image("no-group")
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
-                                        .frame(width: 250, height: 250)
+                                        .frame(width: 200, height: 200)
                                         .foregroundColor(.gray)
+                                        .padding()
 
                                     Text("You don't have any groups yet.")
                                         .foregroundColor(.gray)
