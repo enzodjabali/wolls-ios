@@ -31,8 +31,8 @@ struct UserDetailView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     // Role Section
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("Role")
-                            .font(.headline)
+                        Text("Status".uppercased())
+                            .font(.subheadline)
                             .foregroundColor(.gray)
                         HStack {
                             if user.is_administrator == true {
@@ -60,8 +60,8 @@ struct UserDetailView: View {
                     // Email Section
                     if let email = user.email {
                         VStack(alignment: .leading, spacing: 5) {
-                            Text("Email")
-                                .font(.headline)
+                            Text("Email".uppercased())
+                                .font(.subheadline)
                                 .foregroundColor(.gray)
                             HStack {
                                 Text(email)
@@ -77,8 +77,8 @@ struct UserDetailView: View {
 
                     // IBAN Section
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("IBAN")
-                            .font(.headline)
+                        Text("IBAN".uppercased())
+                            .font(.subheadline)
                             .foregroundColor(.gray)
                         HStack {
                             if let iban = user.iban, !iban.isEmpty {
@@ -86,7 +86,7 @@ struct UserDetailView: View {
                                     .font(.subheadline)
                                     .foregroundColor(.gray)
                             } else {
-                                Text("IBAN not provided by the user.")
+                                Text("IBAN not provided")
                                     .font(.subheadline)
                                     .foregroundColor(.orange)
                             }
@@ -117,8 +117,8 @@ struct UserDetailView: View {
 
                     // Balance Section
                     VStack(alignment: .leading, spacing: 5) {
-                        Text("Balance")
-                            .font(.headline)
+                        Text("Balance".uppercased())
+                            .font(.subheadline)
                             .foregroundColor(.gray)
                         HStack {
                             if let balance = user.balance {
