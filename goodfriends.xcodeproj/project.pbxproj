@@ -31,7 +31,6 @@
 		C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1562C00D2AB00C5E23F /* AvatarView.swift */; };
 		C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */; };
 		C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1602C00DBA300C5E23F /* EditEmailView.swift */; };
-		C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1622C00DC0700C5E23F /* EditDetailView.swift */; };
 		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
 		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
 		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
@@ -97,7 +96,6 @@
 		C60EA1562C00D2AB00C5E23F /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsView.swift; sourceTree = "<group>"; };
 		C60EA1602C00DBA300C5E23F /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
-		C60EA1622C00DC0700C5E23F /* EditDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailView.swift; sourceTree = "<group>"; };
 		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
 		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -245,7 +243,6 @@
 			isa = PBXGroup;
 			children = (
 				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
-				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
 				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
 				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
 				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
@@ -453,7 +450,6 @@
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
 				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
 				C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */,
-				C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
