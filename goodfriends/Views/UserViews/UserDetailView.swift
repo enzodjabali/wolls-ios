@@ -4,6 +4,7 @@ struct UserDetailView: View {
     var user: User
     @Environment(\.presentationMode) var presentationMode
     @State private var copiedIBAN = false
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         NavigationView {
@@ -21,6 +22,7 @@ struct UserDetailView: View {
                     Text("\(firstname) \(lastname)")
                         .font(.title)
                         .fontWeight(.bold)
+                        .foregroundColor(.primary)
                 }
 
                 Text("@" + user.pseudonym)
@@ -53,27 +55,27 @@ struct UserDetailView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color(UIColor.secondarySystemBackground))
+                        .background(boxBackgroundColor)
                         .cornerRadius(10)
                     }
 
                     // Email Section
-                    if let email = user.email {
-                        VStack(alignment: .leading, spacing: 5) {
-                            Text("Email".uppercased())
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                            HStack {
-                                Text(email)
-                                    .font(.subheadline)
-                                    .foregroundColor(.gray)
-                                Spacer()
-                            }
-                            .padding()
-                            .background(Color(UIColor.secondarySystemBackground))
-                            .cornerRadius(10)
-                        }
-                    }
+                    // if let email = user.email {
+                    //    VStack(alignment: .leading, spacing: 5) {
+                    //        Text("Email".uppercased())
+                    //            .font(.subheadline)
+                    //            .foregroundColor(.gray)
+                    //        HStack {
+                    //            Text(email)
+                    //                .font(.subheadline)
+                    //                .foregroundColor(.gray)
+                    //            Spacer()
+                    //        }
+                    //        .padding()
+                    //        .background(boxBackgroundColor)
+                    //        .cornerRadius(10)
+                    //    }
+                    // }
 
                     // IBAN Section
                     VStack(alignment: .leading, spacing: 5) {
@@ -111,7 +113,7 @@ struct UserDetailView: View {
                             }
                         }
                         .padding()
-                        .background(Color(UIColor.secondarySystemBackground))
+                        .background(boxBackgroundColor)
                         .cornerRadius(10)
                     }
 
@@ -149,7 +151,7 @@ struct UserDetailView: View {
                             Spacer()
                         }
                         .padding()
-                        .background(Color(UIColor.secondarySystemBackground))
+                        .background(boxBackgroundColor)
                         .cornerRadius(10)
                     }
                 }
@@ -158,6 +160,7 @@ struct UserDetailView: View {
                 Spacer() // Pushes content to the top
             }
             .padding()
+            .background(Color(UIColor.systemGray6).edgesIgnoringSafeArea(.all)) // Set the background that adapts to light/dark mode
             .navigationBarTitle("", displayMode: .inline) // Empty title to remove the default title
             .navigationBarItems(leading:
                 Button(action: {
@@ -182,5 +185,9 @@ struct UserDetailView: View {
 
     private var maxBarWidth: CGFloat {
         return 200 // Replace with your desired maximum bar width
+    }
+
+    private var boxBackgroundColor: Color {
+        colorScheme == .dark ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground)
     }
 }
