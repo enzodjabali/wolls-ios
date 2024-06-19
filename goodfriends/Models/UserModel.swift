@@ -29,7 +29,7 @@ struct UserStatus: Codable {
     let pseudonym: String
     let hasAcceptedInvitation: Bool
     let hasPendingInvitation: Bool
-    let is_administrator: Bool
+    var is_administrator: Bool
 
     private enum CodingKeys: String, CodingKey {
         case id = "_id"

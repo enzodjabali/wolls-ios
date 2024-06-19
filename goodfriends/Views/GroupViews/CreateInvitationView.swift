@@ -139,7 +139,7 @@ struct CreateInvitationView: View {
         }
         .sheet(isPresented: $showUserDetail) {
             if let selectedUser = selectedUser {
-                UserDetailView(user: selectedUser)
+                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
             }
         }
     }

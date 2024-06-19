@@ -2,9 +2,18 @@ import SwiftUI
 
 struct UserDetailView: View {
     var user: User
+    var groupId: String
+    @Binding var userStatuses: [UserStatus]
     @Environment(\.presentationMode) var presentationMode
     @State private var copiedIBAN = false
     @Environment(\.colorScheme) var colorScheme
+    @State private var showConfirmationAlert = false
+    @State private var confirmationAction: ConfirmationAction?
+    @State private var createError: String?
+    
+    enum ConfirmationAction {
+        case makeAdmin, revokeAdmin, exclude
+    }
 
     var body: some View {
         NavigationView {
@@ -58,24 +67,6 @@ struct UserDetailView: View {
                         .background(boxBackgroundColor)
                         .cornerRadius(10)
                     }
-
-                    // Email Section
-                    // if let email = user.email {
-                    //    VStack(alignment: .leading, spacing: 5) {
-                    //        Text("Email".uppercased())
-                    //            .font(.subheadline)
-                    //            .foregroundColor(.gray)
-                    //        HStack {
-                    //            Text(email)
-                    //                .font(.subheadline)
-                    //                .foregroundColor(.gray)
-                    //            Spacer()
-                    //        }
-                    //        .padding()
-                    //        .background(boxBackgroundColor)
-                    //        .cornerRadius(10)
-                    //    }
-                    // }
 
                     // IBAN Section
                     VStack(alignment: .leading, spacing: 5) {
@@ -156,7 +147,62 @@ struct UserDetailView: View {
                     }
                 }
                 .padding([.leading, .trailing], 20)
-
+                
+                if isAdmin {
+                    HStack {
+                        if user.is_administrator ?? false {
+                            Button(action: {
+                                confirmationAction = .revokeAdmin
+                                showConfirmationAlert = true
+                            }) {
+                                Text("Revoke Administrator Role")
+                                    .bold()
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.orange)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                        } else {
+                            Button(action: {
+                                confirmationAction = .makeAdmin
+                                showConfirmationAlert = true
+                            }) {
+                                Text("Make User Administrator")
+                                    .bold()
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(Color.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                        }
+                        Button(action: {
+                            confirmationAction = .exclude
+                            showConfirmationAlert = true
+                        }) {
+                            Text("Exclude from Group")
+                                .bold()
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.red)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
+                    .padding()
+                    .alert(isPresented: $showConfirmationAlert) {
+                        Alert(
+                            title: confirmationAction == .exclude ? Text("Exclude User") : Text("Change Administrator Role"),
+                            message: Text(confirmationAction == .exclude ? "Are you sure you want to exclude this user from the group?" : (user.is_administrator ?? false ? "Are you sure you want to revoke the administrator role?" : "Are you sure you want to make this user an administrator?")),
+                            primaryButton: .destructive(Text("Confirm")) {
+                                handleConfirmation()
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
+                }
+                
                 Spacer() // Pushes content to the top
             }
             .padding()
@@ -171,6 +217,61 @@ struct UserDetailView: View {
                 }
             )
         }
+        .alert(isPresented: Binding<Bool>(get: { createError != nil }, set: { if !$0 { createError = nil } })) {
+            Alert(title: Text("Error"), message: Text(createError ?? "An error occurred"), dismissButton: .default(Text("OK")))
+        }
+    }
+
+    private func handleConfirmation() {
+        guard let action = confirmationAction else { return }
+        switch action {
+        case .makeAdmin:
+            updateAdministratorRole(isAdmin: true)
+        case .revokeAdmin:
+            updateAdministratorRole(isAdmin: false)
+        case .exclude:
+            excludeUser()
+        }
+    }
+
+    private func updateAdministratorRole(isAdmin: Bool) {
+        GroupMembershipController.shared.updateGroupMembership(groupId: groupId, userId: user.id, isAdmin: isAdmin) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Update the UI or perform necessary actions upon success
+                    if let userIndex = userStatuses.firstIndex(where: { $0.id == user.id }) {
+                        userStatuses[userIndex].is_administrator = isAdmin
+                    }
+                case .failure(let error):
+                    createError = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private func excludeUser() {
+        GroupMembershipController.shared.deleteGroupMembership(groupId: groupId, userId: user.id) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Handle successful exclusion (e.g., pop the view or refresh the list)
+                    presentationMode.wrappedValue.dismiss()
+                case .failure(let error):
+                    createError = error.localizedDescription
+                }
+            }
+        }
+    }
+
+    private var isAdmin: Bool {
+        guard let currentUserId = UserSession.shared.userId else {
+            return false
+        }
+        if let currentUserStatus = userStatuses.first(where: { $0.id == currentUserId }) {
+            return currentUserStatus.is_administrator
+        }
+        return false
     }
 
     private func userInitials(_ user: User) -> String {
@@ -191,3 +292,4 @@ struct UserDetailView: View {
         colorScheme == .dark ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground)
     }
 }
+
