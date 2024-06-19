@@ -49,6 +49,18 @@ struct GroupBoxView: View {
                         .shadow(radius: 3)
                 }
             }
+            
+            // Overlay the logo at the bottom-left corner using GeometryReader
+            GeometryReader { geometry in
+                Image("logo-wolls") // Your logo image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30) // Adjust size as needed
+                    .position(x: geometry.size.width * 0.1, y: geometry.size.height * 0.9) // Adjust position
+            }
+            .clipped()
+            .padding(.bottom, 8)
+            .padding(.leading, -8)
         }
         .frame(height: 150)
     }
