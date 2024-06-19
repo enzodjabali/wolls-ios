@@ -28,6 +28,22 @@ struct UserDetailView: View {
                     .foregroundColor(.gray)
                     .padding(.top, -10)
                 
+                if user.is_administrator == true {
+                    Text("Administrator")
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
+                        .padding(5)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(5)
+                } else {
+                    Text("Member")
+                        .font(.subheadline)
+                        .foregroundColor(.blue)
+                        .padding(5)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(5)
+                }
+                
                 if let email = user.email {
                     Text("Email: \(email)")
                         .font(.subheadline)
@@ -65,6 +81,35 @@ struct UserDetailView: View {
                     }
                 }
                 
+                if let balance = user.balance {
+                    HStack {
+                        if balance < 0 {
+                            Rectangle()
+                                .fill(Color.red.opacity(0.8)) // Set opacity here
+                                .cornerRadius(5) // Set corner radius here
+                                .frame(width: max(CGFloat(abs(balance) / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
+                                .overlay(
+                                    Text("\(String(format: "%.2f", balance)) €")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white)
+                                )
+                                .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                        }
+                        if balance > 0 {
+                            Rectangle()
+                                .fill(Color.green.opacity(0.8)) // Set opacity here
+                                .cornerRadius(5) // Set corner radius here
+                                .frame(width: max(CGFloat(balance / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
+                                .overlay(
+                                    Text("\(String(format: "%.2f", balance)) €")
+                                        .font(.subheadline)
+                                        .foregroundColor(.white)
+                                )
+                                .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                        }
+                    }
+                }
+                
                 Spacer() // Pushes content to the top
             }
             .padding()
@@ -84,5 +129,13 @@ struct UserDetailView: View {
         let firstInitial = user.firstname?.first ?? "?"
         let lastInitial = user.lastname?.first ?? "?"
         return "\(firstInitial)\(lastInitial)"
+    }
+    
+    private var maxBalance: Float {
+        return 1000 // Replace with your logic to determine the maximum balance
+    }
+
+    private var maxBarWidth: CGFloat {
+        return 200 // Replace with your desired maximum bar width
     }
 }
