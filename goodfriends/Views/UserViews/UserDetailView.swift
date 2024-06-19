@@ -149,18 +149,19 @@ struct UserDetailView: View {
                 .padding([.leading, .trailing], 20)
                 
                 if isAdmin {
-                    HStack {
+                    VStack(spacing: 16) {
+                        // Make User Administrator Button
                         if user.is_administrator ?? false {
+                            // Revoke Administrator Role Button
                             Button(action: {
                                 confirmationAction = .revokeAdmin
                                 showConfirmationAlert = true
                             }) {
                                 Text("Revoke Administrator Role")
-                                    .bold()
                                     .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(Color.orange)
-                                    .foregroundColor(.white)
+                                    .background(boxBackgroundColor)
+                                    .foregroundColor(.orange)
                                     .cornerRadius(10)
                             }
                         } else {
@@ -169,24 +170,24 @@ struct UserDetailView: View {
                                 showConfirmationAlert = true
                             }) {
                                 Text("Make User Administrator")
-                                    .bold()
                                     .padding()
                                     .frame(maxWidth: .infinity)
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
+                                    .background(boxBackgroundColor)
+                                    .foregroundColor(.blue)
                                     .cornerRadius(10)
                             }
                         }
+                        
+                        // Exclude from Group Button
                         Button(action: {
                             confirmationAction = .exclude
                             showConfirmationAlert = true
                         }) {
                             Text("Exclude from Group")
-                                .bold()
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(Color.red)
-                                .foregroundColor(.white)
+                                .background(boxBackgroundColor)
+                                .foregroundColor(.red)
                                 .cornerRadius(10)
                         }
                     }
@@ -292,4 +293,3 @@ struct UserDetailView: View {
         colorScheme == .dark ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground)
     }
 }
-
