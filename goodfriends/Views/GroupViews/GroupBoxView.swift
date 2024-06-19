@@ -5,32 +5,27 @@ struct GroupBoxView: View {
 
     var body: some View {
         let backgroundImageName: String
-        let overlayColor: Color
 
         switch group.theme ?? "" {
         case "city":
             backgroundImageName = "group-theme-city-dark"
-            overlayColor = Color.blue.opacity(0.0)
         case "desert":
             backgroundImageName = "group-theme-desert-dark"
-            overlayColor = Color.orange.opacity(0.0)
         case "forest":
             backgroundImageName = "group-theme-forest-dark"
-            overlayColor = Color.green.opacity(0.0)
         default:
             backgroundImageName = "group-theme-city-light" // default theme
-            overlayColor = Color.blue.opacity(0.3)
         }
 
         return ZStack(alignment: .topLeading) {
+            Color(.red) // Background color of the box
+                .cornerRadius(10)
+
             Image(backgroundImageName)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(height: 150)
                 .clipped()
-                .cornerRadius(10)
-
-            overlayColor
                 .cornerRadius(10)
 
             VStack(alignment: .leading) {
