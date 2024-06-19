@@ -239,6 +239,7 @@ struct GroupsView: View {
                     groups = fetchedGroups
                     isLoading = false
                 case .failure(let error):
+                    isLoggedIn = false
                     fetchError = error.localizedDescription
                     isLoading = false
                 }
