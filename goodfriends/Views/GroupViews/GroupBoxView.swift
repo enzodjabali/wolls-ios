@@ -8,14 +8,8 @@ struct GroupBoxView: View {
         let backgroundImageName: String
 
         switch group.theme ?? "" {
-        case "city":
-            backgroundImageName = "box-paris"
         case "desert":
-            backgroundImageName = "box-paris"
-            
-            
-        case "paris":
-            backgroundImageName = "box-paris"
+            backgroundImageName = "group-theme-paris"
             
             
         default:
