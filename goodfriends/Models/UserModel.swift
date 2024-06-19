@@ -8,6 +8,7 @@ struct User: Identifiable, Decodable {
     let isGoogle: Bool?
     let is_administrator: Bool?
     let has_accepted_invitation: Bool?
+    let balance: Float?
     
     private enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -19,6 +20,7 @@ struct User: Identifiable, Decodable {
         case isGoogle
         case is_administrator
         case has_accepted_invitation
+        case balance
     }
 }
 

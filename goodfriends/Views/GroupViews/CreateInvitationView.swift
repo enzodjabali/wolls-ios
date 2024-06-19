@@ -222,7 +222,7 @@ struct CreateInvitationView: View {
     }
 
     private func fetchUserDetails(userId: String) {
-        UserController.shared.fetchUserDetails(userId: userId) { result in
+        UserController.shared.fetchUserDetails(userId: userId, groupId: groupId) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let user):
