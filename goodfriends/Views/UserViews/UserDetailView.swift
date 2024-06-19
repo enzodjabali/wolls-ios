@@ -33,11 +33,18 @@ struct UserDetailView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.primary)
                 }
-
-                Text("@" + user.pseudonym)
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .padding(.top, -10)
+                
+                if user.id == UserSession.shared.userId {
+                    Text("@" + user.pseudonym + " (me)")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding(.top, -10)
+                } else {
+                    Text("@" + user.pseudonym)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding(.top, -10)
+                }
 
                 VStack(alignment: .leading, spacing: 10) {
                     // Role Section
@@ -148,7 +155,7 @@ struct UserDetailView: View {
                 }
                 .padding([.leading, .trailing], 20)
                 
-                if isAdmin {
+                if isAdmin && user.id != UserSession.shared.userId {
                     VStack(spacing: 16) {
                         // Make User Administrator Button
                         if user.is_administrator ?? false {
