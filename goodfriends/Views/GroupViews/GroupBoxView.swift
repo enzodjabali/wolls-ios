@@ -2,23 +2,28 @@ import SwiftUI
 
 struct GroupBoxView: View {
     let group: Group
+    @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
         let backgroundImageName: String
 
         switch group.theme ?? "" {
         case "city":
-            backgroundImageName = "group-theme-city-dark"
+            backgroundImageName = "box-paris"
         case "desert":
-            backgroundImageName = "group-theme-desert-dark"
-        case "forest":
-            backgroundImageName = "group-theme-forest-dark"
+            backgroundImageName = "box-paris"
+            
+            
+        case "paris":
+            backgroundImageName = "box-paris"
+            
+            
         default:
-            backgroundImageName = "group-theme-city-light" // default theme
+            backgroundImageName = "box-paris" // default theme
         }
 
         return ZStack(alignment: .topLeading) {
-            Color(.red) // Background color of the box
+            Color(boxBackgroundColor) // Background color of the box
                 .cornerRadius(10)
 
             Image(backgroundImageName)
@@ -63,5 +68,9 @@ struct GroupBoxView: View {
             .padding(.leading, -8)
         }
         .frame(height: 150)
+    }
+    
+    private var boxBackgroundColor: Color {
+        colorScheme == .dark ? Color(red: 0/255, green: 24/255, blue: 49/255) : Color(red: 206/255, green: 228/255, blue: 250/255)
     }
 }
