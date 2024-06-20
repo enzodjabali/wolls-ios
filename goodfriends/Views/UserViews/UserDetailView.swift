@@ -53,7 +53,7 @@ struct UserDetailView: View {
                             .font(.subheadline)
                             .foregroundColor(.gray)
                         HStack {
-                            if user.is_administrator == true {
+                            if let isAdmin = userStatus?.is_administrator, isAdmin {
                                 Text("Administrator")
                                     .font(.subheadline)
                                     .foregroundColor(.blue)
@@ -158,7 +158,7 @@ struct UserDetailView: View {
                 if isAdmin && user.id != UserSession.shared.userId {
                     VStack(spacing: 16) {
                         // Make User Administrator Button
-                        if user.is_administrator ?? false {
+                        if let isAdmin = userStatus?.is_administrator, isAdmin {
                             // Revoke Administrator Role Button
                             Button(action: {
                                 confirmationAction = .revokeAdmin
@@ -202,7 +202,7 @@ struct UserDetailView: View {
                     .alert(isPresented: $showConfirmationAlert) {
                         Alert(
                             title: confirmationAction == .exclude ? Text("Exclude User") : Text("Change Administrator Role"),
-                            message: Text(confirmationAction == .exclude ? "Are you sure you want to exclude this user from the group?" : (user.is_administrator ?? false ? "Are you sure you want to revoke the administrator role?" : "Are you sure you want to make this user an administrator?")),
+                            message: Text(confirmationAction == .exclude ? "Are you sure you want to exclude this user from the group?" : (userStatus?.is_administrator == true ? "Are you sure you want to revoke the administrator role?" : "Are you sure you want to make this user an administrator?")),
                             primaryButton: .destructive(Text("Confirm")) {
                                 handleConfirmation()
                             },
@@ -298,5 +298,9 @@ struct UserDetailView: View {
 
     private var boxBackgroundColor: Color {
         colorScheme == .dark ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground)
+    }
+
+    private var userStatus: UserStatus? {
+        userStatuses.first { $0.id == user.id }
     }
 }
