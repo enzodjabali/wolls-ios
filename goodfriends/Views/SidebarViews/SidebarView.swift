@@ -74,6 +74,14 @@ struct SidebarView: View {
                 }
             }
             
+            Section(header: Text("Settings")) {
+                Button(action: {
+                    openAppSettings()
+                }) {
+                    Text("Language")
+                }
+            }
+            
             Section {
                 Button(action: {
                     // Handle sign out action
@@ -163,5 +171,16 @@ struct SidebarView: View {
         alertMessageTitle = title
         alertMessage = message
         activeAlert = .groupsListOnlyAdmin
+    }
+    
+    private func openAppSettings() {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true if Settings opened successfully
+            })
+        }
     }
 }

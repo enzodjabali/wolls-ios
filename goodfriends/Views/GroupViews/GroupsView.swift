@@ -127,7 +127,7 @@ struct GroupsView: View {
                     fetchGroups()
                     fetchInvitationCount()
                 }
-                .navigationTitle("Groups")
+                .navigationTitle(NSLocalizedString("groups", comment: ""))
                 .navigationBarBackButtonHidden(true)
                 .navigationBarItems(
                     leading: HStack {

@@ -1,0 +1,5 @@
+"welcome_message" = "Bienvenue dans notre application!";
+"login_button" = "Se connecter";
+"signup_button" = "S'inscrire";
+"logout_message" = "Vous vous êtes déconnecté avec succès.";
+"error_message" = "Une erreur s'est produite. Veuillez réessayer.";
