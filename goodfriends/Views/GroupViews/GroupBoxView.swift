@@ -5,27 +5,40 @@ struct GroupBoxView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        let backgroundImageName: String
+        //let backgroundImageName: String
 
-        switch group.theme ?? "" {
-        case "desert":
-            backgroundImageName = "group-theme-paris"
-            
-            
-        default:
-            backgroundImageName = "box-paris" // default theme
-        }
+        //switch group.theme ?? "" {
+        //case "desert":
+        //    backgroundImageName = "group-theme-tokyo"
+        //default:
+        //    backgroundImageName = "group-theme-madrid" // default theme
+        //}
 
         return ZStack(alignment: .topLeading) {
             Color(boxBackgroundColor) // Background color of the box
                 .cornerRadius(10)
+            
+            
+            
+            // Overlay the logo at the bottom-left corner using GeometryReader
+            GeometryReader { geometry in
+                Image("logo-wolls") // Your logo image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 30, height: 30) // Adjust size as needed
+                    .position(x: geometry.size.width - 310, y: geometry.size.height - 25) // Adjusted position
+            }
+            .clipped()
 
-            Image(backgroundImageName)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(height: 150)
-                .clipped()
-                .cornerRadius(10)
+            // Overlay the logo at the bottom-right corner using GeometryReader
+            GeometryReader { geometry in
+                Image("london") // Your logo image
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 200, height: 200) // Increased size
+                    .position(x: geometry.size.width - 90, y: geometry.size.height - 73) // Adjusted position
+            }
+            .clipped()
 
             VStack(alignment: .leading) {
                 Text(group.name)
@@ -49,21 +62,11 @@ struct GroupBoxView: View {
                 }
             }
             
-            // Overlay the logo at the bottom-left corner using GeometryReader
-            GeometryReader { geometry in
-                Image("logo-wolls") // Your logo image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30, height: 30) // Adjust size as needed
-                    .position(x: geometry.size.width * 0.1, y: geometry.size.height * 0.9) // Adjust position
-            }
-            .clipped()
-            .padding(.bottom, 8)
-            .padding(.leading, -8)
+            
         }
         .frame(height: 150)
     }
-    
+
     private var boxBackgroundColor: Color {
         colorScheme == .dark ? Color(red: 0/255, green: 24/255, blue: 49/255) : Color(red: 206/255, green: 228/255, blue: 250/255)
     }
