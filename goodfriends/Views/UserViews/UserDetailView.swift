@@ -164,7 +164,7 @@ struct UserDetailView: View {
                                 confirmationAction = .revokeAdmin
                                 showConfirmationAlert = true
                             }) {
-                                Text("Revoke Administrator Role")
+                                Text("Unset administrator")
                                     .padding()
                                     .frame(maxWidth: .infinity)
                                     .background(boxBackgroundColor)
@@ -176,7 +176,7 @@ struct UserDetailView: View {
                                 confirmationAction = .makeAdmin
                                 showConfirmationAlert = true
                             }) {
-                                Text("Make User Administrator")
+                                Text("Set administrator")
                                     .padding()
                                     .frame(maxWidth: .infinity)
                                     .background(boxBackgroundColor)
