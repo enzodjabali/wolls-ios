@@ -275,7 +275,6 @@ struct GroupsView: View {
         }
     }
 
-
     func leaveGroup(_ group: Group) {
         guard let userId = UserSession.shared.userId else {
             fetchError = "User not logged in."

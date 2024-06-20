@@ -5,20 +5,10 @@ struct GroupBoxView: View {
     @Environment(\.colorScheme) var colorScheme
 
     var body: some View {
-        //let backgroundImageName: String
-
-        //switch group.theme ?? "" {
-        //case "desert":
-        //    backgroundImageName = "group-theme-tokyo"
-        //default:
-        //    backgroundImageName = "group-theme-madrid" // default theme
-        //}
 
         return ZStack(alignment: .topLeading) {
             Color(boxBackgroundColor) // Background color of the box
                 .cornerRadius(10)
-            
-            
             
             // Overlay the logo at the bottom-left corner using GeometryReader
             GeometryReader { geometry in
@@ -30,13 +20,15 @@ struct GroupBoxView: View {
             }
             .clipped()
 
-            // Overlay the logo at the bottom-right corner using GeometryReader
+            // Overlay the background image at the bottom-right corner using GeometryReader
             GeometryReader { geometry in
-                Image("biking") // Your background image
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 180, height: 180) // Increased size
-                    .position(x: geometry.size.width - 90, y: geometry.size.height - 68) // Adjusted position
+                if let theme = group.theme {
+                    Image(theme) // Using group.theme for the background image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 180, height: 180) // Increased size
+                        .position(x: geometry.size.width - 90, y: geometry.size.height - 68) // Adjusted position
+                }
             }
             .clipped()
 
