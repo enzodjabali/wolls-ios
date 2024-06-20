@@ -1,5 +1,89 @@
 "groups" = "Groupes";
 
-"paris" = "Paris, France";
-"madrid" = "Madrid, Spain";
+// Activities
+"biking" = "Biking";
+"canoeing" = "Canoeing";
+"climbing" = "Climbing";
+"diving" = "Diving";
+"hiking" = "Hiking";
+"running" = "Running";
+"sauna" = "Sauna";
+"skateboarding" = "Skateboarding";
+"sunbathing" = "Sunbathing";
+"swimming" = "Swimming";
+"video-game" = "Video Games";
+"yoga" = "Yoga";
+// Celebrations
+"bachelor-party" = "Bachelor Party";
+"bachelorette-party" = "Bachelorette Party";
+"barbecue-party" = "Barbecue Party";
+"christmas" = "Christmas";
+"dia-de-muertos" = "Día de Muertos";
+"dj-party" = "DJ Party";
+"dragon-boat-festival" = "Dragon Boat Festival";
+"halloween" = "Halloween";
+"holi-festival" = "Holi Festival";
+"house-party" = "House Party";
+"lohri-festival" = "Lohri Festival";
+"panchami-festival" = "Vasant Panchami Festival";
+"pongal-festival" = "Pongal Festival";
+"thaipusam-festival" = "Thaipusam Festival";
+"work-anniversary" = "Work Anniversary";
+// Cities
+"agra" = "Agra, India";
+"ahmedabad" = "Ahmedabad, India";
+"athens" = "Athens, Greece";
 "berlin" = "Berlin, Germany";
+"buenos-aires" = "Buenos Aires, Argentina";
+"dubai" = "Dubai, UAE";
+"el-cairo" = "El Cairo, Egypt";
+"hong-kong" = "Hong Kong, China";
+"london" = "London, England";
+"madrid" = "Madrid, Spain";
+"mexico" = "Mexico City, Mexico";
+"moscow" = "Moscow, Russia";
+"paris" = "Paris, France";
+"rio-de-janeiro" = "Rio De Janeiro, Brazil";
+"sao-paulo" = "São Paulo, Brazil";
+"sidney" = "Sydney, Australia";
+"taipei" = "Taipei City, Taiwan";
+"tokyo" = "Tokyo, Japan";
+"toronto" = "Toronto, Canada";
+// Objects
+"card-game" = "Board Games";
+"flowers" = "Flowers";
+"money" = "Finance";
+// Outdoors
+"city-skyline" = "City Skyline";
+"environment" = "Environment";
+"raining" = "Raining";
+"small-town" = "Town";
+"sunrise" = "Sunrise";
+// Travel
+"airport" = "Airport";
+"bikini" = "Bikini";
+"camping" = "Camping";
+"cruise" = "Cruise";
+"desert" = "Desert";
+"exploring" = "Exploring";
+"glamping" = "Glamping";
+"holiday" = "Holiday";
+"japan" = "Japan";
+"landscape" = "Landscape";
+"pina-colada" = "Piña Colada";
+"pool" = "Pool";
+"road-trip" = "Road Trip";
+"silk-road" = "Silk Road";
+"subway" = "Subway";
+"summer-camp" = "Summer Camp";
+"tour-guide" = "Tour Guide";
+"traveling" = "Traveling";
+"vacation" = "Vacation";
+"winter-road" = "Winter Road";
+// Work
+"coding" = "Coding";
+"construction-worker" = "Construction Worker";
+"sailor" = "Sailor";
+"work-meeting" = "Work Meeting";
+"work" = "Work";
+"working-remotely" = "Working Remotely";
