@@ -8,12 +8,17 @@ struct CreateGroupView: View {
     @State private var filteredUsers: [User] = []
     @State private var searchPseudonym = ""
     @State private var createError: String?
-    @State private var selectedTheme = "paris" // Default theme
+    @State private var selectedTheme = "city-skyline" // Default theme
     var onCreate: (Group) -> Void
     
     // Store the fetched users
     @State private var fetchedUsers: [User] = []
     @State private var usersFetched = false
+
+    // Computed property to get themes sorted by their localized names
+    var sortedThemes: [String] {
+        themes.sorted { $0.localized() < $1.localized() }
+    }
 
     var body: some View {
         NavigationView {
@@ -26,7 +31,7 @@ struct CreateGroupView: View {
                 }
                 Section(header: Text("Theme")) {
                     Picker("Select Theme", selection: $selectedTheme) {
-                        ForEach(themes, id: \.self) { theme in
+                        ForEach(sortedThemes, id: \.self) { theme in
                             Text(theme.localized())
                         }
                     }
