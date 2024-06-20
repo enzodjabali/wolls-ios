@@ -3,7 +3,7 @@ import Foundation
 class GroupController {
     static let shared = GroupController()
     
-    func createGroup(name: String, description: String, invitedUsers: [User], completion: @escaping (Result<Group, Error>) -> Void) {
+    func createGroup(name: String, description: String, invitedUsers: [User], theme: String, completion: @escaping (Result<Group, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/groups") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -15,7 +15,7 @@ class GroupController {
         request.setValue(token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        var newGroup: [String: Any] = ["name": name, "description": description]
+        var newGroup: [String: Any] = ["name": name, "description": description, "theme": theme]
         if !invitedUsers.isEmpty {
             let invitedUserPseudonyms = invitedUsers.map { $0.pseudonym }
             newGroup["invited_users"] = invitedUserPseudonyms

@@ -8,6 +8,7 @@ struct CreateGroupView: View {
     @State private var filteredUsers: [User] = []
     @State private var searchPseudonym = ""
     @State private var createError: String?
+    @State private var selectedTheme = "paris" // Default theme
     var onCreate: (Group) -> Void
     
     // Store the fetched users
@@ -22,6 +23,13 @@ struct CreateGroupView: View {
                 }
                 Section(header: Text("Description")) {
                     TextField("Enter description", text: $groupDescription)
+                }
+                Section(header: Text("Theme")) {
+                    Picker("Select Theme", selection: $selectedTheme) {
+                        ForEach(themes, id: \.self) { theme in
+                            Text(theme.localized())
+                        }
+                    }
                 }
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
@@ -108,7 +116,7 @@ struct CreateGroupView: View {
         }
         
         // Call GroupController to create the group
-        GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers) { result in
+        GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers, theme: selectedTheme) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(var newGroup): // Capture newGroup as mutable
@@ -133,3 +141,11 @@ struct CreateGroupView: View {
         }
     }
 }
+
+extension String {
+    func localized() -> String {
+        return NSLocalizedString(self, comment: "")
+    }
+}
+
+let themes = ["paris", "madrid", "berlin"]
