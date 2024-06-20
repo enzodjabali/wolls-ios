@@ -263,7 +263,7 @@ struct UserDetailView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    // Handle successful exclusion (e.g., pop the view or refresh the list)
+                    // Handle successful exclusion and close the page
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):
                     createError = error.localizedDescription
