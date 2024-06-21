@@ -5,6 +5,11 @@ struct BalancesView: View {
     @State private var balances: [UserStatus] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
+    
+    @State private var selectedUserId: String?
+    @State private var selectedUser: User?
+    @State private var showUserDetail = false
+    @State private var userStatuses: [UserStatus] = []
 
     var body: some View {
         VStack {
@@ -19,12 +24,12 @@ struct BalancesView: View {
                 if balances.isEmpty {
                     ScrollView {
                         ZStack {
-                            Spacer().containerRelativeFrame([.horizontal, .vertical])
+                            Spacer().frame(maxWidth: .infinity, maxHeight: .infinity)
                             VStack {
                                 Text("No balances to display.")
                                     .foregroundColor(.gray)
+                                    .padding()
                             }
-                            .padding()
                         }
                     }
                     .refreshable {
@@ -49,30 +54,35 @@ struct BalancesView: View {
                                 HStack {
                                     if let amount = balance.balance, amount < 0 {
                                         Rectangle()
-                                            .fill(Color.red.opacity(0.8)) // Set opacity here
-                                            .cornerRadius(5) // Set corner radius here
+                                            .fill(Color.red.opacity(0.8))
+                                            .cornerRadius(5)
                                             .frame(width: max(CGFloat(abs(Double(amount) / maxBalance) * maxBarWidth), 80), height: 25)
                                             .overlay(
                                                 Text("\(String(format: "%.2f", amount)) €")
                                                     .font(.subheadline)
                                                     .foregroundColor(.white)
                                             )
-                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                            .padding(.horizontal, 5)
                                     }
                                     if let amount = balance.balance, amount > 0 {
                                         Spacer()
                                         Rectangle()
-                                            .fill(Color.green.opacity(0.8)) // Set opacity here
-                                            .cornerRadius(5) // Set corner radius here
+                                            .fill(Color.green.opacity(0.8))
+                                            .cornerRadius(5)
                                             .frame(width: max(CGFloat((amount) / Float(maxBalance)) * maxBarWidth, 80), height: 25)
                                             .overlay(
                                                 Text("\(String(format: "%.2f", amount)) €")
                                                     .font(.subheadline)
                                                     .foregroundColor(.white)
                                             )
-                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                            .padding(.horizontal, 5)
                                     }
                                 }
+                            }
+                            .onTapGesture {
+                                selectedUserId = balance.id
+                                showUserDetail = true
+                                fetchUserDetails(userId: balance.id)
                             }
                         }
                     }
@@ -80,6 +90,11 @@ struct BalancesView: View {
                         fetchBalances()
                     }
                 }
+            }
+        }
+        .sheet(isPresented: $showUserDetail) {
+            if let selectedUser = selectedUser {
+                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
             }
         }
         .onAppear {
@@ -92,7 +107,7 @@ struct BalancesView: View {
     }
 
     private var maxBarWidth: CGFloat {
-        return UIScreen.main.bounds.width * 0.4 // Adjust the max width of the bar as needed
+        return UIScreen.main.bounds.width * 0.4
     }
 
     private func fetchBalances() {
@@ -105,6 +120,19 @@ struct BalancesView: View {
                 case .failure(let error):
                     self.fetchError = error.localizedDescription
                     self.isLoading = false
+                }
+            }
+        }
+    }
+
+    private func fetchUserDetails(userId: String) {
+        UserController.shared.fetchUserDetails(userId: userId, groupId: groupId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self.selectedUser = user
+                case .failure(let error):
+                    self.fetchError = error.localizedDescription
                 }
             }
         }
