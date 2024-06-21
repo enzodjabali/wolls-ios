@@ -8,11 +8,17 @@ struct CreateGroupView: View {
     @State private var filteredUsers: [User] = []
     @State private var searchPseudonym = ""
     @State private var createError: String?
+    @State private var selectedTheme = "city-skyline" // Default theme
     var onCreate: (Group) -> Void
     
     // Store the fetched users
     @State private var fetchedUsers: [User] = []
     @State private var usersFetched = false
+
+    // Computed property to get themes sorted by their localized names
+    var sortedThemes: [String] {
+        themes.sorted { $0.localized() < $1.localized() }
+    }
 
     var body: some View {
         NavigationView {
@@ -22,6 +28,13 @@ struct CreateGroupView: View {
                 }
                 Section(header: Text("Description")) {
                     TextField("Enter description", text: $groupDescription)
+                }
+                Section(header: Text("Theme")) {
+                    Picker("Select Theme", selection: $selectedTheme) {
+                        ForEach(sortedThemes, id: \.self) { theme in
+                            Text(theme.localized())
+                        }
+                    }
                 }
                 Section(header: Text("Invite Users")) {
                     TextField("Search users by username", text: $searchPseudonym)
@@ -99,14 +112,33 @@ struct CreateGroupView: View {
             invitedUsers.append(user)
         }
     }
-
+    
     func createGroup() {
-        GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers) { result in
+        // Safely unwrap UserSession.shared.userId or provide a default value
+        guard let currentUserId = UserSession.shared.userId else {
+            createError = "User ID not available"
+            return
+        }
+        
+        // Call GroupController to create the group
+        GroupController.shared.createGroup(name: groupName, description: groupDescription, invitedUsers: invitedUsers, theme: selectedTheme) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let newGroup):
-                    onCreate(newGroup) // Call onCreate with the newGroup
+                case .success(var newGroup): // Capture newGroup as mutable
+                    let administrators = [currentUserId] // This assumes currentUserId is of type String
+
+                    // Append administrators to newGroup
+                    if var existingAdministrators = newGroup.administrators {
+                        existingAdministrators.append(contentsOf: administrators)
+                        newGroup.administrators = existingAdministrators
+                    } else {
+                        newGroup.administrators = administrators
+                    }
+                    
+                    // Call onCreate with the updated newGroupFinal
+                    onCreate(newGroup)
                     presentationMode.wrappedValue.dismiss()
+                    
                 case .failure(let error):
                     createError = error.localizedDescription
                 }
@@ -114,3 +146,99 @@ struct CreateGroupView: View {
         }
     }
 }
+
+extension String {
+    func localized() -> String {
+        return NSLocalizedString(self, comment: "")
+    }
+}
+
+let themes = [
+    // Activities
+    "biking",
+    "canoeing",
+    "climbing",
+    "diving",
+    "hiking",
+    "running",
+    "sauna",
+    "skateboarding",
+    "sunbathing",
+    "swimming",
+    "video-game",
+    "yoga",
+    // Celebrations
+    "bachelor-party",
+    "bachelorette-party",
+    "barbecue-party",
+    "christmas",
+    "dia-de-muertos",
+    "dj-party",
+    "dragon-boat-festival",
+    "halloween",
+    "holi-festival",
+    "house-party",
+    "lohri-festival",
+    "panchami-festival",
+    "pongal-festival",
+    "thaipusam-festival",
+    "work-anniversary",
+    // Cities
+    "agra",
+    "ahmedabad",
+    "athens",
+    "berlin",
+    "buenos-aires",
+    "dubai",
+    "el-cairo",
+    "hong-kong",
+    "london",
+    "madrid",
+    "mexico",
+    "moscow",
+    "paris",
+    "rio-de-janeiro",
+    "sao-paulo",
+    "sidney",
+    "taipei",
+    "tokyo",
+    "toronto",
+    // Objects
+    "card-game",
+    "flowers",
+    "money",
+    // Outdoors
+    "city-skyline",
+    "environment",
+    "raining",
+    "small-town",
+    "sunrise",
+    // Travel
+    "airport",
+    "bikini",
+    "camping",
+    "cruise",
+    "desert",
+    "exploring",
+    "glamping",
+    "holiday",
+    "japan",
+    "landscape",
+    "pina-colada",
+    "pool",
+    "road-trip",
+    "silk-road",
+    "subway",
+    "summer-camp",
+    "tour-guide",
+    "traveling",
+    "vacation",
+    "winter-road",
+    // Work
+    "coding",
+    "construction-worker",
+    "sailor",
+    "work-meeting",
+    "work",
+    "working-remotely"
+]

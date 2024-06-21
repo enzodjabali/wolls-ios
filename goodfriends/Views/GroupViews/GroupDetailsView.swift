@@ -6,34 +6,45 @@ struct GroupDetailsView: View {
     @State private var selectedTab = 0
     @State private var isEditing = false
     @State private var isInviting = false
+    @Binding var isLoggedIn: Bool
     
-    init(groupId: String, groupName: String, groupDescription: String, groupCreatedAt: String) {
-        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId, groupName: groupName, groupDescription: groupDescription, createdAt: groupCreatedAt))
+    init(groupId: String, isLoggedIn: Binding<Bool>) {
+        _viewModel = StateObject(wrappedValue: GroupDetailsViewModel(groupId: groupId))
+        _isLoggedIn = isLoggedIn
     }
     
     var body: some View {
         VStack {
-            Picker(selection: $selectedTab, label: Text("")) {
-                Text("Expenses").tag(0)
-                Text("Refunds").tag(1)
-                Text("Balances").tag(2)
+            if viewModel.isLoading {
+                ProgressView("Loading...")
+            } else if let error = viewModel.fetchError {
+                Text(error)
+                    .foregroundColor(.red)
+            } else {
+                Picker(selection: $selectedTab, label: Text("")) {
+                    Text("Expenses").tag(0)
+                    Text("Refunds").tag(1)
+                    Text("Balances").tag(2)
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+                
+                viewForSelectedTab()
             }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            viewForSelectedTab()
         }
         .navigationTitle(viewModel.groupName)
         .navigationBarItems(trailing: HStack {
-            NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing), isActive: $isEditing) {
+            NavigationLink(destination: EditGroupView(viewModel: viewModel, isEditing: $isEditing, isLoggedIn: $isLoggedIn), isActive: $isEditing) {
                 Button(action: {
                     isEditing.toggle()
                 }) {
-                    Image(systemName: "gear")
+                    Image(systemName: "info.circle")
                         .imageScale(.large)
                 }
             }
-            NavigationLink(destination: CreateInvitationView(groupId: viewModel.groupId, onCreate: {}), isActive: $isInviting) {
+            NavigationLink(destination: GroupMembersView(groupId: viewModel.groupId, onCreate: {
+                viewModel.fetchGroupDetails() // Fetch latest details when invitation is created
+            }), isActive: $isInviting) {
                 Button(action: {
                     isInviting.toggle()
                 }) {
@@ -42,6 +53,9 @@ struct GroupDetailsView: View {
                 }
             }
         })
+        .onAppear {
+            viewModel.fetchGroupDetails() // Ensure the view fetches details when it appears
+        }
     }
     
     @ViewBuilder
@@ -61,15 +75,46 @@ struct GroupDetailsView: View {
 
 class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
-    @Published var groupName: String
-    @Published var groupDescription: String
-    @Published var createdAt: String // Store createdAt as String
-
-    init(groupId: String, groupName: String, groupDescription: String, createdAt: String) {
+    @Published var groupName: String = ""
+    @Published var groupDescription: String = ""
+    @Published var groupTheme: String = ""
+    @Published var createdAt: String = ""
+    @Published var administrators: [String] = []
+    @Published var isLoading: Bool = true
+    @Published var fetchError: String?
+    
+    private var cancellables = Set<AnyCancellable>()
+    
+    private var currentUserId: String? {
+        return UserSession.shared.userId
+    }
+    
+    init(groupId: String) {
         self.groupId = groupId
-        self.groupName = groupName
-        self.groupDescription = groupDescription
-        self.createdAt = createdAt
+        fetchGroupDetails()
+    }
+    
+    func fetchGroupDetails() {
+        GroupController.shared.fetchGroup(by: groupId) { [weak self] result in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.isLoading = false
+                switch result {
+                case .success(let group):
+                    self.groupName = group.name
+                    self.groupDescription = group.description ?? ""
+                    self.groupTheme = group.theme ?? ""
+                    self.createdAt = group.createdAt ?? ""
+                    self.administrators = group.administrators ?? []
+                case .failure(let error):
+                    self.fetchError = error.localizedDescription
+                }
+            }
+        }
+    }
+    
+    var isAdmin: Bool {
+        return currentUserId != nil && administrators.contains(currentUserId!)
     }
     
     func updateGroupName(_ newName: String) {
@@ -78,5 +123,9 @@ class GroupDetailsViewModel: ObservableObject {
     
     func updateGroupDescription(_ newDescription: String) {
         self.groupDescription = newDescription
+    }
+    
+    func updateGroupTheme(_ newTheme: String) {
+        self.groupTheme = newTheme
     }
 }

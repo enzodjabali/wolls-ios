@@ -31,7 +31,6 @@
 		C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1562C00D2AB00C5E23F /* AvatarView.swift */; };
 		C60EA15B2C00D3BC00C5E23F /* GroupDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */; };
 		C60EA1612C00DBA300C5E23F /* EditEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1602C00DBA300C5E23F /* EditEmailView.swift */; };
-		C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1622C00DC0700C5E23F /* EditDetailView.swift */; };
 		C60EA1652C00F69F00C5E23F /* EditUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */; };
 		C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1662C00FC0B00C5E23F /* EditNameView.swift */; };
 		C60EA1692C010F6700C5E23F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1682C010F6700C5E23F /* Config.swift */; };
@@ -47,9 +46,10 @@
 		C60EA1832C047DA200C5E23F /* RefundModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1822C047DA200C5E23F /* RefundModel.swift */; };
 		C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1842C051A3500C5E23F /* BalanceController.swift */; };
 		C60EA1872C051ADC00C5E23F /* BalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1862C051ADC00C5E23F /* BalanceModel.swift */; };
-		C689A8D32C0E142D00879FDA /* CreateInvitationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */; };
+		C689A8D32C0E142D00879FDA /* GroupMembersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C689A8D22C0E142D00879FDA /* GroupMembersView.swift */; };
 		C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A762C1990E900F242F5 /* UserDetailView.swift */; };
 		C68D4A792C199D9800F242F5 /* AvatarViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */; };
+		C68D4A862C24632C00F242F5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C68D4A842C24632C00F242F5 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,7 +97,6 @@
 		C60EA1562C00D2AB00C5E23F /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupDetailsView.swift; sourceTree = "<group>"; };
 		C60EA1602C00DBA300C5E23F /* EditEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmailView.swift; sourceTree = "<group>"; };
-		C60EA1622C00DC0700C5E23F /* EditDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDetailView.swift; sourceTree = "<group>"; };
 		C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUsernameView.swift; sourceTree = "<group>"; };
 		C60EA1662C00FC0B00C5E23F /* EditNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNameView.swift; sourceTree = "<group>"; };
 		C60EA1682C010F6700C5E23F /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
@@ -113,9 +112,11 @@
 		C60EA1822C047DA200C5E23F /* RefundModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundModel.swift; sourceTree = "<group>"; };
 		C60EA1842C051A3500C5E23F /* BalanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceController.swift; sourceTree = "<group>"; };
 		C60EA1862C051ADC00C5E23F /* BalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceModel.swift; sourceTree = "<group>"; };
-		C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInvitationView.swift; sourceTree = "<group>"; };
+		C689A8D22C0E142D00879FDA /* GroupMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupMembersView.swift; sourceTree = "<group>"; };
 		C68D4A762C1990E900F242F5 /* UserDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailView.swift; sourceTree = "<group>"; };
 		C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewProfile.swift; sourceTree = "<group>"; };
+		C68D4A8B2C2463AB00F242F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C68D4A8C2C2463CF00F242F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +167,7 @@
 		C60EA1022BFE3C7B00C5E23F /* goodfriends */ = {
 			isa = PBXGroup;
 			children = (
+				C68D4A7A2C245DD200F242F5 /* Locales */,
 				C60EA14C2C00CC3000C5E23F /* Views */,
 				C60EA1492C00CACF00C5E23F /* Controllers */,
 				C60EA1422C00C73800C5E23F /* Models */,
@@ -245,7 +247,6 @@
 			isa = PBXGroup;
 			children = (
 				C60EA1602C00DBA300C5E23F /* EditEmailView.swift */,
-				C60EA1622C00DC0700C5E23F /* EditDetailView.swift */,
 				C60EA1642C00F69F00C5E23F /* EditUsernameView.swift */,
 				C60EA1662C00FC0B00C5E23F /* EditNameView.swift */,
 				C60EA16A2C01141400C5E23F /* EditIbanView.swift */,
@@ -267,7 +268,7 @@
 				C60EA15A2C00D3BC00C5E23F /* GroupDetailsView.swift */,
 				C60EA1722C0162A000C5E23F /* InvitationsView.swift */,
 				C60EA1762C02A6C200C5E23F /* EditGroupView.swift */,
-				C689A8D22C0E142D00879FDA /* CreateInvitationView.swift */,
+				C689A8D22C0E142D00879FDA /* GroupMembersView.swift */,
 			);
 			path = GroupViews;
 			sourceTree = "<group>";
@@ -305,6 +306,14 @@
 				C60EA13A2BFE6DBE00C5E23F /* BalancesView.swift */,
 			);
 			path = BalanceViews;
+			sourceTree = "<group>";
+		};
+		C68D4A7A2C245DD200F242F5 /* Locales */ = {
+			isa = PBXGroup;
+			children = (
+				C68D4A842C24632C00F242F5 /* Localizable.strings */,
+			);
+			path = Locales;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -391,8 +400,9 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				fr,
 				Base,
+				en,
 			);
 			mainGroup = C60EA0F72BFE3C7B00C5E23F;
 			productRefGroup = C60EA1012BFE3C7B00C5E23F /* Products */;
@@ -412,6 +422,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C60EA10B2BFE3C7D00C5E23F /* Preview Assets.xcassets in Resources */,
+				C68D4A862C24632C00F242F5 /* Localizable.strings in Resources */,
 				C60EA1082BFE3C7D00C5E23F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,14 +457,13 @@
 				C60EA1732C0162A000C5E23F /* InvitationsView.swift in Sources */,
 				C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */,
 				C60EA1672C00FC0B00C5E23F /* EditNameView.swift in Sources */,
-				C689A8D32C0E142D00879FDA /* CreateInvitationView.swift in Sources */,
+				C689A8D32C0E142D00879FDA /* GroupMembersView.swift in Sources */,
 				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
 				C60EA16F2C011D9400C5E23F /* ExpenseController.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
 				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
 				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
 				C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */,
-				C60EA1632C00DC0700C5E23F /* EditDetailView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
@@ -510,12 +520,25 @@
 		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		C68D4A842C24632C00F242F5 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C68D4A8B2C2463AB00F242F5 /* fr */,
+				C68D4A8C2C2463CF00F242F5 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
 		C60EA1222BFE3C7D00C5E23F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -579,6 +602,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -635,11 +659,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"goodfriends/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Wolls;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -652,9 +679,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = goodfriends.goodfriends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -663,11 +694,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"goodfriends/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Wolls;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -680,9 +714,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = goodfriends.goodfriends;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

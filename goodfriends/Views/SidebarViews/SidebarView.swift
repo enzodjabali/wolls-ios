@@ -5,9 +5,19 @@ struct SidebarView: View {
     @Binding var isLoggedIn: Bool
     @State private var alertMessageTitle = ""
     @State private var alertMessage = ""
-    @State private var showAlert = false
+    @State private var showGroupsListOnlyAdmin = false
     @State private var showDeleteConfirmation = false
     @State private var onlyAdminGroups: [Group] = []
+    @State private var activeAlert: ActiveAlert?
+
+    enum ActiveAlert: Identifiable {
+        case groupsListOnlyAdmin
+        case deleteConfirmation
+        
+        var id: Int {
+            hashValue
+        }
+    }
     
     var body: some View {
         List {
@@ -49,7 +59,7 @@ struct SidebarView: View {
                         } else {
                             Text("Add your IBAN")
                                 .font(.subheadline)
-                                .foregroundColor(.red)
+                                .foregroundColor(.orange)
                         }
                     }
                 }
@@ -64,39 +74,63 @@ struct SidebarView: View {
                 }
             }
             
+            Section(header: Text("Settings")) {
+                Button(action: {
+                    openAppSettings()
+                }) {
+                    Text("Language")
+                }
+            }
+            
             Section {
                 Button(action: {
                     // Handle sign out action
                     UserController.shared.signOut()
                     isLoggedIn = false // Update login status
                 }) {
-                    Label("Sign Out", systemImage: "arrowshape.turn.up.left")
-                        .foregroundColor(.blue)
+                    Text("Sign Out")
                 }
                 
                 Button(action: {
                     checkOnlyAdminGroups()
                 }) {
-                    Label("Delete Account", systemImage: "trash")
+                    Text("Delete Account")
                         .foregroundColor(.red)
                 }
             }
-            .alert(isPresented: $showDeleteConfirmation) {
-                Alert(
-                    title: Text("Delete Account"),
-                    message: Text("Are you sure you want to delete your account? This will permanently erase your account."),
-                    primaryButton: .destructive(Text("Delete")) {
-                        deleteUserAccount()
-                    },
-                    secondaryButton: .cancel()
-                )
+            .alert(item: $activeAlert) { alert in
+                switch alert {
+                case .groupsListOnlyAdmin:
+                    return Alert(
+                        title: Text(alertMessageTitle),
+                        message: Text(alertMessage),
+                        dismissButton: .default(Text("OK"))
+                    )
+                case .deleteConfirmation:
+                    return Alert(
+                        title: Text("Delete Account"),
+                        message: Text("Are you sure you want to delete your account? This will permanently erase your account."),
+                        primaryButton: .destructive(Text("Delete")) {
+                            deleteUserAccount()
+                        },
+                        secondaryButton: .cancel()
+                    )
+                }
+            }
+            
+            Section {
+                VStack {
+                    Text("Wolls v1.0")
+                    Text("Made in France")
+                }
+                .font(.footnote)
+                .foregroundColor(.gray)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.vertical, 10)
             }
         }
         .listStyle(SidebarListStyle())
         .navigationTitle("Menu")
-        .alert(isPresented: $showAlert) {
-            Alert(title: Text(alertMessageTitle), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-        }
     }
     
     private func checkOnlyAdminGroups() {
@@ -107,10 +141,10 @@ struct SidebarView: View {
                     if !groups.isEmpty {
                         onlyAdminGroups = groups
                         alertMessageTitle = "Hold on!"
-                        alertMessage = "You are the only administrator of the following groups:\n" + onlyAdminGroups.map { "- \($0.name)" }.joined(separator: "\n") + " \n\nYou need to either delete them or make another user administrator before deleting your account."
-                        showAlert = true
+                        alertMessage = "You are the only administrator of the following groups:\n" + onlyAdminGroups.map { "- \($0.name)" }.joined(separator: "\n") + " \n\nYou need to delete them or make another user administrator before deleting your account."
+                        activeAlert = .groupsListOnlyAdmin
                     } else {
-                        showDeleteConfirmation = true
+                        activeAlert = .deleteConfirmation
                     }
                 case .failure(let error):
                     showAlert(title: "Error", message: "Error fetching the groups: \(error.localizedDescription)")
@@ -136,8 +170,17 @@ struct SidebarView: View {
     private func showAlert(title: String, message: String) {
         alertMessageTitle = title
         alertMessage = message
-        DispatchQueue.main.async {
-            showAlert.toggle()
+        activeAlert = .groupsListOnlyAdmin
+    }
+    
+    private func openAppSettings() {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                print("Settings opened: \(success)") // Prints true if Settings opened successfully
+            })
         }
     }
 }

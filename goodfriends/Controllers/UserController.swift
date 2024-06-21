@@ -429,9 +429,9 @@ class UserController {
         }.resume()
     }
     
-    func fetchUserDetails(userId: String, completion: @escaping (Result<User, Error>) -> Void) {
+    func fetchUserDetails(userId: String, groupId: String, completion: @escaping (Result<User, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "\(API.baseURL)/v1/users/\(userId)") else {
+              let url = URL(string: "\(API.baseURL)/v1/users/\(userId)/\(groupId)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }

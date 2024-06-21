@@ -3,7 +3,7 @@ import Foundation
 class BalanceController {
     static let shared = BalanceController()
     
-    func fetchBalances(groupId: String, completion: @escaping (Result<[Balance], Error>) -> Void) {
+    func fetchBalances(groupId: String, completion: @escaping (Result<[UserStatus], Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/balances/\(groupId)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -26,9 +26,8 @@ class BalanceController {
             }
 
             do {
-                let balancesResponse = try JSONDecoder().decode(BalancesResponse.self, from: data)
-                let balances = balancesResponse.balances.map { Balance(username: $0.key, amount: $0.value) }
-                completion(.success(balances))
+                let balancesResponse = try JSONDecoder().decode([UserStatus].self, from: data)
+                completion(.success(balancesResponse))
             } catch {
                 completion(.failure(error))
             }

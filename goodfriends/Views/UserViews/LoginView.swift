@@ -13,10 +13,16 @@ struct LoginView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Image("login")
+                Image("logo-wolls")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 270, height: 270)
+                    .frame(width: 230, height: 230)
+                
+                // Displaying text with custom RGB color
+                Text("Wollscome!")
+                    .font(.custom("Arial Rounded MT Bold", size: 36))
+                    .foregroundColor(Color(red: 132/255, green: 193/255, blue: 255/255)) // Using custom RGB color
+                    .padding(.top, 20)
 
                 TextField("Username", text: $pseudonym)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -52,7 +58,7 @@ struct LoginView: View {
                 }
             }
             .padding()
-            .navigationTitle("Login")
+            //.navigationTitle("Login")
         }
     }
 
