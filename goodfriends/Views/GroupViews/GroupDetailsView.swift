@@ -77,6 +77,7 @@ class GroupDetailsViewModel: ObservableObject {
     @Published var groupId: String
     @Published var groupName: String = ""
     @Published var groupDescription: String = ""
+    @Published var groupTheme: String = ""
     @Published var createdAt: String = ""
     @Published var administrators: [String] = []
     @Published var isLoading: Bool = true
@@ -102,6 +103,7 @@ class GroupDetailsViewModel: ObservableObject {
                 case .success(let group):
                     self.groupName = group.name
                     self.groupDescription = group.description ?? ""
+                    self.groupTheme = group.theme ?? ""
                     self.createdAt = group.createdAt ?? ""
                     self.administrators = group.administrators ?? []
                 case .failure(let error):
@@ -121,5 +123,9 @@ class GroupDetailsViewModel: ObservableObject {
     
     func updateGroupDescription(_ newDescription: String) {
         self.groupDescription = newDescription
+    }
+    
+    func updateGroupTheme(_ newTheme: String) {
+        self.groupTheme = newTheme
     }
 }

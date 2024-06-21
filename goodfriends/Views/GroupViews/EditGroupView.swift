@@ -5,6 +5,7 @@ struct EditGroupView: View {
     @Binding var isEditing: Bool
     @State private var newName: String
     @State private var newDescription: String
+    @State private var newTheme: String
     @State private var createdAtDate: Date? // New state variable for createdAt
     @State private var editError: String?
     @State private var deleteError: String?
@@ -19,8 +20,14 @@ struct EditGroupView: View {
         self._isEditing = isEditing
         self._newName = State(initialValue: viewModel.groupName)
         self._newDescription = State(initialValue: viewModel.groupDescription)
+        self._newTheme = State(initialValue: viewModel.groupTheme)
         self._createdAtDate = State(initialValue: DateFormatter.iso8601Full.date(from: viewModel.createdAt)) // Initialize createdAtDate
         self._isLoggedIn = isLoggedIn
+    }
+    
+    // Computed property to get themes sorted by their localized names
+    var sortedThemes: [String] {
+        themes.sorted { $0.localized() < $1.localized() }
     }
 
     var body: some View {
@@ -33,6 +40,14 @@ struct EditGroupView: View {
                 TextField("Enter new description", text: $newDescription)
                     .disabled(!isAdmin)
             }
+            Section(header: Text("Theme")) {
+                Picker("Select Theme", selection: $newTheme) {
+                    ForEach(sortedThemes, id: \.self) { theme in
+                        Text(theme.localized())
+                    }
+                }
+            }
+            .disabled(!isAdmin)
             Section(header: Text("Creation Date")) {
                 if let createdAtDate = createdAtDate {
                     Text("\(createdAtDate, formatter: dateFormatter)")
@@ -136,12 +151,13 @@ struct EditGroupView: View {
             return
         }
         
-        GroupController.shared.editGroup(groupId: viewModel.groupId, newName: newName, newDescription: newDescription) { result in
+        GroupController.shared.editGroup(groupId: viewModel.groupId, newName: newName, newDescription: newDescription, newTheme: newTheme) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     viewModel.updateGroupName(newName)
                     viewModel.updateGroupDescription(newDescription)
+                    viewModel.updateGroupTheme(newTheme)
                     isEditing = false
                     presentationMode.wrappedValue.dismiss()
                 case .failure(let error):

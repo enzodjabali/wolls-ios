@@ -205,7 +205,7 @@ class GroupController {
         }.resume()
     }
     
-    func editGroup(groupId: String, newName: String, newDescription: String, completion: @escaping (Result<Void, Error>) -> Void) {
+    func editGroup(groupId: String, newName: String, newDescription: String, newTheme: String, completion: @escaping (Result<Void, Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
               let url = URL(string: "\(API.baseURL)/v1/groups/\(groupId)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
@@ -217,7 +217,7 @@ class GroupController {
         request.setValue(token, forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        let updatedGroup = ["name": newName, "description": newDescription]
+        let updatedGroup = ["name": newName, "description": newDescription, "theme": newTheme]
         guard let jsonData = try? JSONSerialization.data(withJSONObject: updatedGroup, options: []) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to encode request body"])))
             return
