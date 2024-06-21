@@ -2,13 +2,15 @@ import SwiftUI
 
 struct BalancesView: View {
     let groupId: String
-    @State private var userStatusWithBalance: [UserStatus] = []
+    @State private var users: [UserStatus] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     
     @State private var selectedUserId: String?
     @State private var selectedUser: User?
     @State private var showUserDetail = false
+    @State private var showAlertForNonMember = false
+    @State private var nonMemberPseudonym: String?
 
     var body: some View {
         VStack {
@@ -20,7 +22,7 @@ struct BalancesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                if userStatusWithBalance.isEmpty {
+                if users.isEmpty {
                     ScrollView {
                         ZStack {
                             Spacer().containerRelativeFrame([.horizontal, .vertical])
@@ -36,22 +38,22 @@ struct BalancesView: View {
                     }
                 } else {
                     List {
-                        ForEach(userStatusWithBalance.indices, id: \.self) { index in
-                            let balance = userStatusWithBalance[index]
+                        ForEach(users.indices, id: \.self) { index in
+                            let user = users[index]
                             VStack(alignment: .leading) {
-                                if let amount = balance.balance, amount < 0 {
-                                    Text(balance.pseudonym)
+                                if let amount = user.balance, amount < 0 {
+                                    Text(user.pseudonym)
                                         .font(.headline)
                                 } else {
                                     HStack {
                                         Spacer()
-                                        Text(balance.pseudonym)
+                                        Text(user.pseudonym)
                                             .font(.headline)
                                     }
                                 }
 
                                 HStack {
-                                    if let amount = balance.balance, amount < 0 {
+                                    if let amount = user.balance, amount < 0 {
                                         Rectangle()
                                             .fill(Color.red.opacity(0.8))
                                             .cornerRadius(5)
@@ -63,7 +65,7 @@ struct BalancesView: View {
                                             )
                                             .padding(.horizontal, 5)
                                     }
-                                    if let amount = balance.balance, amount > 0 {
+                                    if let amount = user.balance, amount > 0 {
                                         Spacer()
                                         Rectangle()
                                             .fill(Color.green.opacity(0.8))
@@ -79,9 +81,14 @@ struct BalancesView: View {
                                 }
                             }
                             .onTapGesture {
-                                selectedUserId = balance.id
-                                showUserDetail = true
-                                fetchUserDetails(userId: balance.id)
+                                if user.hasAcceptedInvitation {
+                                    selectedUserId = user.id
+                                    showUserDetail = true
+                                    fetchUserDetails(userId: user.id)
+                                } else {
+                                    self.nonMemberPseudonym = user.pseudonym
+                                    self.showAlertForNonMember = true
+                                }
                             }
                         }
                     }
@@ -93,8 +100,15 @@ struct BalancesView: View {
         }
         .sheet(isPresented: $showUserDetail) {
             if let selectedUser = selectedUser {
-                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatusWithBalance)
+                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $users)
             }
+        }
+        .alert(isPresented: $showAlertForNonMember) {
+            Alert(
+                title: Text("User Not a Member"),
+                message: Text("\(nonMemberPseudonym ?? "This user") is not a member of the group anymore."),
+                dismissButton: .default(Text("OK"))
+            )
         }
         .onAppear {
             fetchBalances()
@@ -102,7 +116,7 @@ struct BalancesView: View {
     }
 
     private var maxBalance: Double {
-        return userStatusWithBalance.map { abs(Double($0.balance ?? 0)) }.max() ?? 1
+        return users.map { abs(Double($0.balance ?? 0)) }.max() ?? 1
     }
 
     private var maxBarWidth: CGFloat {
@@ -114,7 +128,7 @@ struct BalancesView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let balances):
-                    self.userStatusWithBalance = balances
+                    self.users = balances
                     self.isLoading = false
                 case .failure(let error):
                     self.fetchError = error.localizedDescription
