@@ -24,12 +24,12 @@ struct BalancesView: View {
                 if balances.isEmpty {
                     ScrollView {
                         ZStack {
-                            Spacer().frame(maxWidth: .infinity, maxHeight: .infinity)
+                            Spacer().containerRelativeFrame([.horizontal, .vertical])
                             VStack {
                                 Text("No balances to display.")
                                     .foregroundColor(.gray)
-                                    .padding()
                             }
+                            .padding()
                         }
                     }
                     .refreshable {
