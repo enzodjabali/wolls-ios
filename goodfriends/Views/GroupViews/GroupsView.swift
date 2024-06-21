@@ -68,7 +68,7 @@ struct GroupsView: View {
                             } else {
                                 List {
                                     ForEach(groups) { group in
-                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, groupName: group.name, groupDescription: group.description ?? "", groupCreatedAt: group.createdAt ?? "", administrators: group.administrators ?? [], isLoggedIn: $isLoggedIn)) {
+                                        NavigationLink(destination: GroupDetailsView(groupId: group.id, isLoggedIn: $isLoggedIn)) {
                                             GroupBoxView(group: group)
                                         }
                                         .swipeActions {
