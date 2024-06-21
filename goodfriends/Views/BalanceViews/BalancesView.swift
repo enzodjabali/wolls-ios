@@ -2,14 +2,13 @@ import SwiftUI
 
 struct BalancesView: View {
     let groupId: String
-    @State private var balances: [UserStatus] = []
+    @State private var userStatusWithBalance: [UserStatus] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
     
     @State private var selectedUserId: String?
     @State private var selectedUser: User?
     @State private var showUserDetail = false
-    @State private var userStatuses: [UserStatus] = []
 
     var body: some View {
         VStack {
@@ -21,7 +20,7 @@ struct BalancesView: View {
                     .foregroundColor(.red)
                     .padding()
             } else {
-                if balances.isEmpty {
+                if userStatusWithBalance.isEmpty {
                     ScrollView {
                         ZStack {
                             Spacer().containerRelativeFrame([.horizontal, .vertical])
@@ -37,8 +36,8 @@ struct BalancesView: View {
                     }
                 } else {
                     List {
-                        ForEach(balances.indices, id: \.self) { index in
-                            let balance = balances[index]
+                        ForEach(userStatusWithBalance.indices, id: \.self) { index in
+                            let balance = userStatusWithBalance[index]
                             VStack(alignment: .leading) {
                                 if let amount = balance.balance, amount < 0 {
                                     Text(balance.pseudonym)
@@ -94,7 +93,7 @@ struct BalancesView: View {
         }
         .sheet(isPresented: $showUserDetail) {
             if let selectedUser = selectedUser {
-                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
+                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatusWithBalance)
             }
         }
         .onAppear {
@@ -103,7 +102,7 @@ struct BalancesView: View {
     }
 
     private var maxBalance: Double {
-        return balances.map { abs(Double($0.balance ?? 0)) }.max() ?? 1
+        return userStatusWithBalance.map { abs(Double($0.balance ?? 0)) }.max() ?? 1
     }
 
     private var maxBarWidth: CGFloat {
@@ -115,7 +114,7 @@ struct BalancesView: View {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let balances):
-                    self.balances = balances
+                    self.userStatusWithBalance = balances
                     self.isLoading = false
                 case .failure(let error):
                     self.fetchError = error.localizedDescription
