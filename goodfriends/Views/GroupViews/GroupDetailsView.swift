@@ -42,7 +42,7 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-            NavigationLink(destination: CreateInvitationView(groupId: viewModel.groupId, onCreate: {
+            NavigationLink(destination: GroupMembersView(groupId: viewModel.groupId, onCreate: {
                 viewModel.fetchGroupDetails() // Fetch latest details when invitation is created
             }), isActive: $isInviting) {
                 Button(action: {

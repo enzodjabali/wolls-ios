@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CreateInvitationView: View {
+struct GroupMembersView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var invitedUsernames: Set<String> = []
     @State private var filteredUsers: [UserStatus] = []
@@ -21,125 +21,130 @@ struct CreateInvitationView: View {
     @State private var usersFetched = false
 
     var body: some View {
-        VStack {
-            Form {
-                Section(header: Text("Members")) {
-                    List(members, id: \.id) { user in
-                        Button(action: {
-                            selectedUserId = user.id
-                            showUserDetail = true
-                            fetchUserDetails(userId: user.id)
-                        }) {
-                            HStack {
-                                Text(user.pseudonym)
-                                if user.id == UserSession.shared.userId {
-                                    Text("(me)")
-                                        .foregroundColor(.gray)
-                                }
-                                Spacer()
-                                if user.is_administrator {
-                                    Image(systemName: "person.badge.key")
-                                } else {
-                                    Image(systemName: "person")
+        NavigationView {
+            VStack {
+                Form {
+                    Section(header: Text("Members")) {
+                        ForEach(members, id: \.id) { user in
+                            Button(action: {
+                                selectedUserId = user.id
+                                showUserDetail = true
+                                fetchUserDetails(userId: user.id)
+                            }) {
+                                HStack {
+                                    Text(user.pseudonym)
+                                    if user.id == UserSession.shared.userId {
+                                        Text("(me)")
+                                            .foregroundColor(.gray)
+                                    }
+                                    Spacer()
+                                    if user.is_administrator {
+                                        Image(systemName: "person.badge.key")
+                                    } else {
+                                        Image(systemName: "person")
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                
-                if pendingMembers.count > 0 {
-                    Section(header: Text("Pending Invitations")) {
-                        List(pendingMembers, id: \.id) { user in
-                            Button(action: {
-                                pendingUser = user
-                            }) {
-                                HStack {
-                                    Text(user.pseudonym)
-                                    Spacer()
-                                    Text("Pending")
-                                        .foregroundColor(.orange)
+                    
+                    if pendingMembers.count > 0 {
+                        Section(header: Text("Pending Invitations")) {
+                            ForEach(pendingMembers, id: \.id) { user in
+                                Button(action: {
+                                    pendingUser = user
+                                }) {
+                                    HStack {
+                                        Text(user.pseudonym)
+                                        Spacer()
+                                        Text("Pending")
+                                            .foregroundColor(.orange)
+                                    }
                                 }
                             }
-                        }
-                        .alert(isPresented: Binding<Bool>(
-                            get: { pendingUser != nil },
-                            set: { if !$0 { pendingUser = nil } }
-                        )) {
-                            Alert(
-                                title: Text("Pending Invitation"),
-                                message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expenses."),
-                                dismissButton: .default(Text("OK")) {
-                                    pendingUser = nil
-                                }
-                            )
+                            .alert(isPresented: Binding<Bool>(
+                                get: { pendingUser != nil },
+                                set: { if !$0 { pendingUser = nil } }
+                            )) {
+                                Alert(
+                                    title: Text("Pending Invitation"),
+                                    message: Text("\(pendingUser?.pseudonym ?? "This user") has a pending invitation. Wait for them to accept it to start sharing expenses."),
+                                    dismissButton: .default(Text("OK")) {
+                                        pendingUser = nil
+                                    }
+                                )
+                            }
                         }
                     }
-                }
-                
-                if isAdmin {
-                    Section(header: Text("Invite Users")) {
-                        TextField("Search users by username", text: $searchPseudonym)
-                            .autocapitalization(.none)
-                            .disableAutocorrection(true)
-                            .onChange(of: searchPseudonym) { _ in
-                                searchUsers()
-                            }
-                        
-                        List(filteredUsers, id: \.id) { user in
-                            Button(action: {
-                                inviteUser(user)
-                            }) {
-                                HStack {
-                                    Text(user.pseudonym)
-                                    Spacer()
-                                    if invitedUsernames.contains(user.pseudonym) {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.blue)
+                    
+                    if isAdmin {
+                        Section(header: Text("Invite Users")) {
+                            TextField("Search users by username", text: $searchPseudonym)
+                                .autocapitalization(.none)
+                                .disableAutocorrection(true)
+                                .onChange(of: searchPseudonym) { _ in
+                                    searchUsers()
+                                }
+                            
+                            ForEach(filteredUsers, id: \.id) { user in
+                                Button(action: {
+                                    inviteUser(user)
+                                }) {
+                                    HStack {
+                                        Text(user.pseudonym)
+                                        Spacer()
+                                        if invitedUsernames.contains(user.pseudonym) {
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.blue)
+                                        }
                                     }
                                 }
                             }
                         }
                     }
                 }
-            }
-            .navigationTitle("Users")
-            .onAppear {
-                fetchUserStatuses()
-            }
-            
-            if isAdmin && !invitedUsernames.isEmpty {
-                Button(action: {
-                    sendInvitations()
-                }) {
-                    Text("Send Invites")
-                        .bold()
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
+                .navigationTitle("Users")
+                .onAppear {
+                    fetchUserStatuses()
                 }
-                .padding()
+                
+                if isAdmin && !invitedUsernames.isEmpty {
+                    Button(action: {
+                        sendInvitations()
+                    }) {
+                        Text("Send Invites")
+                            .bold()
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding()
+                }
+                
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
             }
-            
-            if let error = createError {
-                Text(error)
-                    .foregroundColor(.red)
+            .alert(isPresented: $showSuccessAlert) {
+                Alert(
+                    title: Text("Invitations Sent"),
+                    message: Text("The invitations have been successfully sent."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .sheet(isPresented: $showUserDetail, onDismiss: {
+                fetchUserStatuses() // Fetch latest details when the user detail view is dismissed
+            }) {
+                if let selectedUser = selectedUser {
+                    UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
+                }
             }
         }
-        .alert(isPresented: $showSuccessAlert) {
-            Alert(
-                title: Text("Invitations Sent"),
-                message: Text("The invitations have been successfully sent."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
-        .sheet(isPresented: $showUserDetail, onDismiss: {
-            fetchUserStatuses() // Fetch latest details when the user detail view is dismissed
-        }) {
-            if let selectedUser = selectedUser {
-                UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
-            }
+        .refreshable {
+            fetchUserStatuses()
         }
     }
 
