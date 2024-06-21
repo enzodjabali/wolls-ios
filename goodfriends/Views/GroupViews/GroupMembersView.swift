@@ -103,7 +103,6 @@ struct GroupMembersView: View {
                         }
                     }
                 }
-                .navigationTitle("Users")
                 .onAppear {
                     fetchUserStatuses()
                 }
@@ -146,6 +145,7 @@ struct GroupMembersView: View {
         .refreshable {
             fetchUserStatuses()
         }
+        .navigationTitle("Users") // Set the title manually outside the VStack
     }
 
     private var isAdmin: Bool {
