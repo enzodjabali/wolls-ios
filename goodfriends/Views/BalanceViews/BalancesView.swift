@@ -2,7 +2,7 @@ import SwiftUI
 
 struct BalancesView: View {
     let groupId: String
-    @State private var balances: [Balance] = []
+    @State private var balances: [UserStatus] = []
     @State private var fetchError: String?
     @State private var isLoading: Bool = true
 
@@ -31,44 +31,47 @@ struct BalancesView: View {
                         fetchBalances()
                     }
                 } else {
-                    List(balances) { balance in
-                        VStack(alignment: .leading) {
-                            if balance.amount < 0 {
-                                Text(balance.username)
-                                    .font(.headline)
-                            } else {
-                                HStack {
-                                    Spacer()
-                                    Text(balance.username)
+                    List {
+                        ForEach(balances.indices, id: \.self) { index in
+                            let balance = balances[index]
+                            VStack(alignment: .leading) {
+                                if let amount = balance.balance, amount < 0 {
+                                    Text(balance.pseudonym)
                                         .font(.headline)
+                                } else {
+                                    HStack {
+                                        Spacer()
+                                        Text(balance.pseudonym)
+                                            .font(.headline)
+                                    }
                                 }
-                            }
-                            
-                            HStack {
-                                if balance.amount < 0 {
-                                    Rectangle()
-                                        .fill(Color.red.opacity(0.8)) // Set opacity here
-                                        .cornerRadius(5) // Set corner radius here
-                                        .frame(width: max(CGFloat(abs(balance.amount) / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
-                                        .overlay(
-                                            Text("\(String(format: "%.2f", balance.amount)) €")
-                                                .font(.subheadline)
-                                                .foregroundColor(.white)
-                                        )
-                                        .padding(.horizontal, 5) // Add horizontal padding for better spacing
-                                }
-                                if balance.amount > 0 {
-                                    Spacer()
-                                    Rectangle()
-                                        .fill(Color.green.opacity(0.8)) // Set opacity here
-                                        .cornerRadius(5) // Set corner radius here
-                                        .frame(width: max(CGFloat(balance.amount / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
-                                        .overlay(
-                                            Text("\(String(format: "%.2f", balance.amount)) €")
-                                                .font(.subheadline)
-                                                .foregroundColor(.white)
-                                        )
-                                        .padding(.horizontal, 5) // Add horizontal padding for better spacing
+
+                                HStack {
+                                    if let amount = balance.balance, amount < 0 {
+                                        Rectangle()
+                                            .fill(Color.red.opacity(0.8)) // Set opacity here
+                                            .cornerRadius(5) // Set corner radius here
+                                            .frame(width: max(CGFloat(abs(Double(amount) / maxBalance) * maxBarWidth), 80), height: 25)
+                                            .overlay(
+                                                Text("\(String(format: "%.2f", amount)) €")
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.white)
+                                            )
+                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                    }
+                                    if let amount = balance.balance, amount > 0 {
+                                        Spacer()
+                                        Rectangle()
+                                            .fill(Color.green.opacity(0.8)) // Set opacity here
+                                            .cornerRadius(5) // Set corner radius here
+                                            .frame(width: max(CGFloat((amount) / Float(maxBalance)) * maxBarWidth, 80), height: 25)
+                                            .overlay(
+                                                Text("\(String(format: "%.2f", amount)) €")
+                                                    .font(.subheadline)
+                                                    .foregroundColor(.white)
+                                            )
+                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                    }
                                 }
                             }
                         }
@@ -85,7 +88,7 @@ struct BalancesView: View {
     }
 
     private var maxBalance: Double {
-        return balances.map { abs($0.amount) }.max() ?? 1
+        return balances.map { abs(Double($0.balance ?? 0)) }.max() ?? 1
     }
 
     private var maxBarWidth: CGFloat {
