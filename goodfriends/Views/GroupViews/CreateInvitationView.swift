@@ -104,10 +104,7 @@ struct CreateInvitationView: View {
             }
             .navigationTitle("Users")
             .onAppear {
-                if !usersFetched {
-                    fetchUserStatuses()
-                    usersFetched = true
-                }
+                fetchUserStatuses()
             }
             
             if isAdmin && !invitedUsernames.isEmpty {
@@ -137,7 +134,9 @@ struct CreateInvitationView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .sheet(isPresented: $showUserDetail) {
+        .sheet(isPresented: $showUserDetail, onDismiss: {
+            fetchUserStatuses() // Fetch latest details when the user detail view is dismissed
+        }) {
             if let selectedUser = selectedUser {
                 UserDetailView(user: selectedUser, groupId: groupId, userStatuses: $userStatuses)
             }
