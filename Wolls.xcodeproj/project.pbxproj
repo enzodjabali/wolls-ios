@@ -70,14 +70,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C60EA1002BFE3C7B00C5E23F /* goodfriends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = goodfriends.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C60EA1002BFE3C7B00C5E23F /* Wolls.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wolls.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C60EA1032BFE3C7B00C5E23F /* goodfriendsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsApp.swift; sourceTree = "<group>"; };
 		C60EA1052BFE3C7B00C5E23F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C60EA10A2BFE3C7D00C5E23F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		C60EA1102BFE3C7D00C5E23F /* goodfriendsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = goodfriendsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C60EA1102BFE3C7D00C5E23F /* WollsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WollsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C60EA1142BFE3C7D00C5E23F /* goodfriendsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsTests.swift; sourceTree = "<group>"; };
-		C60EA11A2BFE3C7D00C5E23F /* goodfriendsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = goodfriendsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C60EA11A2BFE3C7D00C5E23F /* WollsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WollsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITests.swift; sourceTree = "<group>"; };
 		C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C60EA12D2BFE548100C5E23F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -157,9 +157,9 @@
 		C60EA1012BFE3C7B00C5E23F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C60EA1002BFE3C7B00C5E23F /* goodfriends.app */,
-				C60EA1102BFE3C7D00C5E23F /* goodfriendsTests.xctest */,
-				C60EA11A2BFE3C7D00C5E23F /* goodfriendsUITests.xctest */,
+				C60EA1002BFE3C7B00C5E23F /* Wolls.app */,
+				C60EA1102BFE3C7D00C5E23F /* WollsTests.xctest */,
+				C60EA11A2BFE3C7D00C5E23F /* WollsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -319,9 +319,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C60EA0FF2BFE3C7B00C5E23F /* goodfriends */ = {
+		C60EA0FF2BFE3C7B00C5E23F /* Wolls */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C60EA1242BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriends" */;
+			buildConfigurationList = C60EA1242BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "Wolls" */;
 			buildPhases = (
 				C60EA0FC2BFE3C7B00C5E23F /* Sources */,
 				C60EA0FD2BFE3C7B00C5E23F /* Frameworks */,
@@ -331,14 +331,14 @@
 			);
 			dependencies = (
 			);
-			name = goodfriends;
+			name = Wolls;
 			productName = goodfriends;
-			productReference = C60EA1002BFE3C7B00C5E23F /* goodfriends.app */;
+			productReference = C60EA1002BFE3C7B00C5E23F /* Wolls.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C60EA10F2BFE3C7D00C5E23F /* goodfriendsTests */ = {
+		C60EA10F2BFE3C7D00C5E23F /* WollsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C60EA1272BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriendsTests" */;
+			buildConfigurationList = C60EA1272BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "WollsTests" */;
 			buildPhases = (
 				C60EA10C2BFE3C7D00C5E23F /* Sources */,
 				C60EA10D2BFE3C7D00C5E23F /* Frameworks */,
@@ -349,14 +349,14 @@
 			dependencies = (
 				C60EA1122BFE3C7D00C5E23F /* PBXTargetDependency */,
 			);
-			name = goodfriendsTests;
+			name = WollsTests;
 			productName = goodfriendsTests;
-			productReference = C60EA1102BFE3C7D00C5E23F /* goodfriendsTests.xctest */;
+			productReference = C60EA1102BFE3C7D00C5E23F /* WollsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C60EA1192BFE3C7D00C5E23F /* goodfriendsUITests */ = {
+		C60EA1192BFE3C7D00C5E23F /* WollsUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C60EA12A2BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriendsUITests" */;
+			buildConfigurationList = C60EA12A2BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "WollsUITests" */;
 			buildPhases = (
 				C60EA1162BFE3C7D00C5E23F /* Sources */,
 				C60EA1172BFE3C7D00C5E23F /* Frameworks */,
@@ -367,9 +367,9 @@
 			dependencies = (
 				C60EA11C2BFE3C7D00C5E23F /* PBXTargetDependency */,
 			);
-			name = goodfriendsUITests;
+			name = WollsUITests;
 			productName = goodfriendsUITests;
-			productReference = C60EA11A2BFE3C7D00C5E23F /* goodfriendsUITests.xctest */;
+			productReference = C60EA11A2BFE3C7D00C5E23F /* WollsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -395,7 +395,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C60EA0FB2BFE3C7B00C5E23F /* Build configuration list for PBXProject "goodfriends" */;
+			buildConfigurationList = C60EA0FB2BFE3C7B00C5E23F /* Build configuration list for PBXProject "Wolls" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -409,9 +409,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C60EA0FF2BFE3C7B00C5E23F /* goodfriends */,
-				C60EA10F2BFE3C7D00C5E23F /* goodfriendsTests */,
-				C60EA1192BFE3C7D00C5E23F /* goodfriendsUITests */,
+				C60EA0FF2BFE3C7B00C5E23F /* Wolls */,
+				C60EA10F2BFE3C7D00C5E23F /* WollsTests */,
+				C60EA1192BFE3C7D00C5E23F /* WollsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -510,12 +510,12 @@
 /* Begin PBXTargetDependency section */
 		C60EA1122BFE3C7D00C5E23F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C60EA0FF2BFE3C7B00C5E23F /* goodfriends */;
+			target = C60EA0FF2BFE3C7B00C5E23F /* Wolls */;
 			targetProxy = C60EA1112BFE3C7D00C5E23F /* PBXContainerItemProxy */;
 		};
 		C60EA11C2BFE3C7D00C5E23F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = C60EA0FF2BFE3C7B00C5E23F /* goodfriends */;
+			target = C60EA0FF2BFE3C7B00C5E23F /* Wolls */;
 			targetProxy = C60EA11B2BFE3C7D00C5E23F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -739,7 +739,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/goodfriends.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/goodfriends";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wolls.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wolls";
 			};
 			name = Debug;
 		};
@@ -758,7 +758,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/goodfriends.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/goodfriends";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Wolls.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Wolls";
 			};
 			name = Release;
 		};
@@ -799,7 +799,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C60EA0FB2BFE3C7B00C5E23F /* Build configuration list for PBXProject "goodfriends" */ = {
+		C60EA0FB2BFE3C7B00C5E23F /* Build configuration list for PBXProject "Wolls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C60EA1222BFE3C7D00C5E23F /* Debug */,
@@ -808,7 +808,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C60EA1242BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriends" */ = {
+		C60EA1242BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "Wolls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C60EA1252BFE3C7D00C5E23F /* Debug */,
@@ -817,7 +817,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C60EA1272BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriendsTests" */ = {
+		C60EA1272BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "WollsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C60EA1282BFE3C7D00C5E23F /* Debug */,
@@ -826,7 +826,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C60EA12A2BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "goodfriendsUITests" */ = {
+		C60EA12A2BFE3C7D00C5E23F /* Build configuration list for PBXNativeTarget "WollsUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C60EA12B2BFE3C7D00C5E23F /* Debug */,
