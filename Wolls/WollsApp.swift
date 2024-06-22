@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct goodfriendsApp: App {
+struct WollsApp: App {
     @State private var isLoggedIn: Bool = false // Add state variable for login status
 
     var body: some Scene {

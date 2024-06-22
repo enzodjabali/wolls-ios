@@ -7,13 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1032BFE3C7B00C5E23F /* goodfriendsApp.swift */; };
-		C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1052BFE3C7B00C5E23F /* ContentView.swift */; };
+		C60EA1042BFE3C7B00C5E23F /* WollsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1032BFE3C7B00C5E23F /* WollsApp.swift */; };
 		C60EA1082BFE3C7D00C5E23F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */; };
 		C60EA10B2BFE3C7D00C5E23F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C60EA10A2BFE3C7D00C5E23F /* Preview Assets.xcassets */; };
-		C60EA1152BFE3C7D00C5E23F /* goodfriendsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1142BFE3C7D00C5E23F /* goodfriendsTests.swift */; };
-		C60EA11F2BFE3C7D00C5E23F /* goodfriendsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */; };
-		C60EA1212BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */; };
+		C60EA1152BFE3C7D00C5E23F /* WollsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1142BFE3C7D00C5E23F /* WollsTests.swift */; };
+		C60EA11F2BFE3C7D00C5E23F /* WollsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA11E2BFE3C7D00C5E23F /* WollsUITests.swift */; };
+		C60EA1212BFE3C7D00C5E23F /* WollsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1202BFE3C7D00C5E23F /* WollsUITestsLaunchTests.swift */; };
 		C60EA12E2BFE548100C5E23F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12D2BFE548100C5E23F /* LoginView.swift */; };
 		C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA12F2BFE576D00C5E23F /* RegisterView.swift */; };
 		C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C60EA1322BFE5CED00C5E23F /* GroupsView.swift */; };
@@ -71,15 +70,14 @@
 
 /* Begin PBXFileReference section */
 		C60EA1002BFE3C7B00C5E23F /* Wolls.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wolls.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		C60EA1032BFE3C7B00C5E23F /* goodfriendsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsApp.swift; sourceTree = "<group>"; };
-		C60EA1052BFE3C7B00C5E23F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C60EA1032BFE3C7B00C5E23F /* WollsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WollsApp.swift; sourceTree = "<group>"; };
 		C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C60EA10A2BFE3C7D00C5E23F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C60EA1102BFE3C7D00C5E23F /* WollsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WollsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C60EA1142BFE3C7D00C5E23F /* goodfriendsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsTests.swift; sourceTree = "<group>"; };
+		C60EA1142BFE3C7D00C5E23F /* WollsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WollsTests.swift; sourceTree = "<group>"; };
 		C60EA11A2BFE3C7D00C5E23F /* WollsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WollsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITests.swift; sourceTree = "<group>"; };
-		C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = goodfriendsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		C60EA11E2BFE3C7D00C5E23F /* WollsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WollsUITests.swift; sourceTree = "<group>"; };
+		C60EA1202BFE3C7D00C5E23F /* WollsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WollsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C60EA12D2BFE548100C5E23F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C60EA12F2BFE576D00C5E23F /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		C60EA1322BFE5CED00C5E23F /* GroupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsView.swift; sourceTree = "<group>"; };
@@ -147,9 +145,9 @@
 		C60EA0F72BFE3C7B00C5E23F = {
 			isa = PBXGroup;
 			children = (
-				C60EA1022BFE3C7B00C5E23F /* goodfriends */,
-				C60EA1132BFE3C7D00C5E23F /* goodfriendsTests */,
-				C60EA11D2BFE3C7D00C5E23F /* goodfriendsUITests */,
+				C60EA1022BFE3C7B00C5E23F /* Wolls */,
+				C60EA1132BFE3C7D00C5E23F /* WollsTests */,
+				C60EA11D2BFE3C7D00C5E23F /* WollsUITests */,
 				C60EA1012BFE3C7B00C5E23F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -164,20 +162,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C60EA1022BFE3C7B00C5E23F /* goodfriends */ = {
+		C60EA1022BFE3C7B00C5E23F /* Wolls */ = {
 			isa = PBXGroup;
 			children = (
 				C68D4A7A2C245DD200F242F5 /* Locales */,
 				C60EA14C2C00CC3000C5E23F /* Views */,
 				C60EA1492C00CACF00C5E23F /* Controllers */,
 				C60EA1422C00C73800C5E23F /* Models */,
-				C60EA1032BFE3C7B00C5E23F /* goodfriendsApp.swift */,
-				C60EA1052BFE3C7B00C5E23F /* ContentView.swift */,
+				C60EA1032BFE3C7B00C5E23F /* WollsApp.swift */,
 				C60EA1072BFE3C7D00C5E23F /* Assets.xcassets */,
 				C60EA1092BFE3C7D00C5E23F /* Preview Content */,
 				C60EA1682C010F6700C5E23F /* Config.swift */,
 			);
-			path = goodfriends;
+			path = Wolls;
 			sourceTree = "<group>";
 		};
 		C60EA1092BFE3C7D00C5E23F /* Preview Content */ = {
@@ -188,21 +185,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C60EA1132BFE3C7D00C5E23F /* goodfriendsTests */ = {
+		C60EA1132BFE3C7D00C5E23F /* WollsTests */ = {
 			isa = PBXGroup;
 			children = (
-				C60EA1142BFE3C7D00C5E23F /* goodfriendsTests.swift */,
+				C60EA1142BFE3C7D00C5E23F /* WollsTests.swift */,
 			);
-			path = goodfriendsTests;
+			path = WollsTests;
 			sourceTree = "<group>";
 		};
-		C60EA11D2BFE3C7D00C5E23F /* goodfriendsUITests */ = {
+		C60EA11D2BFE3C7D00C5E23F /* WollsUITests */ = {
 			isa = PBXGroup;
 			children = (
-				C60EA11E2BFE3C7D00C5E23F /* goodfriendsUITests.swift */,
-				C60EA1202BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift */,
+				C60EA11E2BFE3C7D00C5E23F /* WollsUITests.swift */,
+				C60EA1202BFE3C7D00C5E23F /* WollsUITestsLaunchTests.swift */,
 			);
-			path = goodfriendsUITests;
+			path = WollsUITests;
 			sourceTree = "<group>";
 		};
 		C60EA1422C00C73800C5E23F /* Models */ = {
@@ -461,14 +458,13 @@
 				C60EA1542C00D24100C5E23F /* GroupBoxView.swift in Sources */,
 				C60EA16F2C011D9400C5E23F /* ExpenseController.swift in Sources */,
 				C60EA1302BFE576D00C5E23F /* RegisterView.swift in Sources */,
-				C60EA1062BFE3C7B00C5E23F /* ContentView.swift in Sources */,
 				C60EA14B2C00CAE600C5E23F /* UserController.swift in Sources */,
 				C60EA1772C02A6C200C5E23F /* EditGroupView.swift in Sources */,
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
 				C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */,
-				C60EA1042BFE3C7B00C5E23F /* goodfriendsApp.swift in Sources */,
+				C60EA1042BFE3C7B00C5E23F /* WollsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
 				C60EA14E2C00CDAE00C5E23F /* GroupController.swift in Sources */,
 				C60EA1482C00C7CA00C5E23F /* ExpenseModel.swift in Sources */,
@@ -492,7 +488,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C60EA1152BFE3C7D00C5E23F /* goodfriendsTests.swift in Sources */,
+				C60EA1152BFE3C7D00C5E23F /* WollsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -500,8 +496,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C60EA11F2BFE3C7D00C5E23F /* goodfriendsUITests.swift in Sources */,
-				C60EA1212BFE3C7D00C5E23F /* goodfriendsUITestsLaunchTests.swift in Sources */,
+				C60EA11F2BFE3C7D00C5E23F /* WollsUITests.swift in Sources */,
+				C60EA1212BFE3C7D00C5E23F /* WollsUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -662,7 +658,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"goodfriends/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Wolls/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Wolls;
@@ -697,7 +693,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"goodfriends/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Wolls/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Wolls;

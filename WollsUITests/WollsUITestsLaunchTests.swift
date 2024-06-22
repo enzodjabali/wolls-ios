@@ -1,13 +1,6 @@
-//
-//  goodfriendsUITestsLaunchTests.swift
-//  goodfriendsUITests
-//
-//  Created by Enzo on 22/05/2024.
-//
-
 import XCTest
 
-final class goodfriendsUITestsLaunchTests: XCTestCase {
+final class WollsUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -1,13 +1,6 @@
-//
-//  goodfriendsUITests.swift
-//  goodfriendsUITests
-//
-//  Created by Enzo on 22/05/2024.
-//
-
 import XCTest
 
-final class goodfriendsUITests: XCTestCase {
+final class WollsUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
