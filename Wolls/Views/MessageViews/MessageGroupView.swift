@@ -63,6 +63,7 @@ struct GroupChatView: View {
         }
         .navigationBarTitle("Group Chat", displayMode: .inline)
         .onAppear {
+            viewModel.fetchMessages() // Fetch messages on appear
             viewModel.connect()
         }
         .onDisappear {
@@ -125,6 +126,22 @@ class GroupChatViewModel: ObservableObject {
                 print("Message sent successfully")
             case .failure(let error):
                 print("Failed to send message: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    // Function to fetch messages on demand
+    func fetchMessages() {
+        MessageController.shared.fetchMessages(groupId: self.groupId) { result in
+            switch result {
+            case .success(let messages):
+                DispatchQueue.main.async {
+                    self.messages = messages
+                }
+                print("MESSAGES HISTORY:")
+                print(messages)
+            case .failure(let error):
+                print("Failed to fetch messages: \(error.localizedDescription)")
             }
         }
     }
