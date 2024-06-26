@@ -73,7 +73,7 @@ struct GroupChatView: View {
 
 
 class GroupChatViewModel: ObservableObject {
-    @Published var messages: [ChatMessage] = []
+    @Published var messages: [MessageGroup] = []
     @Published var messageText: String = ""
     private var manager: SocketManager
     private var socket: SocketIOClient
@@ -91,13 +91,12 @@ class GroupChatViewModel: ObservableObject {
 
         socket.on("group_message") { data, ack in
             guard let messageData = data[0] as? [String: Any],
-                  let id = messageData["id"] as? String,
+                  let id = messageData["_id"] as? String,
                   let senderId = messageData["senderId"] as? String,
                   let content = messageData["content"] as? String else { return }
 
             print(messageData)
-            
-            let message = ChatMessage(id: id, senderId: senderId, content: content, isSentByCurrentUser: senderId == self.currentUserId)
+            let message = MessageGroup(id: id, senderId: senderId, content: content, isSentByCurrentUser: senderId == self.currentUserId)
             DispatchQueue.main.async {
                 self.messages.append(message)
             }
@@ -117,21 +116,20 @@ class GroupChatViewModel: ObservableObject {
     }
 
     func sendMessage() {
-        guard let userId = currentUserId else { return }
-        let messageData: [String: Any] = ["id": "666666", "senderId": userId, "groupId": self.groupId, "content": messageText]
-        socket.emit("send_group_message", messageData)
+        let content = messageText
         messageText = ""
+
+        MessageController.shared.sendMessage(groupId: groupId, content: content) { result in
+            switch result {
+            case .success():
+                print("Message sent successfully")
+            case .failure(let error):
+                print("Failed to send message: \(error.localizedDescription)")
+            }
+        }
     }
 
     private var currentUserId: String? {
         return UserSession.shared.userId
     }
-}
-
-
-struct ChatMessage: Identifiable {
-    var id: String
-    var senderId: String
-    var content: String
-    var isSentByCurrentUser: Bool
 }
