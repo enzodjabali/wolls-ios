@@ -49,6 +49,8 @@
 		C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A762C1990E900F242F5 /* UserDetailView.swift */; };
 		C68D4A792C199D9800F242F5 /* AvatarViewProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */; };
 		C68D4A862C24632C00F242F5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C68D4A842C24632C00F242F5 /* Localizable.strings */; };
+		C6FCCFE42C2AC04D006D4E7A /* GroupChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FCCFE32C2AC04D006D4E7A /* GroupChatView.swift */; };
+		C6FCCFE72C2AC207006D4E7A /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = C6FCCFE62C2AC207006D4E7A /* SocketIO */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,7 @@
 		C68D4A782C199D9800F242F5 /* AvatarViewProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewProfile.swift; sourceTree = "<group>"; };
 		C68D4A8B2C2463AB00F242F5 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C68D4A8C2C2463CF00F242F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C6FCCFE32C2AC04D006D4E7A /* GroupChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6FCCFE72C2AC207006D4E7A /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -230,6 +234,7 @@
 		C60EA14C2C00CC3000C5E23F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C6FCCFE22C2ABFF2006D4E7A /* ChatViews */,
 				C60EA15E2C00D46E00C5E23F /* BalanceViews */,
 				C60EA15D2C00D45B00C5E23F /* RefundViews */,
 				C60EA15C2C00D44900C5E23F /* ExpenseViews */,
@@ -313,6 +318,14 @@
 			path = Locales;
 			sourceTree = "<group>";
 		};
+		C6FCCFE22C2ABFF2006D4E7A /* ChatViews */ = {
+			isa = PBXGroup;
+			children = (
+				C6FCCFE32C2AC04D006D4E7A /* GroupChatView.swift */,
+			);
+			path = ChatViews;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -329,6 +342,9 @@
 			dependencies = (
 			);
 			name = Wolls;
+			packageProductDependencies = (
+				C6FCCFE62C2AC207006D4E7A /* SocketIO */,
+			);
 			productName = goodfriends;
 			productReference = C60EA1002BFE3C7B00C5E23F /* Wolls.app */;
 			productType = "com.apple.product-type.application";
@@ -402,6 +418,9 @@
 				en,
 			);
 			mainGroup = C60EA0F72BFE3C7B00C5E23F;
+			packageReferences = (
+				C6FCCFE52C2AC14E006D4E7A /* XCRemoteSwiftPackageReference "socket" */,
+			);
 			productRefGroup = C60EA1012BFE3C7B00C5E23F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -463,6 +482,7 @@
 				C60EA1372BFE6D7900C5E23F /* ExpensesView.swift in Sources */,
 				C60EA1852C051A3500C5E23F /* BalanceController.swift in Sources */,
 				C60EA1572C00D2AB00C5E23F /* AvatarView.swift in Sources */,
+				C6FCCFE42C2AC04D006D4E7A /* GroupChatView.swift in Sources */,
 				C68D4A772C1990E900F242F5 /* UserDetailView.swift in Sources */,
 				C60EA1042BFE3C7B00C5E23F /* WollsApp.swift in Sources */,
 				C60EA1332BFE5CED00C5E23F /* GroupsView.swift in Sources */,
@@ -832,6 +852,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C6FCCFE52C2AC14E006D4E7A /* XCRemoteSwiftPackageReference "socket" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C6FCCFE62C2AC207006D4E7A /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C6FCCFE52C2AC14E006D4E7A /* XCRemoteSwiftPackageReference "socket" */;
+			productName = SocketIO;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C60EA0F82BFE3C7B00C5E23F /* Project object */;
 }

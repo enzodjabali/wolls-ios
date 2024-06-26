@@ -6,6 +6,7 @@ struct GroupDetailsView: View {
     @State private var selectedTab = 0
     @State private var isEditing = false
     @State private var isInviting = false
+    @State private var isChatting = false
     @Binding var isLoggedIn: Bool
     
     init(groupId: String, isLoggedIn: Binding<Bool>) {
@@ -49,6 +50,14 @@ struct GroupDetailsView: View {
                     isInviting.toggle()
                 }) {
                     Image(systemName: "person.2")
+                        .imageScale(.large)
+                }
+            }
+            NavigationLink(destination: GroupChatView(viewModel: GroupChatViewModel(groupId: viewModel.groupId)), isActive: $isChatting) {
+                Button(action: {
+                    isChatting.toggle()
+                }) {
+                    Image(systemName: "message")
                         .imageScale(.large)
                 }
             }
