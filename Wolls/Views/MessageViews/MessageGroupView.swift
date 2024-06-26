@@ -13,7 +13,7 @@ struct GroupChatView: View {
                 ScrollViewReader { scrollView in
                     ForEach(viewModel.messages) { message in
                         HStack {
-                            if message.isSentByCurrentUser {
+                            if message.senderId == UserSession.shared.userId {
                                 Spacer()
                                 Text(message.content)
                                     .padding()
@@ -96,7 +96,7 @@ class GroupChatViewModel: ObservableObject {
                   let content = messageData["content"] as? String else { return }
 
             print(messageData)
-            let message = MessageGroup(id: id, senderId: senderId, content: content, isSentByCurrentUser: senderId == self.currentUserId)
+            let message = MessageGroup(id: id, senderId: senderId, content: content)
             DispatchQueue.main.async {
                 self.messages.append(message)
             }
