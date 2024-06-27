@@ -77,8 +77,13 @@ struct MessageGroupView: View {
 
             HStack {
                 TextField("Message", text: $viewModel.messageText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .frame(minHeight: 30)
+                    .frame(minHeight: 31) // Adjusted height to accommodate multiple lines
+                    .padding(.horizontal, 12) // Added horizontal padding to match button padding
+                    .lineLimit(nil) // Allow multiple lines
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color.gray.opacity(0.4), lineWidth: 0.5)
+                    )
 
                 Button(action: {
                     viewModel.sendMessage()
@@ -89,7 +94,7 @@ struct MessageGroupView: View {
                         .padding(.vertical, 6)
                         .background(Color.blue)
                         .foregroundColor(.white)
-                        .cornerRadius(50)
+                        .clipShape(Circle()) // Use Circle shape for rounded button
                 }
                 .disabled(viewModel.messageText.isEmpty)
             }
