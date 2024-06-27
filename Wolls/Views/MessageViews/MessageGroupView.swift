@@ -3,6 +3,8 @@ import Combine
 import Foundation
 import SocketIO
 
+var limit = 0
+
 struct GroupChatView: View {
     @ObservedObject var viewModel: GroupChatViewModel
 
@@ -11,28 +13,42 @@ struct GroupChatView: View {
         VStack {
             ScrollView {
                 ScrollViewReader { scrollView in
-                    ForEach(viewModel.messages) { message in
-                        HStack {
-                            if message.senderId == UserSession.shared.userId {
-                                Spacer()
-                                Text(message.content)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                            } else {
-                                Text(message.content)
-                                    .padding()
-                                    .background(Color.gray.opacity(0.2))
-                                    .foregroundColor(.black)
-                                    .cornerRadius(10)
-                                Spacer()
+                    VStack {
+                        Text("Pull down to load more messages")
+                            .font(.footnote)
+                            .foregroundColor(.gray)
+                            .padding(.top, 10)
+
+                        ForEach(viewModel.messages) { message in
+                            HStack {
+                                if message.senderId == UserSession.shared.userId {
+                                    Spacer()
+                                    Text(message.content)
+                                        .padding()
+                                        .background(Color.blue)
+                                        .foregroundColor(.white)
+                                        .cornerRadius(10)
+                                } else {
+                                    Text(message.content)
+                                        .padding()
+                                        .background(Color.gray.opacity(0.2))
+                                        .foregroundColor(.black)
+                                        .cornerRadius(10)
+                                    Spacer()
+                                }
                             }
+                            .padding(.horizontal)
+                            .padding(.top, 5)
                         }
-                        .padding(.horizontal)
-                        .padding(.top, 5)
                     }
+                    // Scroll to bottom when any change is made (new message, fetch more messages, etc...)
                     .onChange(of: viewModel.messages.count) { _ in
+                        if let lastMessage = viewModel.messages.last {
+                            scrollView.scrollTo(lastMessage.id, anchor: .bottom)
+                        }
+                    }
+                    // Scroll to bottom when arrive on the page
+                    .onAppear {
                         if let lastMessage = viewModel.messages.last {
                             scrollView.scrollTo(lastMessage.id, anchor: .bottom)
                         }
@@ -40,6 +56,9 @@ struct GroupChatView: View {
                 }
             }
             .padding(.top)
+            .refreshable {
+                viewModel.fetchMessages()
+            }
 
             HStack {
                 TextField("Type a message...", text: $viewModel.messageText)
@@ -63,6 +82,7 @@ struct GroupChatView: View {
         }
         .navigationBarTitle("Group Chat", displayMode: .inline)
         .onAppear {
+            limit = 50
             viewModel.fetchMessages() // Fetch messages on appear
             viewModel.connect()
         }
@@ -132,7 +152,7 @@ class GroupChatViewModel: ObservableObject {
     
     // Function to fetch messages on demand
     func fetchMessages() {
-        MessageController.shared.fetchMessages(groupId: self.groupId) { result in
+        MessageController.shared.fetchMessages(groupId: self.groupId, offset: 0, limit: limit) { result in
             switch result {
             case .success(let messages):
                 DispatchQueue.main.async {
@@ -140,6 +160,7 @@ class GroupChatViewModel: ObservableObject {
                 }
                 print("MESSAGES HISTORY:")
                 print(messages)
+                limit += 10
             case .failure(let error):
                 print("Failed to fetch messages: \(error.localizedDescription)")
             }

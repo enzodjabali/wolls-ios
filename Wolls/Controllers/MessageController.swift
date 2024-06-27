@@ -47,9 +47,9 @@ class MessageController {
         }.resume()
     }
     
-    func fetchMessages(groupId: String, completion: @escaping (Result<[MessageGroup], Error>) -> Void) {
+    func fetchMessages(groupId: String, offset: Int = 0, limit: Int = 20, completion: @escaping (Result<[MessageGroup], Error>) -> Void) {
         guard let token = UserDefaults.standard.string(forKey: "userToken"),
-              let url = URL(string: "\(API.baseURL)/v1/messages/group/\(groupId)") else {
+              let url = URL(string: "\(API.baseURL)/v1/messages/group/\(groupId)?offset=\(offset)&limit=\(limit)") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL or token"])))
             return
         }
@@ -77,5 +77,4 @@ class MessageController {
             }
         }.resume()
     }
-
 }
