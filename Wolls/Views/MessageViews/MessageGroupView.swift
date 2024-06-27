@@ -26,16 +26,17 @@ struct MessageGroupView: View {
                                 if message.senderId == UserSession.shared.userId {
                                     Spacer()
                                     Text(message.content)
-                                        .padding()
+                                        .padding(.horizontal, 13)
+                                        .padding(.vertical, 8)
                                         .background(Color.blue)
                                         .foregroundColor(.white)
-                                        .cornerRadius(10)
+                                        .cornerRadius(17)
                                 } else {
                                     Text(message.content)
-                                        .padding()
+                                        .padding(.horizontal, 13)
+                                        .padding(.vertical, 8)
                                         .background(Color.gray.opacity(0.2))
-                                        .foregroundColor(.black)
-                                        .cornerRadius(10)
+                                        .cornerRadius(17)
                                     Spacer()
                                 }
                             }
