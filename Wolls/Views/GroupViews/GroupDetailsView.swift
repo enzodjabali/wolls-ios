@@ -53,7 +53,7 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-            NavigationLink(destination: GroupChatView(viewModel: GroupChatViewModel(groupId: viewModel.groupId)), isActive: $isChatting) {
+            NavigationLink(destination: MessageGroupView(viewModel: GroupChatViewModel(groupId: viewModel.groupId)), isActive: $isChatting) {
                 Button(action: {
                     isChatting.toggle()
                 }) {

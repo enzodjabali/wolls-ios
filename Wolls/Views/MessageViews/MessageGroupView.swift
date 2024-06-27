@@ -5,7 +5,7 @@ import SocketIO
 
 var limit = 0
 
-struct GroupChatView: View {
+struct MessageGroupView: View {
     @ObservedObject var viewModel: GroupChatViewModel
 
     var body: some View {
