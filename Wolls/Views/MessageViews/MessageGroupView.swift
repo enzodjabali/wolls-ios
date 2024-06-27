@@ -14,10 +14,12 @@ struct MessageGroupView: View {
             ScrollView {
                 ScrollViewReader { scrollView in
                     VStack {
-                        Text("Pull down to load more messages")
-                            .font(.footnote)
-                            .foregroundColor(.gray)
-                            .padding(.top, 10)
+                        if limit < viewModel.messageCount {
+                            Text("Pull down to load more messages")
+                                .font(.footnote)
+                                .foregroundColor(.gray)
+                                .padding(.top, 10)
+                        }
 
                         ForEach(viewModel.messages) { message in
                             HStack {
@@ -85,6 +87,7 @@ struct MessageGroupView: View {
             limit = 50
             viewModel.fetchMessages() // Fetch messages on appear
             viewModel.connect()
+            viewModel.fetchMessageCount() // Fetch message count on appear
         }
         .onDisappear {
             viewModel.disconnect()
@@ -92,10 +95,10 @@ struct MessageGroupView: View {
     }
 }
 
-
 class GroupChatViewModel: ObservableObject {
     @Published var messages: [MessageGroup] = []
     @Published var messageText: String = ""
+    @Published var messageCount: Int = 0
     private var manager: SocketManager
     private var socket: SocketIOClient
     private var groupId: String
@@ -163,6 +166,19 @@ class GroupChatViewModel: ObservableObject {
                 limit += 10
             case .failure(let error):
                 print("Failed to fetch messages: \(error.localizedDescription)")
+            }
+        }
+    }
+
+    func fetchMessageCount() {
+        MessageController.shared.getMessageCount(groupId: self.groupId) { result in
+            switch result {
+            case .success(let count):
+                DispatchQueue.main.async {
+                    self.messageCount = count
+                }
+            case .failure(let error):
+                print("Failed to fetch message count: \(error.localizedDescription)")
             }
         }
     }
