@@ -22,24 +22,35 @@ struct MessageGroupView: View {
 
                         ForEach(Array(viewModel.messages.enumerated()), id: \.element.id) { index, message in
                             let isSameSenderAsPrevious = index > 0 && viewModel.messages[index - 1].senderId == message.senderId
+                            let isFirstMessageFromSender = index == 0 || viewModel.messages[index - 1].senderId != message.senderId
 
-                            HStack {
-                                if message.senderId == UserSession.shared.userId {
-                                    Spacer()
-                                    Text(message.content)
-                                        .padding(.horizontal, 13)
-                                        .padding(.vertical, 8)
-                                        .background(Color.blue)
-                                        .foregroundColor(.white)
-                                        .cornerRadius(17)
-                                } else {
-                                    Text(message.content)
-                                        .padding(.horizontal, 13)
-                                        .padding(.vertical, 8)
-                                        .background(Color.gray.opacity(0.2))
-                                        .cornerRadius(17)
-                                    Spacer()
+                            VStack(alignment: .leading) {
+                                if isFirstMessageFromSender && message.senderId != UserSession.shared.userId {
+                                    Text(message.pseudonym) // Display pseudonym if not current user
+                                        .font(.caption)
+                                        .foregroundColor(.gray)
+                                        .padding(.bottom, -5)
                                 }
+
+                                HStack {
+                                    if message.senderId == UserSession.shared.userId {
+                                        Spacer()
+                                        Text(message.content)
+                                            .padding(.horizontal, 13)
+                                            .padding(.vertical, 8)
+                                            .background(Color.blue)
+                                            .foregroundColor(.white)
+                                            .cornerRadius(17)
+                                    } else {
+                                        Text(message.content)
+                                            .padding(.horizontal, 13)
+                                            .padding(.vertical, 8)
+                                            .background(Color.gray.opacity(0.2))
+                                            .cornerRadius(17)
+                                        Spacer()
+                                    }
+                                }
+                                
                             }
                             .padding(.horizontal)
                             .padding(.top, isSameSenderAsPrevious ? -5 : 5)
@@ -86,7 +97,7 @@ struct MessageGroupView: View {
         }
         .navigationBarTitle("Group Chat", displayMode: .inline)
         .onAppear {
-            limit = 50
+            limit = 100
             viewModel.fetchMessages() // Fetch messages on appear
             viewModel.connect()
             viewModel.fetchMessageCount() // Fetch message count on appear
@@ -166,7 +177,7 @@ class GroupChatViewModel: ObservableObject {
                 }
                 print("MESSAGES HISTORY:")
                 print(messages)
-                limit += 10
+                limit += 200
             case .failure(let error):
                 print("Failed to fetch messages: \(error.localizedDescription)")
             }
