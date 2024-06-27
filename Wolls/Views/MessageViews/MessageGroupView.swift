@@ -9,7 +9,6 @@ struct MessageGroupView: View {
     @ObservedObject var viewModel: GroupChatViewModel
 
     var body: some View {
-        
         VStack {
             ScrollView {
                 ScrollViewReader { scrollView in
@@ -21,7 +20,9 @@ struct MessageGroupView: View {
                                 .padding(.top, 10)
                         }
 
-                        ForEach(viewModel.messages) { message in
+                        ForEach(Array(viewModel.messages.enumerated()), id: \.element.id) { index, message in
+                            let isSameSenderAsPrevious = index > 0 && viewModel.messages[index - 1].senderId == message.senderId
+
                             HStack {
                                 if message.senderId == UserSession.shared.userId {
                                     Spacer()
@@ -41,7 +42,7 @@ struct MessageGroupView: View {
                                 }
                             }
                             .padding(.horizontal)
-                            .padding(.top, 5)
+                            .padding(.top, isSameSenderAsPrevious ? -5 : 5)
                         }
                     }
                     // Scroll to bottom when any change is made (new message, fetch more messages, etc...)
