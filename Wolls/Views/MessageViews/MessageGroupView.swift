@@ -119,10 +119,11 @@ class GroupChatViewModel: ObservableObject {
             guard let messageData = data[0] as? [String: Any],
                   let id = messageData["_id"] as? String,
                   let senderId = messageData["senderId"] as? String,
+                  let pseudonym = messageData["pseudonym"] as? String,
                   let content = messageData["content"] as? String else { return }
 
             print(messageData)
-            let message = MessageGroup(id: id, senderId: senderId, content: content)
+            let message = MessageGroup(id: id, senderId: senderId, pseudonym: pseudonym, content: content)
             DispatchQueue.main.async {
                 self.messages.append(message)
             }

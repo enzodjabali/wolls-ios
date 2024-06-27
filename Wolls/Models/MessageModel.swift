@@ -1,6 +1,7 @@
 struct MessageGroup: Identifiable, Decodable {
     var id: String        // Rename this property to match the JSON key "_id"
     var senderId: String
+    var pseudonym: String
     var groupId: String?   // Add this property for groupId
     var content: String
     var timestamp: String?   // Add this property for timestamp, make sure to decode it correctly
@@ -10,6 +11,7 @@ struct MessageGroup: Identifiable, Decodable {
     private enum CodingKeys: String, CodingKey {
         case id = "_id"
         case senderId
+        case pseudonym
         case groupId
         case content
         case timestamp
