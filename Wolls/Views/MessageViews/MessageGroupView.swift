@@ -76,20 +76,20 @@ struct MessageGroupView: View {
             }
 
             HStack {
-                TextField("Type a message...", text: $viewModel.messageText)
+                TextField("Message", text: $viewModel.messageText)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .frame(minHeight: 30)
 
                 Button(action: {
                     viewModel.sendMessage()
                 }) {
-                    Text("Send")
+                    Image(systemName: "arrow.up")
                         .bold()
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 6)
                         .background(Color.blue)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(50)
                 }
                 .disabled(viewModel.messageText.isEmpty)
             }
