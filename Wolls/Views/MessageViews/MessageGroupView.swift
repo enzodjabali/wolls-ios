@@ -50,7 +50,15 @@ struct MessageGroupView: View {
                                         Spacer()
                                     }
                                 }
-                                
+                                .contextMenu {
+                                    Button(action: {
+                                        // Copy message to clipboard
+                                        UIPasteboard.general.string = message.content
+                                    }) {
+                                        Text("Copy")
+                                        Image(systemName: "doc.on.doc")
+                                    }
+                                }
                             }
                             .padding(.horizontal)
                             .padding(.top, isSameSenderAsPrevious ? -5 : 5)
