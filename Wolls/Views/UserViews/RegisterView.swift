@@ -11,7 +11,7 @@ struct RegisterView: View {
     @State private var isRegistered = false
 
     var body: some View {
-        VStack {
+        ScrollView {
             // Wolls logo image
             Image("logo-wolls")
                 .resizable()

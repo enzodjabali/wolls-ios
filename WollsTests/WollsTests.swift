@@ -1,14 +1,7 @@
-//
-//  goodfriendsTests.swift
-//  goodfriendsTests
-//
-//  Created by Enzo on 22/05/2024.
-//
-
 import XCTest
-@testable import goodfriends
+@testable import Wolls
 
-final class goodfriendsTests: XCTestCase {
+final class WollsTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
