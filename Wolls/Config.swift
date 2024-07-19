@@ -7,5 +7,5 @@ struct API {
 }
 
 struct AppInfo {
-    static let version = "1.0.1"
+    static let version = "1.0.1-beta"
 }
