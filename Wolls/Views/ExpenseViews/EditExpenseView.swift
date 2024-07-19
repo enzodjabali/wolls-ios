@@ -40,6 +40,10 @@ struct EditExpenseView: View {
                     ProgressView("Loading...")
                         .padding()
                 } else {
+                    if let error = createError {
+                        Text(error)
+                            .foregroundColor(.red)
+                    }
                     Section(header: Text("Expense Details")) {
                         TextField("Title", text: $title)
                             .disabled(!isCreator)
@@ -153,11 +157,6 @@ struct EditExpenseView: View {
                     Section {
                         Toggle("Refunded", isOn: $isRefunded)
                             .disabled(!isCreator)
-                    }
-                
-                    if let error = createError {
-                        Text(error)
-                            .foregroundColor(.red)
                     }
                 }
             }
