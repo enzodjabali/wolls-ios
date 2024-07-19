@@ -29,6 +29,10 @@ struct AddExpenseView: View {
     var body: some View {
         NavigationView {
             Form {
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
                 Section(header: Text("Expense Details")) {
                     TextField("Title", text: $title)
                     Picker("Category", selection: $selectedCategory) {
@@ -107,10 +111,6 @@ struct AddExpenseView: View {
 //                    }
 //                }
 
-                if let error = createError {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
             }
             .navigationTitle("Expense")
             .navigationBarItems(leading: Button("Cancel") {
