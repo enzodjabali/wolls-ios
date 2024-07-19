@@ -64,7 +64,7 @@ class UserController {
         email: String,
         password: String,
         confirmPassword: String,
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<String, Error>) -> Void // Changed to return the login token on success
     ) {
         guard let url = URL(string: "\(API.baseURL)/v1/users/register") else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -100,8 +100,8 @@ class UserController {
             }
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
-                // Successful registration
-                completion(.success(()))
+                // Successful registration, proceed to login
+                self.login(pseudonym: pseudonym, password: password, completion: completion)
             } else {
                 // Handle error
                 if let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],

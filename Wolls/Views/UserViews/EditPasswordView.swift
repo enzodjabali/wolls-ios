@@ -21,7 +21,7 @@ struct EditPasswordView: View {
                         .foregroundColor(.red)
                 }
             }
-            .navigationTitle("Edit Password")
+            .navigationTitle("Password")
             .navigationBarItems(
                 trailing: Button("Save") {
                     updatePassword()

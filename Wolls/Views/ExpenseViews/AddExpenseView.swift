@@ -29,6 +29,10 @@ struct AddExpenseView: View {
     var body: some View {
         NavigationView {
             Form {
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
                 Section(header: Text("Expense Details")) {
                     TextField("Title", text: $title)
                     Picker("Category", selection: $selectedCategory) {
@@ -71,51 +75,47 @@ struct AddExpenseView: View {
                     }
                 }
 
-                Section(header: Text("Receipt")) {
-                    if selectedImage == nil && fileName == nil {
-                        Button(action: {
-                            self.showActionSheet = true
-                        }) {
-                            Text("Add a receipt")
-                        }
-                    }
-                    if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                        Button(action: {
-                            self.selectedImage = nil
-                            base64ImageString = nil
-                        }) {
-                            Text("Remove Image")
-                                .foregroundColor(.red)
-                        }
-                    }
-                    if let fileName = fileName {
-                        Text("\(fileName)")
-                        Button(action: {
-                            self.fileName = nil
-                            base64FileString = nil
-                        }) {
-                            HStack {
-                                Image(systemName: "minus.circle")
-                                Text("Remove")
-                            }
-                            .foregroundColor(.red)
-                        }
-                    }
-                }
+//                Section(header: Text("Receipt")) {
+//                    if selectedImage == nil && fileName == nil {
+//                        Button(action: {
+//                            self.showActionSheet = true
+//                        }) {
+//                            Text("Add a receipt")
+//                        }
+//                    }
+//                    if let selectedImage = selectedImage {
+//                        Image(uiImage: selectedImage)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 200)
+//                        Button(action: {
+//                            self.selectedImage = nil
+//                            base64ImageString = nil
+//                        }) {
+//                            Text("Remove Image")
+//                                .foregroundColor(.red)
+//                        }
+//                    }
+//                    if let fileName = fileName {
+//                        Text("\(fileName)")
+//                        Button(action: {
+//                            self.fileName = nil
+//                            base64FileString = nil
+//                        }) {
+//                            HStack {
+//                                Image(systemName: "minus.circle")
+//                                Text("Remove")
+//                            }
+//                            .foregroundColor(.red)
+//                        }
+//                    }
+//                }
 
-                if let error = createError {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
             }
             .navigationTitle("Expense")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
-            }, trailing: Button("Save") {
+            }, trailing: Button("Create") {
                 createExpense()
             })
             .onAppear {
@@ -160,7 +160,7 @@ struct AddExpenseView: View {
                 switch result {
                 case .success(let users):
                     self.members = users
-                    self.selectCurrentUser()
+                    self.selectAllMembers() // Select all members by default
                 case .failure(let error):
                     self.createError = error.localizedDescription
                 }
@@ -168,28 +168,13 @@ struct AddExpenseView: View {
         }
     }
 
-    func selectCurrentUser() {
-        if let userId = UserSession.shared.userId {
-            // Find the current user in the members list
-            if let currentUser = members.first(where: { $0.id == userId }) {
-                self.currentUser = currentUser
-                if !selectedMembers.contains(where: { $0.id == currentUser.id }) {
-                    selectedMembers.append(currentUser)
-                }
-            } else {
-                print("Current user is not in the group members list")
-            }
-        } else {
-            print("User ID is not available")
-        }
+    func selectAllMembers() {
+        self.selectedMembers = members
     }
 
     func createExpense() {
-        guard let amount = Double(amountString) else {
-            createError = "Invalid amount"
-            return
-        }
-        
+        let amount = amountString
+  
         let refundRecipientIds = selectedMembers.map { $0.id }
 
         var attachment: [String: Any]?
@@ -299,4 +284,3 @@ struct DocumentPicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 }
-

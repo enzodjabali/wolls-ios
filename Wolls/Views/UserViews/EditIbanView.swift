@@ -32,7 +32,7 @@ struct EditIbanView: View {
                 }
             )
 
-            Text("This makes it easier for your friends to send your refunds. To ensure smooth transactions, provide an accurate and active IBAN.")
+            Text("This makes it easier for your friends to send your reimbursements. To ensure smooth transactions, provide an accurate and active IBAN.")
                 .font(.caption)
                 .foregroundColor(.gray)
                 .padding()

@@ -23,6 +23,10 @@ struct CreateGroupView: View {
     var body: some View {
         NavigationView {
             Form {
+                if let error = createError {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
                 Section(header: Text("Group Name")) {
                     TextField("Enter group name", text: $groupName)
                 }
@@ -56,12 +60,8 @@ struct CreateGroupView: View {
                         }
                     }
                 }
-                if let error = createError {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
             }
-            .navigationTitle("Create a group")
+            .navigationTitle("Group")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Create") {

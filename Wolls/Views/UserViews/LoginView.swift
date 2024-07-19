@@ -51,7 +51,7 @@ struct LoginView: View {
                 }
                 .padding()
 
-                NavigationLink(destination: RegisterView()) {
+                NavigationLink(destination: RegisterView(isLoggedIn: $isLoggedIn)) { // Pass the binding here
                     Text("Don't have an account? Register here.")
                         .foregroundColor(.blue)
                         .padding()

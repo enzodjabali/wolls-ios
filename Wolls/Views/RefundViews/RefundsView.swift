@@ -27,7 +27,7 @@ struct RefundsView: View {
             SearchBar(text: $searchText, placeholder: "Search")
             
             if isLoading {
-                ProgressView("Loading refunds...")
+                ProgressView("Loading reimbursements...")
                     .progressViewStyle(CircularProgressViewStyle())
             } else if let errorMessage = errorMessage {
                 Text(errorMessage)
@@ -40,7 +40,7 @@ struct RefundsView: View {
                             ZStack {
                                 Spacer().containerRelativeFrame([.horizontal, .vertical])
                                 VStack {
-                                    Text("No simplified refunds to display.")
+                                    Text("No simplified reimbursement to display.")
                                         .foregroundColor(.gray)
                                 }
                                 .padding()
@@ -71,7 +71,7 @@ struct RefundsView: View {
                             ZStack {
                                 Spacer().containerRelativeFrame([.horizontal, .vertical])
                                 VStack {
-                                    Text("No detailed refunds to display.")
+                                    Text("No detailed reimbursement to display.")
                                         .foregroundColor(.gray)
                                 }
                                 .padding()
@@ -170,7 +170,7 @@ struct RefundsView: View {
                     case .success(let refunds):
                         self.refundsSimplified = refunds
                     case .failure(let error):
-                        self.errorMessage = "Failed to load refunds: \(error.localizedDescription)"
+                        self.errorMessage = "Failed to load reimbursements: \(error.localizedDescription)"
                     }
                     self.isLoading = false
                 }
@@ -182,7 +182,7 @@ struct RefundsView: View {
                     case .success(let refunds):
                         self.refundsDetailed = refunds
                     case .failure(let error):
-                        self.errorMessage = "Failed to load refunds: \(error.localizedDescription)"
+                        self.errorMessage = "Failed to load reimbursements: \(error.localizedDescription)"
                     }
                     self.isLoading = false
                 }

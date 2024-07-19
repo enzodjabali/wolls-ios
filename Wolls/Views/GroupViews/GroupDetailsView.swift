@@ -24,7 +24,7 @@ struct GroupDetailsView: View {
             } else {
                 Picker(selection: $selectedTab, label: Text("")) {
                     Text("Expenses").tag(0)
-                    Text("Refunds").tag(1)
+                    Text("Reimbursements").tag(1)
                     Text("Balances").tag(2)
                 }
                 .pickerStyle(SegmentedPickerStyle())
@@ -53,14 +53,14 @@ struct GroupDetailsView: View {
                         .imageScale(.large)
                 }
             }
-            NavigationLink(destination: MessageGroupView(viewModel: GroupChatViewModel(groupId: viewModel.groupId)), isActive: $isChatting) {
-                Button(action: {
-                    isChatting.toggle()
-                }) {
-                    Image(systemName: "message")
-                        .imageScale(.large)
-                }
-            }
+//            NavigationLink(destination: MessageGroupView(viewModel: GroupChatViewModel(groupId: viewModel.groupId)), isActive: $isChatting) {
+//                Button(action: {
+//                    isChatting.toggle()
+//                }) {
+//                    Image(systemName: "message")
+//                        .imageScale(.large)
+//                }
+//            }
         })
         .onAppear {
             viewModel.fetchGroupDetails() // Ensure the view fetches details when it appears

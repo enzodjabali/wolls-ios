@@ -154,6 +154,21 @@ class ExpenseController {
                 return
             }
 
+            if let httpResponse = response as? HTTPURLResponse, !(200...299).contains(httpResponse.statusCode) {
+                // Handle error response
+                do {
+                    if let errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let errorMessage = errorResponse["error"] as? String {
+                        completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])))
+                    } else {
+                        completion(.failure(NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Unknown error occurred"])))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+                return
+            }
+
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .iso8601
 

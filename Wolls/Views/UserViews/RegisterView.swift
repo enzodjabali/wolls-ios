@@ -8,7 +8,7 @@ struct RegisterView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var registerError: String?
-    @State private var isRegistered = false
+    @Binding var isLoggedIn: Bool // Updated to use the same Binding for login status
 
     var body: some View {
         ScrollView {
@@ -17,6 +17,12 @@ struct RegisterView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100, height: 100) // Adjust size as needed
+        
+            if let error = registerError {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding()
+            }
 
             // Form fields
             TextField("First name", text: $firstname)
@@ -52,12 +58,6 @@ struct RegisterView: View {
                 .padding()
                 .disableAutocorrection(true)
 
-            if let error = registerError {
-                Text(error)
-                    .foregroundColor(.red)
-                    .padding()
-            }
-
             // Introductory text before the Register button
             Text("Youhou, it's your time to Wooooolls!")
                 .font(.headline)
@@ -76,7 +76,7 @@ struct RegisterView: View {
             }
             .padding()
 
-            NavigationLink(destination: LoginView(isLoggedIn: $isRegistered), isActive: $isRegistered) {
+            NavigationLink(destination: LoginView(isLoggedIn: $isLoggedIn), isActive: $isLoggedIn) {
                 EmptyView()
             }
         }
@@ -95,8 +95,9 @@ struct RegisterView: View {
         ) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success:
-                    isRegistered = true
+                case .success(let token):
+                    UserDefaults.standard.set(token, forKey: "userToken")
+                    isLoggedIn = true
                 case .failure(let error):
                     registerError = error.localizedDescription
                 }

@@ -40,6 +40,10 @@ struct EditExpenseView: View {
                     ProgressView("Loading...")
                         .padding()
                 } else {
+                    if let error = createError {
+                        Text(error)
+                            .foregroundColor(.red)
+                    }
                     Section(header: Text("Expense Details")) {
                         TextField("Title", text: $title)
                             .disabled(!isCreator)
@@ -87,77 +91,72 @@ struct EditExpenseView: View {
                         }
                     }
                     
-                    Section(header: Text("Receipt")) {
-                        if let selectedImage = selectedImage {
-                            Image(uiImage: selectedImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
-                            
-                            if isCreator {
-                                Button(action: shareAttachment) {
-                                    HStack {
-                                        Image(systemName: "square.and.arrow.up")
-                                        Text("Share")
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-
-                                Button(action: removeAttachment) {
-                                    HStack {
-                                        Image(systemName: "minus.circle")
-                                        Text("Remove")
-                                    }
-                                    .foregroundColor(.red)
-                                }
-                            }
-                        } else if let base64FileString = base64FileString {
-                            if let imageData = Data(base64Encoded: base64FileString),
-                               let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 200)
-                            } else {
-                                if let fileName = fileName {
-                                    Text("\(fileName)")
-                                }
-                            }
-                            
-                            if isCreator {
-                                Button(action: shareAttachment) {
-                                    HStack {
-                                        Image(systemName: "square.and.arrow.up")
-                                        Text("Share")
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-
-                                Button(action: removeAttachment) {
-                                    HStack {
-                                        Image(systemName: "minus.circle")
-                                        Text("Remove")
-                                    }
-                                    .foregroundColor(.red)
-                                }
-                            }
-                        } else {
-                            if isCreator {
-                                Button("Add a receipt") {
-                                    self.showActionSheet = true
-                                }
-                            }
-                        }
-                    }
+//                    Section(header: Text("Receipt")) {
+//                        if let selectedImage = selectedImage {
+//                            Image(uiImage: selectedImage)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(height: 200)
+//                            
+//                            if isCreator {
+//                                Button(action: shareAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "square.and.arrow.up")
+//                                        Text("Share")
+//                                    }
+//                                    .foregroundColor(.blue)
+//                                }
+//
+//                                Button(action: removeAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "minus.circle")
+//                                        Text("Remove")
+//                                    }
+//                                    .foregroundColor(.red)
+//                                }
+//                            }
+//                        } else if let base64FileString = base64FileString {
+//                            if let imageData = Data(base64Encoded: base64FileString),
+//                               let uiImage = UIImage(data: imageData) {
+//                                Image(uiImage: uiImage)
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 200)
+//                            } else {
+//                                if let fileName = fileName {
+//                                    Text("\(fileName)")
+//                                }
+//                            }
+//                            
+//                            if isCreator {
+//                                Button(action: shareAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "square.and.arrow.up")
+//                                        Text("Share")
+//                                    }
+//                                    .foregroundColor(.blue)
+//                                }
+//
+//                                Button(action: removeAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "minus.circle")
+//                                        Text("Remove")
+//                                    }
+//                                    .foregroundColor(.red)
+//                                }
+//                            }
+//                        } else {
+//                            if isCreator {
+//                                Button("Add a receipt") {
+//                                    self.showActionSheet = true
+//                                }
+//                            }
+//                        }
+//                    }
                     
                     Section {
                         Toggle("Refunded", isOn: $isRefunded)
                             .disabled(!isCreator)
-                    }
-                
-                    if let error = createError {
-                        Text(error)
-                            .foregroundColor(.red)
                     }
                 }
             }
@@ -273,10 +272,7 @@ struct EditExpenseView: View {
     }
 
     func updateExpense() {
-        guard let amount = Double(amountString) else {
-            createError = "Invalid amount"
-            return
-        }
+        let amount = amountString
         
         let refundRecipientIds = selectedMembers.map { $0.id }
         
