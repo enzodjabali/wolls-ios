@@ -17,6 +17,12 @@ struct RegisterView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 100, height: 100) // Adjust size as needed
+        
+            if let error = registerError {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding()
+            }
 
             // Form fields
             TextField("First name", text: $firstname)
@@ -51,12 +57,6 @@ struct RegisterView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
                 .disableAutocorrection(true)
-
-            if let error = registerError {
-                Text(error)
-                    .foregroundColor(.red)
-                    .padding()
-            }
 
             // Introductory text before the Register button
             Text("Youhou, it's your time to Wooooolls!")
