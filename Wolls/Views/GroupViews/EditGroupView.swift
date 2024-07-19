@@ -32,6 +32,18 @@ struct EditGroupView: View {
 
     var body: some View {
         Form {
+            if let error = editError {
+                Section {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+            }
+            if let error = deleteError {
+                Section {
+                    Text(error)
+                        .foregroundColor(.red)
+                }
+            }
             Section(header: Text("Name")) {
                 TextField("Enter new name", text: $newName)
                     .disabled(!isAdmin)
@@ -54,18 +66,6 @@ struct EditGroupView: View {
                         .foregroundColor(.gray) // Make the text look disabled
                 } else {
                     Text("Invalid date")
-                }
-            }
-            if let error = editError {
-                Section {
-                    Text(error)
-                        .foregroundColor(.red)
-                }
-            }
-            if let error = deleteError {
-                Section {
-                    Text(error)
-                        .foregroundColor(.red)
                 }
             }
             if !isOnlyAdmin {
