@@ -125,26 +125,26 @@ struct UserDetailView: View {
                                 if let balance = user.balance {
                                     if balance < 0 {
                                         Rectangle()
-                                            .fill(Color.red.opacity(0.8)) // Set opacity here
-                                            .cornerRadius(5) // Set corner radius here
+                                            .fill(Color.red.opacity(0.8))
+                                            .cornerRadius(5)
                                             .frame(width: max(CGFloat(abs(balance) / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
                                             .overlay(
                                                 Text("\(String(format: "%.2f", balance)) €")
                                                     .font(.subheadline)
                                                     .foregroundColor(.white)
                                             )
-                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                            .padding(.horizontal, 5)
                                     } else {
                                         Rectangle()
-                                            .fill(Color.green.opacity(0.8)) // Set opacity here
-                                            .cornerRadius(5) // Set corner radius here
-                                            .frame(width: max(CGFloat(balance / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
+                                            .fill(Color.green.opacity(0.8))
+                                            .cornerRadius(5)
+                                            .frame(width: max(CGFloat(abs(balance) / maxBalance) * maxBarWidth, 80), height: 25) // Ensure minimum width
                                             .overlay(
                                                 Text("\(String(format: "%.2f", balance)) €")
                                                     .font(.subheadline)
                                                     .foregroundColor(.white)
                                             )
-                                            .padding(.horizontal, 5) // Add horizontal padding for better spacing
+                                            .padding(.horizontal, 5)
                                     }
                                 }
                                 Spacer()
@@ -291,7 +291,7 @@ struct UserDetailView: View {
     }
 
     private var maxBalance: Float {
-        return 1000 // Replace with your logic to determine the maximum balance
+        return 2000 // Replace with your logic to determine the maximum balance
     }
 
     private var maxBarWidth: CGFloat {
