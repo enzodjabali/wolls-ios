@@ -71,41 +71,41 @@ struct AddExpenseView: View {
                     }
                 }
 
-                Section(header: Text("Receipt")) {
-                    if selectedImage == nil && fileName == nil {
-                        Button(action: {
-                            self.showActionSheet = true
-                        }) {
-                            Text("Add a receipt")
-                        }
-                    }
-                    if let selectedImage = selectedImage {
-                        Image(uiImage: selectedImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                        Button(action: {
-                            self.selectedImage = nil
-                            base64ImageString = nil
-                        }) {
-                            Text("Remove Image")
-                                .foregroundColor(.red)
-                        }
-                    }
-                    if let fileName = fileName {
-                        Text("\(fileName)")
-                        Button(action: {
-                            self.fileName = nil
-                            base64FileString = nil
-                        }) {
-                            HStack {
-                                Image(systemName: "minus.circle")
-                                Text("Remove")
-                            }
-                            .foregroundColor(.red)
-                        }
-                    }
-                }
+//                Section(header: Text("Receipt")) {
+//                    if selectedImage == nil && fileName == nil {
+//                        Button(action: {
+//                            self.showActionSheet = true
+//                        }) {
+//                            Text("Add a receipt")
+//                        }
+//                    }
+//                    if let selectedImage = selectedImage {
+//                        Image(uiImage: selectedImage)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 200)
+//                        Button(action: {
+//                            self.selectedImage = nil
+//                            base64ImageString = nil
+//                        }) {
+//                            Text("Remove Image")
+//                                .foregroundColor(.red)
+//                        }
+//                    }
+//                    if let fileName = fileName {
+//                        Text("\(fileName)")
+//                        Button(action: {
+//                            self.fileName = nil
+//                            base64FileString = nil
+//                        }) {
+//                            HStack {
+//                                Image(systemName: "minus.circle")
+//                                Text("Remove")
+//                            }
+//                            .foregroundColor(.red)
+//                        }
+//                    }
+//                }
 
                 if let error = createError {
                     Text(error)

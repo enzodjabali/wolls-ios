@@ -87,68 +87,68 @@ struct EditExpenseView: View {
                         }
                     }
                     
-                    Section(header: Text("Receipt")) {
-                        if let selectedImage = selectedImage {
-                            Image(uiImage: selectedImage)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 200)
-                            
-                            if isCreator {
-                                Button(action: shareAttachment) {
-                                    HStack {
-                                        Image(systemName: "square.and.arrow.up")
-                                        Text("Share")
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-
-                                Button(action: removeAttachment) {
-                                    HStack {
-                                        Image(systemName: "minus.circle")
-                                        Text("Remove")
-                                    }
-                                    .foregroundColor(.red)
-                                }
-                            }
-                        } else if let base64FileString = base64FileString {
-                            if let imageData = Data(base64Encoded: base64FileString),
-                               let uiImage = UIImage(data: imageData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 200)
-                            } else {
-                                if let fileName = fileName {
-                                    Text("\(fileName)")
-                                }
-                            }
-                            
-                            if isCreator {
-                                Button(action: shareAttachment) {
-                                    HStack {
-                                        Image(systemName: "square.and.arrow.up")
-                                        Text("Share")
-                                    }
-                                    .foregroundColor(.blue)
-                                }
-
-                                Button(action: removeAttachment) {
-                                    HStack {
-                                        Image(systemName: "minus.circle")
-                                        Text("Remove")
-                                    }
-                                    .foregroundColor(.red)
-                                }
-                            }
-                        } else {
-                            if isCreator {
-                                Button("Add a receipt") {
-                                    self.showActionSheet = true
-                                }
-                            }
-                        }
-                    }
+//                    Section(header: Text("Receipt")) {
+//                        if let selectedImage = selectedImage {
+//                            Image(uiImage: selectedImage)
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(height: 200)
+//                            
+//                            if isCreator {
+//                                Button(action: shareAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "square.and.arrow.up")
+//                                        Text("Share")
+//                                    }
+//                                    .foregroundColor(.blue)
+//                                }
+//
+//                                Button(action: removeAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "minus.circle")
+//                                        Text("Remove")
+//                                    }
+//                                    .foregroundColor(.red)
+//                                }
+//                            }
+//                        } else if let base64FileString = base64FileString {
+//                            if let imageData = Data(base64Encoded: base64FileString),
+//                               let uiImage = UIImage(data: imageData) {
+//                                Image(uiImage: uiImage)
+//                                    .resizable()
+//                                    .scaledToFit()
+//                                    .frame(height: 200)
+//                            } else {
+//                                if let fileName = fileName {
+//                                    Text("\(fileName)")
+//                                }
+//                            }
+//                            
+//                            if isCreator {
+//                                Button(action: shareAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "square.and.arrow.up")
+//                                        Text("Share")
+//                                    }
+//                                    .foregroundColor(.blue)
+//                                }
+//
+//                                Button(action: removeAttachment) {
+//                                    HStack {
+//                                        Image(systemName: "minus.circle")
+//                                        Text("Remove")
+//                                    }
+//                                    .foregroundColor(.red)
+//                                }
+//                            }
+//                        } else {
+//                            if isCreator {
+//                                Button("Add a receipt") {
+//                                    self.showActionSheet = true
+//                                }
+//                            }
+//                        }
+//                    }
                     
                     Section {
                         Toggle("Refunded", isOn: $isRefunded)
