@@ -24,7 +24,7 @@ struct GroupDetailsView: View {
             } else {
                 Picker(selection: $selectedTab, label: Text("")) {
                     Text("Expenses").tag(0)
-                    Text("Refunds").tag(1)
+                    Text("Reimbursements").tag(1)
                     Text("Balances").tag(2)
                 }
                 .pickerStyle(SegmentedPickerStyle())
