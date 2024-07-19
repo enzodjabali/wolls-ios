@@ -160,7 +160,7 @@ struct AddExpenseView: View {
                 switch result {
                 case .success(let users):
                     self.members = users
-                    self.selectCurrentUser()
+                    self.selectAllMembers() // Select all members by default
                 case .failure(let error):
                     self.createError = error.localizedDescription
                 }
@@ -168,20 +168,8 @@ struct AddExpenseView: View {
         }
     }
 
-    func selectCurrentUser() {
-        if let userId = UserSession.shared.userId {
-            // Find the current user in the members list
-            if let currentUser = members.first(where: { $0.id == userId }) {
-                self.currentUser = currentUser
-                if !selectedMembers.contains(where: { $0.id == currentUser.id }) {
-                    selectedMembers.append(currentUser)
-                }
-            } else {
-                print("Current user is not in the group members list")
-            }
-        } else {
-            print("User ID is not available")
-        }
+    func selectAllMembers() {
+        self.selectedMembers = members
     }
 
     func createExpense() {
@@ -296,4 +284,3 @@ struct DocumentPicker: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
 }
-
