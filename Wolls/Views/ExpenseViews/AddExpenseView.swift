@@ -115,7 +115,7 @@ struct AddExpenseView: View {
             .navigationTitle("Expense")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
-            }, trailing: Button("Save") {
+            }, trailing: Button("Create") {
                 createExpense()
             })
             .onAppear {
