@@ -272,10 +272,7 @@ struct EditExpenseView: View {
     }
 
     func updateExpense() {
-        guard let amount = Double(amountString) else {
-            createError = "Invalid amount"
-            return
-        }
+        let amount = amountString
         
         let refundRecipientIds = selectedMembers.map { $0.id }
         

@@ -185,11 +185,8 @@ struct AddExpenseView: View {
     }
 
     func createExpense() {
-        guard let amount = Double(amountString) else {
-            createError = "Invalid amount"
-            return
-        }
-        
+        let amount = amountString
+  
         let refundRecipientIds = selectedMembers.map { $0.id }
 
         var attachment: [String: Any]?
