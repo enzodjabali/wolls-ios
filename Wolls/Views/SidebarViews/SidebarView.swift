@@ -121,7 +121,7 @@ struct SidebarView: View {
             Section {
                 VStack {
                     Text("Wolls v" + AppInfo.version)
-                    Text("Made in France 🇫🇷")
+                    Text("Made in France")
                 }
                 .font(.footnote)
                 .foregroundColor(.gray)
