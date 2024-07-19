@@ -8,7 +8,7 @@ struct RegisterView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var registerError: String?
-    @State private var isRegistered = false
+    @Binding var isLoggedIn: Bool // Updated to use the same Binding for login status
 
     var body: some View {
         ScrollView {
@@ -76,7 +76,7 @@ struct RegisterView: View {
             }
             .padding()
 
-            NavigationLink(destination: LoginView(isLoggedIn: $isRegistered), isActive: $isRegistered) {
+            NavigationLink(destination: LoginView(isLoggedIn: $isLoggedIn), isActive: $isLoggedIn) {
                 EmptyView()
             }
         }
@@ -95,8 +95,9 @@ struct RegisterView: View {
         ) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success:
-                    isRegistered = true
+                case .success(let token):
+                    UserDefaults.standard.set(token, forKey: "userToken")
+                    isLoggedIn = true
                 case .failure(let error):
                     registerError = error.localizedDescription
                 }
